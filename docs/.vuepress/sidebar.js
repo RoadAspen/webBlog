@@ -2,7 +2,6 @@ const blog = [{
         title: 'JS',
         collapsable: true,
         children: [
-            'js/new做了什么',
             'js/手写系列',
             "js/promise",
             //     'js/运算符',
@@ -130,13 +129,13 @@ const blog = [{
         title: '小程序原理',
         collapsable: true
     },
-    {
-        title: '杂谈',
-        collapsable: true,
-        children: [
-            'talk/book'
-        ]
-    }
+    // {
+    //     title: '杂谈',
+    //     collapsable: true,
+    //     children: [
+    //         'talk/book'
+    //     ]
+    // }
 ]
 
 // 算法

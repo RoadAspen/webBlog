@@ -20,7 +20,6 @@ module.exports = {
 	themeConfig: {
 		nav,
 		sidebar,
-		// logo: '/assets/img/logo.png',
 		sidebarDepth: 5, // 显示链接的深度，默认为1,最深为2
 		displayAllHeaders: true, //显示所有页面的标题链接 
 		lastUpdated: '最后更新时间',
