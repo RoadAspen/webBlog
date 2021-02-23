@@ -92,7 +92,7 @@ const blog = [{
         collapsable: true,
         children: [
             "ts/基础知识",
-            // "ts/进阶",
+            "ts/进阶",
             // "ts/类与接口",
             // "ts/装饰器",
             // "ts/装饰器的使用"
