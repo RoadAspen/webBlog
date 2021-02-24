@@ -3,18 +3,19 @@ const blog = [{
         collapsable: true,
         children: [
             'js/手写系列',
-            "js/promise",
+            "js/Promise",
             //     'js/运算符',
-            //     'js/预编译',
+            'js/预编译',
             //     'js/clone',
             //     'js/执行过程',
-            //     'js/箭头函数',
-            //     'js/闭包',
-            //     "js/元编程",
-            //     "js/原型",
-            //     "js/迭代器",
-            //     "js/EventLoop",
-            //     "js/0.1+0.2"
+            'js/箭头函数',
+            'js/闭包',
+            "js/元编程",
+            "js/原型",
+            "js/迭代器",
+            "js/EventLoop",
+            //     "js/0.1+0.2",
+            "js/位运算及权限设计"
         ],
 
     },

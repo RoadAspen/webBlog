@@ -1,66 +1,70 @@
-# Promise/A+ 规范
+# Promise
+
+Promise/A+ 规范
+
 > `Promise`表示了异步操作的最终结果，有三种状态，`pending`可转变为`fulfilled`或`rejected`，这个转变过程不可逆，且只能转变为其中一个。
+
 1. `pending` 等待中，未来可转化为 `fulfilled`或者`rejected`
 2. `fulfilled` 已履行 需要返回一个不可变`value`，状态从 `pending`转变成 `fulfilled`
 3. `rejected` 已拒绝，需要返回一个不可变`reason`， 状态从 `pending`转变成 `rejected`
 
-#### Promise例子
+#### Promise 例子
+
 ```js
-    const request = require("request");
+const request = require("request");
 
-    // 我们先用Promise包装下三个网络请求
-    // 请求成功时resolve这个Promise
-    const request1 = function() {
-      const promise = new Promise((resolve) => {
-        request('https://www.baidu.com', function (error, response) {
-          if (!error && response.statusCode == 200) {
-            resolve('request1 success');
-          }
-        });
-      });
-    
-      return promise;
-    }
-    
-    const request2 = function() {
-      const promise = new Promise((resolve) => {
-        request('https://www.baidu.com', function (error, response) {
-          if (!error && response.statusCode == 200) {
-            resolve('request2 success');
-          }
-        });
-      });
-    
-      return promise;
-    }
-    
-    const request3 = function() {
-      const promise = new Promise((resolve) => {
-        request('https://www.baidu.com', function (error, response) {
-          if (!error && response.statusCode == 200) {
-            resolve('request3 success');
-          }
-        });
-      });
-    
-      return promise;
-    }
-    
-    
-    // 先发起request1，等他resolve后再发起request2，
-    // 然后是request3
-    request1().then((data) => {
-      console.log(data);
-      return request2();
-    })
-    .then((data) => {
-      console.log(data);
-      return request3();
-    })
-    .then((data) => {
-      console.log(data);
-    })
+// 我们先用Promise包装下三个网络请求
+// 请求成功时resolve这个Promise
+const request1 = function() {
+	const promise = new Promise((resolve) => {
+		request("https://www.baidu.com", function(error, response) {
+			if (!error && response.statusCode == 200) {
+				resolve("request1 success");
+			}
+		});
+	});
 
+	return promise;
+};
+
+const request2 = function() {
+	const promise = new Promise((resolve) => {
+		request("https://www.baidu.com", function(error, response) {
+			if (!error && response.statusCode == 200) {
+				resolve("request2 success");
+			}
+		});
+	});
+
+	return promise;
+};
+
+const request3 = function() {
+	const promise = new Promise((resolve) => {
+		request("https://www.baidu.com", function(error, response) {
+			if (!error && response.statusCode == 200) {
+				resolve("request3 success");
+			}
+		});
+	});
+
+	return promise;
+};
+
+// 先发起request1，等他resolve后再发起request2，
+// 然后是request3
+request1()
+	.then((data) => {
+		console.log(data);
+		return request2();
+	})
+	.then((data) => {
+		console.log(data);
+		return request3();
+	})
+	.then((data) => {
+		console.log(data);
+	});
 ```
 
 ```
@@ -69,39 +73,47 @@ A[pending]-->|"resolve(value)"| B(fulfilled)
 A-->|"reject(reason)"| C(rejected)
 ```
 
-### then方法
+### then 方法
+
 > 一个`Promise` 必须有一个`then`方法用来访问它的值或者拒绝原因。`then`方法有两个参数，`onFulfilled`，`onRejected`
 
 ```js
-    Promise.then(onFulfilled,onRejected)
+Promise.then(onFulfilled, onRejected);
 ```
 
 ##### `onFulfilled`
+
 > 如果`onFulfilled`不是函数，就必须被忽略，如果`onFulfilled`是函数。
-- 当`Promise`在执行结束后必须被调用，第一个参数为`promise`的最终值`value`。
-- 在`Promise`没有执行结束前不可被调用。
-- 调用次数不可超过一次。即返回成功之后调用一次获取返回值。
+
+-   当`Promise`在执行结束后必须被调用，第一个参数为`promise`的最终值`value`。
+-   在`Promise`没有执行结束前不可被调用。
+-   调用次数不可超过一次。即返回成功之后调用一次获取返回值。
 
 ##### `onRejected`
-> 如果`onRejected`不是函数，就必须被忽略，如果是函数。   
-- 当`Promise`被拒绝后必须被调用，第一个参数为`promise`的拒绝原因`reason`。
-- 在`Promise`没有执行结束前不可被调用。
-- 调用次数不可超过一次。即拒绝之后调用一次获取拒绝原因。
+
+> 如果`onRejected`不是函数，就必须被忽略，如果是函数。
+
+-   当`Promise`被拒绝后必须被调用，第一个参数为`promise`的拒绝原因`reason`。
+-   在`Promise`没有执行结束前不可被调用。
+-   调用次数不可超过一次。即拒绝之后调用一次获取拒绝原因。
 
 ##### 多次调用
+
 > `then` 方法可以被同一个 `promise` 调用多次.
 
-1. 当 `promise` 成功执行时，所有 `onFulfilled` 需按照其注册顺序依次回调.  
+1. 当 `promise` 成功执行时，所有 `onFulfilled` 需按照其注册顺序依次回调.
 2. 当 `promise` 被拒绝执行时，所有的 `onRejected` 需按照其注册顺序依次回调.
 
 ##### 返回
-> `then` 必须返回一个`promise`对象.  
-- 如果then中没有执行onFulfilled 则需要在返回的promise中执行
-- 如果then中没有执行onRejected 则需要在返回的promise中执行
 
-## Promise实现
+> `then` 必须返回一个`promise`对象.
 
-> 基本的prmise使用
+-   如果 then 中没有执行 onFulfilled 则需要在返回的 promise 中执行
+-   如果 then 中没有执行 onRejected 则需要在返回的 promise 中执行
+
+## Promise 实现
+
+> 基本的 prmise 使用
 
 ```js
     new Promise((resolve,reject){
@@ -110,7 +122,8 @@ A-->|"reject(reason)"| C(rejected)
         },5000)
     })
 ```
->构造函数Promise必须接受一个函数作为参数，这个函数又需要resolve，reject作为参数，这两个参数也为函数类型。
+
+> 构造函数 Promise 必须接受一个函数作为参数，这个函数又需要 resolve，reject 作为参数，这两个参数也为函数类型。
 
 ```js
     // 定义一个判定参数是否为函数的方法
