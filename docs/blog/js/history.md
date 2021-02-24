@@ -1,13 +1,17 @@
-# Html5 History 路由原理及实现
+# History
 
-> 1. history.pushState 比 hash 更符合前端路由的访问方式，更加优雅（无#）。
-> 2. pushState 可以新增相同的 url 记录，hash 不能。
-> 3. pushState 添加一个 url 之后，需要使用 history.go(url)来进行调转。
-> 4. pushState 只能添加相同 hostname 的 url 地址或者无 hostname 的地址。
-> 5. pushState,replaceState 和 hash 一样，可以改变浏览器 url 而不引起页面自动跳转。
-> 6. hash 改变可以触发 hashchange，也可以触发 popstate，但是 pushState 和 replaceState 却不能触发 popState 和 hashchange。
-> 7. pushState、replaceState 主要是为了更新 history，方便后续交互行为发生做准备。
-> 8. pushState 和 replaceState 会将 hostname 之后的部分全部替换，而 hash 只会修改 hash 中#后边的部分
+## 什么是 History 路由
+
+history 是 HTML5 新增的 api，具有以下特点：
+
+1. history.pushState 比 hash 更符合前端路由的访问方式，更加优雅（无#）。
+2. pushState 可以新增相同的 url 记录，hash 不能。
+3. pushState 添加一个 url 之后，需要使用 history.go(url)来进行调转。
+4. pushState 只能添加相同 hostname 的 url 地址或者无 hostname 的地址。
+5. pushState,replaceState 和 hash 一样，可以改变浏览器 url 而不引起页面自动跳转。
+6. hash 改变可以触发 hashchange，也可以触发 popstate，但是 pushState 和 replaceState 却不能触发 popState 和 hashchange。
+7. pushState、replaceState 主要是为了更新 history，方便后续交互行为发生做准备。
+8. pushState 和 replaceState 会将 hostname 之后的部分全部替换，而 hash 只会修改 hash 中#后边的部分
 
 ### 流程
 
@@ -89,28 +93,28 @@
 还有一个方法是劫持 pushState 并改写浏览器的 pushState 方法，每次当执行 pushState 的时候，同时执行路径对应的 js。
 
 ```js
-interface Historys extends History {
-	onPushState?: any;
-}
-(function(history: Historys) {
-	const pushState = history.pushState;
-	history.pushState = function(
-		data: any,
-		title: string,
-		url?: string | null | undefined
-	) {
-		if (typeof history.onPushState === "function") {
-			// 此处执行响应的js操作
-			history.onPushState();
-		}
-		return pushState.apply(history, [data, title, url]);
-	};
+(function(history) {
+  const pushState = history.pushState;
+  history.pushState = function(
+    data: any,
+    title: string,
+    url?: string | null | undefined
+  ) {
+    if (typeof history.onPushState === "function") {
+      // 此处执行响应的js操作
+      history.onPushState();
+    }
+    return pushState.apply(history, [data, title, url]);
+  };
 })(window.history);
 ```
 
-> history api 由于是真实的 url 路径，前端通过监听 url 的变化用 js 做出相应的页面处理，url 改变不和后台做交互，所以当浏览器在不刷新的情况下是可以正常工作的。如果出现了刷新，则当前的 url 会作为请求路径向服务器发出请求，这时，由于路由是前端配置的，后端并不知道这个路由是干什么的，没有做处理，就会报 404。
+## 注意
 
-> 解决办法
->
-> > 1. 在没有修改 output 的 publicPath 的情况下，在 webpack-dev-server 的配置中添加 historyApiFallback:true.
-> > 2. 如果修改了 publicPath，则需要在 proxy 中"/"路径设置 bypass，如果 req 中的 accept 字段包含了 text/html，就将返回/index.html 跳过代理,随后就将 index.html 返回给浏览器，这样对 API 的代理转发就不会受到影响。
+history api 由于是真实的 url 路径，前端通过监听 url 的变化用 js 做出相应的页面处理，url 改变不和后台做交互，所以当浏览器在不刷新的情况下是可以正常工作的。如果出现了刷新，则当前的 url 会作为请求路径向服务器发出请求，这时，由于路由是前端配置的，后端并不知道这个路由是干什么的，没有做处理，就会报 404。
+
+### 解决办法
+
+1. 在没有修改 output 的 publicPath 的情况下，在 webpack-dev-server 的配置中添加 historyApiFallback:true.
+2. 如果修改了 publicPath，则需要在 proxy 中"/"路径设置 bypass，如果 req 中的 accept 字段包含了 text/html，就将返回/index.html 跳过代理,随后就将 index.html 返回给浏览器，这样对 API 的代理转发就不会受到影响。
+3. 生产环境中，配置 nginx，将所有 url 地址统一返回 index.html
