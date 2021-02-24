@@ -4,6 +4,8 @@ const blog = [{
         children: [
             'js/手写系列',
             "js/Promise",
+            "js/hash",
+            "js/history",
             //     'js/运算符',
             'js/预编译',
             //     'js/clone',
@@ -15,7 +17,8 @@ const blog = [{
             "js/迭代器",
             "js/EventLoop",
             //     "js/0.1+0.2",
-            "js/位运算及权限设计"
+            "js/位运算及权限设计",
+            "js/内存管理",
         ],
 
     },
