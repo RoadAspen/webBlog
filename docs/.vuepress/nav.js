@@ -20,7 +20,7 @@ const database = {
 
 module.exports = [
     blog,
-    // arithmetic,
+    arithmetic,
     react,
     database
 ]
