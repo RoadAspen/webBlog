@@ -1320,11 +1320,11 @@ React 实现的流程如下：
 7. 为了拆分工作单元，我们需要加入 fiber 架构， fiber 架构 = fiber 数据结构 + sheduler(调度) 。
 8. fiber， 每一个 fiber 都有一个 link 指向 parent fiber，一个 child fiber ， 一个 sibling fiber。
 9. 将每一个 fiber 当作是一个 unitOfWork，并在 render 中确定 root fiber，并作为第一个 unitOfwork 传入 performUnitOfWork 函数。
-10. performUnitOfWork 函数 负责根据传入的 unitOfwork 创建对应的 fiber，并确定 下个 unitOfWork，继续传入 performUnitOfWork。
+10. performUnitOfWork 函数 负责根据传入的 unitOfwork 创建对应的 fiber，并确定 下个 unitOfWork，while 循环，根据 deadline shouldYield 判断是否继续递归 performUnitOfWork，否则跳出循环，使用 requestIdleCallback(workLoop) 继续异步执行。
 11. 调度完成后会返回一个 fiber tree ， 将 fiber tree 传递给 reconciler, 进行 diff，给每一个 fiber 打上 effectTag。
-12. 当 reconciler 完成之后会触发 commit， 进行浏览器绘制。 浏览器会根据 effectTag 的类型，去做相应的更改。
-13. function component 函数组件。
-14. hooks
+12. 当 reconciler 完成之后会触发 commit，浏览器根据 effectList， 进行浏览器绘制。 浏览器会根据 effectTag 的类型，去做相应的更改。
+13. function component 函数组件，这个函数组件会返回一个 jsx，fiber 会将这个函数作为 type，在 render 阶段，如果 type 是 function 类型，则执行这个函数，并将 fiber 传入进去，在 commit 阶段，函数组件挂载需要找到最近的一个 hostComponent，而删除也要找到函数内部最近的一个 hostComponent 元素。
+14. hooks ，当处理 type 是 function 的 fiber 时，会给这个 fiber 创建一个 hooks 的数组，并将当前 fiber 作为 wipfiber，传递给全局变量，这样在 useState 等 hooks 执行时，会直接取 全局的 wipfiber，并将 hooks 函数结果依次传入到 hooks 数组中（这也是为什么 hooks 的调用顺序不能更改），如果有旧的 hook，还将旧的 hook 的 state 按照 hookIndex 顺序赋值给新的 fiber 中的 hooks 数组中。在 hook 中的每一项还有一个 queue 队列，用于存储 setState 传入的回调函数，每次执行 setState 都会在 queue 队列中添加一个函数，当函数组件更新时，会遍历 queue 队列，将所有改变 state 的回调依次执行。
 
 ## 鸣谢
 
