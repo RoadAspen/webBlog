@@ -8,6 +8,8 @@ React 部分主要是提供了我们常用的 API，而真正的核心是 ReactD
 
 ```js
 export {
+	createElement, // react 将 type ，props ， children 传换成  fiber 结构
+	cloneElement, // 一般用于 React.Children.map 时， 对当前的组件做一些添加或者删除的操作。 此时使用 cloneElement。
 	Children, // React.children 用于对 传入的children 进行处理，在 组件内部 ，常用 React.children.map   React.children.forEach. 第一个参数是 props.children ,第二个是 回调函数
 	createRef, // 创建一个 ref
 	Component, // React class 组件 抽象类
@@ -30,14 +32,15 @@ export {
 	useState, // 定义函数组件的状态,传入一个value，返回 state 和 修改 state的方法
 	// ====================== hooks api end===============================
 
+	isValidElement, // 验证对象是否为 React 元素，返回值为 true 或 false。
+	ReactVersion as version, // 返回 react 的版本
 	REACT_FRAGMENT_TYPE as Fragment, // 空标签
 	REACT_PROFILER_TYPE as Profiler, // 测量包含的组件渲染的时间，并执行回调函数。 在生产环境禁用
 	REACT_STRICT_MODE_TYPE as StrictMode, // 严格模式，检查子组件是否符合组件编写规则，发出警告 ，仅在开发模式下运行，不渲染任何组件
+	//
+	// =========================== Concurrent模式  =========================================
+
 	REACT_SUSPENSE_TYPE as Suspense, // 异步加载组件，有一个 fallback 属性，用来执行 异步组件未加载完成之前，显示 fallback 指定的dom结构. 仅支持 React.lazy 加载组件的方式
-	createElement, // react 将 type ，props ， children 传换成  fiber 结构
-	cloneElement, // 一般用于 React.Children.map 时， 对当前的组件做一些添加或者删除的操作。 此时使用 cloneElement。
-	isValidElement, // 验证对象是否为 React 元素，返回值为 true 或 false。
-	ReactVersion as version, // 返回 react 的版本
 	ReactSharedInternals as __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
 	// Deprecated behind disableCreateFactory
 	createFactory, //

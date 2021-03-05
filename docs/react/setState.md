@@ -1,4 +1,4 @@
-# React setState 异步 or 同步
+# setState 异步 or 同步
 
 在 React 中调用 setState 可以触发组件重新渲染，但是在不同的地方使用 setState 会有不同的表现，异步或者同步。
 
