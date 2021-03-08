@@ -9,7 +9,7 @@ React 部分主要是提供了我们常用的 API，而真正的核心是 ReactD
 ```js
 export {
 	createElement, // react 将 type ，props ， children 传换成  fiber 结构
-	cloneElement, // 一般用于 React.Children.map 时， 对当前的组件做一些添加或者删除的操作。 此时使用 cloneElement。
+	cloneElement, // 一般用于 React.Children.map 时， 对当前的组件做一些添加或者删除 属性的操作。 此时使用 cloneElement。
 	Children, // React.children 用于对 传入的children 进行处理，在 组件内部 ，常用 React.children.map   React.children.forEach. 第一个参数是 props.children ,第二个是 回调函数
 	createRef, // 创建一个 ref
 	Component, // React class 组件 抽象类
@@ -17,6 +17,7 @@ export {
 	createContext, // 创建 context，传入一个value，创建一个 context， 将一个 类组件的contextType 指定为这个context，可以在类中使用 this.context 消费这个context
 	forwardRef, // 传递 ref 到 HOC内部的参数组件， ref 不属于 props，所以 使用 forwardRef 向子组件传递 ref。 建议 和 useImperativeHandle 一起使用
 	lazy, // 懒加载，异步加载 配合 Suspense
+	REACT_SUSPENSE_TYPE as Suspense, // 异步加载组件，有一个 fallback 属性，用来执行 异步组件未加载完成之前，显示 fallback 指定的dom结构. 仅支持 React.lazy 加载组件的方式
 	memo, // 包裹函数组件，类似于 class 组件的 shouldComponentUpdate
 	// ====================== hooks api start===============================
 
@@ -40,7 +41,6 @@ export {
 	//
 	// =========================== Concurrent模式  =========================================
 
-	REACT_SUSPENSE_TYPE as Suspense, // 异步加载组件，有一个 fallback 属性，用来执行 异步组件未加载完成之前，显示 fallback 指定的dom结构. 仅支持 React.lazy 加载组件的方式
 	ReactSharedInternals as __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
 	// Deprecated behind disableCreateFactory
 	createFactory, //
