@@ -110,8 +110,7 @@ const blog = [
 		title: "ReactNative",
 		collapsable: true,
 		children: [
-			"reactnative/搭建",
-			"reactnative/路由",
+			"reactnative/基础"
 			//s
 		],
 	},
