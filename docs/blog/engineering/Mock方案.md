@@ -104,6 +104,40 @@ Mock.mock("/api/getData", "get", {
 
 **代表**：[json-server](https://github.com/typicode/json-server)
 
+### 例子
+
+安装
+
+```js
+// npm install -g json-server
+```
+
+创建 json，类似于数据库, 每一个 key，都对应一个 url 地址，对 url 地址，会基于 RestAPI 的格式做 get、post、put、patch、delete 等方法的映射
+
+```json
+//db.json
+{
+  "posts": [{ "id": 1, "title": "json-server", "author": "typicode" }],
+  "comments": [{ "id": 1, "body": "some comment", "postId": 1 }],
+  "profile": { "name": "typicode" }
+}
+```
+
+启动
+
+```js
+// json-server --watch db.json
+```
+
+使用
+
+```js
+axios.get('http://localhost:3000/posts/1')
+
+// 返回
+{"id": 1,"title": "json-server", "author": "typicode" }
+```
+
 ### 优点
 
 1. 配置简单，json-server 可以 0 代码启动一个 REST API Server。
@@ -112,4 +146,6 @@ Mock.mock("/api/getData", "get", {
 
 ### 缺点
 
-1. 无法自动同步后端 api，需要
+1. 无法自动同步后端 api 。
+
+推荐使用，此方法可以真实模拟前后端交互效果。
