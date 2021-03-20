@@ -42,11 +42,11 @@ action 用来表示修改 state 的动作 type 以及 载荷 payload， action �
 
 ```js
 function addCount(count) {
-	return {
-		type: "add",
-		payload: {
-			count,
-		},
-	};
+  return {
+    type: "add",
+    payload: {
+      count,
+    },
+  };
 }
 ```
