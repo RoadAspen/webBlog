@@ -28,8 +28,8 @@ const blog = [
 			"http/HTTP",
 			"http/HTTP版本",
 			"http/HTTP缓存",
-			"http/DNS",
-			"http/TCP-IP",
+			// "http/DNS",
+			// "http/TCP-IP",
 		],
 	},
 	{
@@ -130,7 +130,7 @@ const blog = [
 		collapsable: true,
 		children: [
 			// "safety/encryption",
-			"safety/safe",
+			"safety/安全",
 		],
 	},
 	// {
