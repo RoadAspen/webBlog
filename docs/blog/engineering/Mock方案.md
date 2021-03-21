@@ -149,3 +149,17 @@ axios.get('http://localhost:3000/posts/1')
 1. 无法自动同步后端 api 。
 
 推荐使用，此方法可以真实模拟前后端交互效果。
+
+## REST API
+
+一句话总结： URI 代表 资源对象，METHOD 代表行为：
+
+```js
+"GET /posts"; // 列表
+"GET /posts/1"; // 详情
+"POST /posts"; // 新增
+"put /posts/1"; // 替换（全量更新）
+"PATCH /posts/1"; // 修改
+"DELETE /posts/1"; // 删除
+
+```
