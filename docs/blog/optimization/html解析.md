@@ -1,10 +1,10 @@
-# 浏览器解析 HTML 并渲染
+# 浏览器解析渲染页面
 
-> 一个 html 文件由很多种文件组成， 内链 css，javascript 外链 css，javascript ，还有 image、iframe 等。渲染流程就是指浏览器从最初接收请求来的 HTML、CSS、javascript 等资源，然后解析、构建树、渲染布局、绘制，最后呈现给客户能看到的界面这整个过程。
+一个 html 文件由很多种文件组成， 内链 css，javascript 外链 css，javascript ，还有 image、iframe 等。渲染流程就是指浏览器从最初接收请求来的 HTML、CSS、javascript 等资源，然后解析、构建树、渲染布局、绘制，最后呈现给客户能看到的界面这整个过程。
 
 浏览器渲染引擎目前主要为 `webkit(chrome,safri)`、`gecko(firefox)`,`blink` 是 `webkit`的一个分支。
 
-## 浏览器的渲染流程主要包括以下几步：
+## 浏览器的解析渲染流程主要包括以下几步：
 
 1. 解析 HTML 生成 DOM tree。
 2. 解析 css 生成 CSSOM tree。
