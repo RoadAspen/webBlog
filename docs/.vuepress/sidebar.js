@@ -50,7 +50,8 @@ const blog = [
 		title: "前端工程化",
 		collapsable: true,
 		children: [
-			'engineering/Mock方案',
+			"engineering/Mock方案",
+			"engineering/commitlint",
 			// 'engineering/打造属于自己的脚手架',
 			// 'engineering/脚手架的可视化操作',
 			// 'engineering/Jenkins安装',
@@ -61,9 +62,9 @@ const blog = [
 		title: "性能优化",
 		collapsable: true,
 		children: [
-			'optimization/资源加载优先级',
-			'optimization/html解析',
-			'optimization/浏览器输入网址',
+			"optimization/资源加载优先级",
+			"optimization/html解析",
+			"optimization/浏览器输入网址",
 			// 'optimization/网速检测',
 			// 'optimization/资源阻塞',
 			// 'optimization/渲染流程',
@@ -110,7 +111,7 @@ const blog = [
 		title: "ReactNative",
 		collapsable: true,
 		children: [
-			"reactnative/基础"
+			"reactnative/基础",
 			//s
 		],
 	},
@@ -122,7 +123,7 @@ const blog = [
 			// "framework/react-redux",
 			// "framework/react-router",
 			// "framework/hooks-redux",
-			"framework/koa"
+			"framework/koa",
 		],
 	},
 	{
