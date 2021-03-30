@@ -13,14 +13,14 @@ const react = {
     link: '/react/'
 }
 
-const database = {
-    text: '数据库',
-    link: '/database/'
+const book = {
+    text: '阅读',
+    link: '/book/'
 }
 
 module.exports = [
     blog,
     arithmetic,
     react,
-    database
+    book
 ]

@@ -27,9 +27,7 @@ const blog = [
 			"http/计算机网络",
 			"http/HTTP",
 			"http/HTTP版本",
-			"http/HTTP缓存",
-			// "http/DNS",
-			// "http/TCP-IP",
+			"http/HTTP缓存"
 		],
 	},
 	{
@@ -134,10 +132,13 @@ const blog = [
 			"safety/安全",
 		],
 	},
-	// {
-	// 	title: "Nginx",
-	// 	collapsable: true,
-	// },
+	{
+		title: "运维相关",
+		collapsable: true,
+		children: [
+			"operation/docker-frontend-nginx",
+		],
+	},
 	// {
 	// 	title: "微前端",
 	// 	collapsable: true,
@@ -218,6 +219,7 @@ const react = [
 		collapsable: true,
 		children: [
 			"react实现",
+			"react优化",
 			// 'ReactElement',
 			// 'JSX',
 			// 'ReactChildren',

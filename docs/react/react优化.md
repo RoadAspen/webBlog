@@ -1,6 +1,12 @@
-# 组件优化
+# react 优化
 
-## Component 和 PureComponent 区别
+在react程序中优化有两个方面，一个是类优化，一个是函数内优化。
+
+## 类组件优化
+
+主要依赖于 `shouldComponentUpate`。
+
+### Component 和 PureComponent 区别
 
 > `React.PureComponent` 与 `React.Component` 几乎完全相同，但 `React.PureComponent` 通过`props`和`state`的浅对比来实现 `shouldComponentUpate()`。如果对象包含复杂的数据结构，它可能会因深层的数据不一致而产生错误的否定判断(表现为对象深层的数据已改变视图却没有更新）。
 
@@ -11,24 +17,14 @@ Component 却需要 shouldComponentUpdate 来优化性能。
 
 ### 调用 setState 时是否更新
 
-1. 当 state 且都是基础类型时，每次调用 setState，都会更新，无论值是否发生变化。如：
+1. 每次调用 setState，都会更新，无论值是否发生变化。
+如：
 
 ```js
-changeage = () => {
-  // 组建为class，无论值改不改变，只要执行setState，就会更新。
-  this.setState({
-    age: 3 || this.state.age + 1,
-  });
-};
-```
-
-2. 当 state 子值为引用类型时，无论引用是否改变，次一级是否改变，都会更新。如：
-
-```js
-// name的引用并未改变，但值改变。组件更新。
-this.state.name.first = this.state.name.first + 1;
-// name的引用并未改变，且值未改变，组件更新。
-this.state.name.first = this.state.name.first;
+// 组件为class，无论值改不改变，只要执行setState，就会更新。
+this.setState({
+  age: 3 || this.state.age + 1,
+});
 
 this.setState({
   name: this.state.name,
@@ -51,7 +47,7 @@ this.setState({
 });
 ```
 
-> 结论为 class extends React.Component 时，只要调用 setState，无论 state 是否改变，都会触发组件更新。
+结论为 class extends React.Component 时，只要调用 setState，无论 state 是否改变，都会触发组件更新。
 
 ## props 改变
 
@@ -229,13 +225,60 @@ shouldComponentUpdate(nextProps: any, nextState: any) {
 
 > `function Component`的 useState，也是使用 Object.is 是一种浅比较，基本类型比较值，引用类型比较指针的指向。
 
-## 优化
+## 函数组件优化
+
+函数内优化主要采用 `useMemo` 和 `useCallback`。 函数外部优化采用 `React.memo` 。
+### 组件外
+#### React.memo
+类似于 pureComponent, React.memo 只会检查 props 变更。
+```js
+function App(){
+  return <div>1</div>
+}
+function areEqual(prevProps,nextProps){
+  // 在这里比较 props的变化
+}
+const Napp = React.memo(App, areEqual)
+```
+### 组件内
+### useMemo
+useMemo 是为了缓存一个经过大量计算得出的变量，如果变量依赖的其他变量没有发生变化，则不会重新计算。
+```js
+a = [1,2,3,4,5]
+let num = useMemo(()=>{
+  return a.reduce((q,w)=>q+w)
+},[a])
+```
+如果变量a不发生任何变化，则 每次都把缓存值赋值给num。
+### useCallback
+useCallback 是为了缓存一个函数，如果依赖的变量没有发生变化，则不会重新生成新的函数。
+```js
+ // 使用ref，获取真实dom，或者组件本身
+  const forms = useRef<HTMLFormElement>(null);
+
+  // 在这里，每次更新不会创建新的函数，但是可以取到新的forms 的 current
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      let username, password;
+      if (forms && forms.current) {
+        username = (forms.current.elements[0] as HTMLFormElement).value;
+        password = (forms.current.elements[1] as HTMLFormElement).value;
+        console.log(username, password);
+      }
+      // const username = (event.currentTarget.elements[0] as HTMLFormElement).value;
+      // const password = (event.currentTarget.elements[1] as HTMLFormElement).value;
+      login({ username, password });
+    },
+    [forms],
+  )
+```
+## 总结
 
 > react 中的性能开销主要在于 `diff（vdom diff）` 和 `reconciliation(vdom->true dom)` ，所以在这两个方面下手来优化 react 性能。
 
 1. 慎重分配 state，避免不必要的 render 调用。
-2. 合并状态更新，减少 render 调用。
-3. 使用`PureComponent` 和 `React.memo` 减少 render 调用，React.memo 作用于函数组件，只对 props 有效，将函数组件接收 props 时的标签变得和 PureComponent 一样。
+2. 在 函数组件内部使用 `useMemo` 和 `useCallback`。
+3. 使用 `shouldComponentUpdate`、`PureComponent` 和 `React.memo` 减少 render 调用，React.memo 作用于函数组件，只对 props 有效，将函数组件接收 props 时的标签变得和 PureComponent 一样。
 4. 传递方法绑定 this，在`constructor`中`bind`，如果在传递时调用，则每次都生成新的方法。
 5. 多个`props`时，将对象拆分成基本类型。
-6. `shouldComponentUpdate`
