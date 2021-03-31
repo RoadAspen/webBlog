@@ -278,7 +278,7 @@ useCallback 是为了缓存一个函数，如果依赖的变量没有发生变�
 > react 中的性能开销主要在于 `diff（vdom diff）` 和 `reconciliation(vdom->true dom)` ，所以在这两个方面下手来优化 react 性能。
 
 1. 慎重分配 state，避免不必要的 render 调用。
-2. 在 函数组件内部使用 `useMemo` 和 `useCallback`。
+2. 在 函数组件内部使用 `useMemo` 和 `useCallback`git。
 3. 使用 `shouldComponentUpdate`、`PureComponent` 和 `React.memo` 减少 render 调用，React.memo 作用于函数组件，只对 props 有效，将函数组件接收 props 时的标签变得和 PureComponent 一样。
 4. 传递方法绑定 this，在`constructor`中`bind`，如果在传递时调用，则每次都生成新的方法。
 5. 多个`props`时，将对象拆分成基本类型。
