@@ -48,6 +48,7 @@ const blog = [
 		title: "前端工程化",
 		collapsable: true,
 		children: [
+			"engineering/node管理工具",
 			"engineering/Mock方案",
 			"engineering/commitlint",
 			// 'engineering/打造属于自己的脚手架',
@@ -60,9 +61,9 @@ const blog = [
 		title: "性能优化",
 		collapsable: true,
 		children: [
-			"optimization/资源加载优先级",
-			"optimization/html解析",
 			"optimization/浏览器输入网址",
+			"optimization/html解析",
+			"optimization/资源加载优先级",
 			// 'optimization/网速检测',
 			// 'optimization/资源阻塞',
 			// 'optimization/渲染流程',
