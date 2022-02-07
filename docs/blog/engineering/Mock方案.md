@@ -161,5 +161,4 @@ axios.get('http://localhost:3000/posts/1')
 "put /posts/1"; // 替换（全量更新）
 "PATCH /posts/1"; // 修改
 "DELETE /posts/1"; // 删除
-
 ```

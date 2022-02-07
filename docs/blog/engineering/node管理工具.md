@@ -16,6 +16,7 @@ nvm 是一款管理 node 版本的工具，在使用 nvm 前。卸载本地安�
 // nvm use  v15.12.0   将当前node版本切换到 v15.12.0
 
 //  sudo nvm uninstall 4.4.5  卸载制定node版本
+//  sudo nvm remove 4  卸载当前node版本
 ```
 
 ## nrm

@@ -29,7 +29,7 @@ npm install --save-dev @commitlint/config-conventional @commitlint/cli
 
 ```js
 module.exports = {
-	extends: ["@commitlint/config-conventional"],
+  extends: ["@commitlint/config-conventional"],
 };
 ```
 
@@ -64,7 +64,7 @@ footer;
 
 ### header
 
-header 的规则是：
+header 的组成规则是：
 
 ```js
 <type>:<subject>
@@ -74,10 +74,10 @@ type 表示本次操作的标识， subject 则是本次操作的具体描述,�
 
 ### type
 
-1. `feat`：新功能（feature）
-2. `fix`：修补 bug
-3. `docs`：文档（documentation）
-4. `style`： 格式方面的优化
-5. `refactor`：重构
-6. `test`：测试
-7. `chore`：构建过程或辅助工具的变
+1. `feat`：新功能（feature）提交
+2. `fix`：修补 bug， 专门为了修改 bug
+3. `docs`：文档（documentation）相关更改
+4. `style`： 格式方面的优化， css 更改
+5. `refactor`：重构代码，并没有新增新功能
+6. `test`：新增测试文件
+7. `chore`：构建过程或辅助工具的变化
