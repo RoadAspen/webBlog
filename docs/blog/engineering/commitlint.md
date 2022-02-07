@@ -1,6 +1,6 @@
 # CommitLint
 
-## commitlint 是什么
+## commitLint 是什么
 
 在多人协作的背景下，git 仓库和 workflow 的作用很重要，对于 git commit message 的信息说明就要有一定的规范，否则每个人一个写法，就会显得特别的混乱。commitlint 作为一个 git 提交时用于检测 message 格式的 git hooks 插件，配合 husky 一起使用。
 
@@ -14,7 +14,7 @@ husky 是一个 git hook 的管理工具。可以在 git 操作时触发相应�
 npm install --save-dev husky
 ```
 
-### 安装 commitlint
+### 安装 commitLint
 
 [commitlint](https://github.com/conventional-changelog/commitlint) 文档有很详细的说明。
 

@@ -50,8 +50,9 @@ const blog = [
     children: [
       "engineering/node管理工具",
       "engineering/Mock方案",
-      "engineering/commitlint",
-      // 'engineering/打造属于自己的脚手架',
+      "engineering/commitLint",
+      "engineering/git",
+      "engineering/打造自己的脚手架",
       // 'engineering/脚手架的可视化操作',
       // 'engineering/Jenkins安装',
       // 'engineering/sonar简单使用'
@@ -103,7 +104,7 @@ const blog = [
       "ts/进阶",
       "ts/类与接口",
       "ts/装饰器",
-      // "ts/装饰器的使用"
+      "ts/声明文件",
     ],
   },
   {
