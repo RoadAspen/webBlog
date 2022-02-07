@@ -41,8 +41,20 @@ origin  git@github.com:RoadAspen/webBlog.git (push)
 
 ### commit
 
->
+> 本地提交
 
 ### push
 
-> 提交代码， 将本地代码推送到远程仓库
+> 远程提交代码， 将本地代码推送到远程仓库
+
+### branch
+
+> 查看本地分支
+
+### reset
+
+> 切换版本
+
+### checkout
+
+> 切换分支 或 更新本地
