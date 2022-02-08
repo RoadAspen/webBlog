@@ -10,100 +10,100 @@ css 应用这些单位的属性有：`font-size`、`width`、`height`、`line-he
 
 ## 属性配合单位
 
-#### px
+### px
 
 px 是 css 像素单位，是一个固定的值。**所有属性都可以使用 px**。
 
 ```css
 div {
-	font-size: 30px;
-	width: 30px;
-	height: 60px;
-	margin-left: 30px;
-	padding-left: 30px;
+  font-size: 30px;
+  width: 30px;
+  height: 60px;
+  margin-left: 30px;
+  padding-left: 30px;
 }
 ```
 
-#### rem
+### rem
 
 rem 是一个基于根 font-size 大小的一个倍数关系,**所有属性都可以使用 rem**。如
 
 ```css
 body {
-	font-size: 10px;
+  font-size: 10px;
 }
 
 div {
-	font-size: 2rem; /*这里是 20px*/
+  font-size: 2rem; /*这里是 20px*/
 }
 
 div p {
-	font-size: 1rem; /*这里是 10px*/
-	line-height: 1rem; /*这里的line-height 10px*/
+  font-size: 1rem; /*这里是 10px*/
+  line-height: 1rem; /*这里的line-height 10px*/
 }
 ```
 
-#### em
+### em
 
 em 和 rem 类似，但是 em 是基于父元素的 font-size 的大小计算的，**所有属性都可以使用 em**。
 
 ```css
 body {
-	font-size: 10px;
+  font-size: 10px;
 }
 
 div {
-	font-size: 2em; /*这里是 20px*/
+  font-size: 2em; /*这里是 20px*/
 }
 
 div p {
-	width: 10em; /*这里是200px*/
-	font-size: 1.5em; /*这里是 30px,  div font-size 的 1.5倍*/
-	line-height: 1em; /*这里的line-height 20px*/
+  width: 10em; /*这里是200px*/
+  font-size: 1.5em; /*这里是 30px,  div font-size 的 1.5倍*/
+  line-height: 1em; /*这里的line-height 20px*/
 }
 ```
 
-#### vh
+### vh
 
 vh 是基于当前屏幕的显示高度， 100 vh 就是当前的设备的最大可视高度， **所有属性都可以使用 vh**。
 
 ```css
 body {
-	font-size: 10vh; /*这里是 屏幕高度的10%*/
+  font-size: 10vh; /*这里是 屏幕高度的10%*/
 }
 
 div {
-	font-size: 2vh; /*这里是 2%*/
+  font-size: 2vh; /*这里是 2%*/
 }
 
 div p {
-	width: 10vh; /*这里是200px*/
-	font-size: 1.5vh; /*这里是 30px,  div font-size 的 1.5倍*/
-	line-height: 1vh; /*这里的line-height 20px*/
+  width: 10vh; /*这里是200px*/
+  font-size: 1.5vh; /*这里是 30px,  div font-size 的 1.5倍*/
+  line-height: 1vh; /*这里的line-height 20px*/
 }
 ```
 
-#### vw
+### vw
 
 vh 是基于当前屏幕的显示宽度， 100 vw 就是当前的设备的最大可视宽度。
 
 ```css
 body {
-	font-size: 10vw; /*这里是 屏幕高度的10%*/
+  font-size: 10vw; /*这里是 屏幕高度的10%*/
 }
 
 div {
-	font-size: 2vw; /*这里是 2%*/
+  font-size: 2vw; /*这里是 2%*/
 }
 
 div p {
-	width: 10vw; /*这里是200px*/
-	font-size: 1.5vw; /*这里是 30px,  div font-size 的 1.5倍*/
-	line-height: 1vw; /*这里的line-height 20px*/
+  width: 10vw; /*这里是200px*/
+  font-size: 1.5vw; /*这里是 30px,  div font-size 的 1.5倍*/
+  line-height: 1vw; /*这里的line-height 20px*/
 }
 ```
 
-#### % 百分比
+### % 百分比
 
 **百分比比较特殊**，它起到的作用和所使用的属性有关系。
 
@@ -112,13 +112,13 @@ div p {
 
 ```css
 div1 {
-	height: 200px;
-	width: 500px;
+  height: 200px;
+  width: 500px;
 }
 
 div1 div2 {
-	height: 10%; /*这里基于父元素的height， 200*10% = 20px*/
-	width: 20%; /* 这里基于父元素的width， 500*20% = 100px*/
+  height: 10%; /*这里基于父元素的height， 200*10% = 20px*/
+  width: 20%; /* 这里基于父元素的width， 500*20% = 100px*/
 }
 ```
 
@@ -127,20 +127,20 @@ margin 和 padding 的水平和垂直方向的百分比都是相对于父元素�
 
 ```css
 div {
-	width: 500px;
-	height: 300px;
+  width: 500px;
+  height: 300px;
 }
 
 div div {
-	margin-top: 20%; /*这里是基于 width 计算的，500*20% = 100px*/
+  margin-top: 20%; /*这里是基于 width 计算的，500*20% = 100px*/
 
-	margin-left: 20%; /*这里是基于 width 计算的，500*20% = 100px*/
+  margin-left: 20%; /*这里是基于 width 计算的，500*20% = 100px*/
 
-	margin-bottom: 20%; /*这里是基于 width 计算的，500*20% = 100px*/
+  margin-bottom: 20%; /*这里是基于 width 计算的，500*20% = 100px*/
 
-	padding-top: 10%; /*这里是基于 width 计算的，500*10% = 50px*/
+  padding-top: 10%; /*这里是基于 width 计算的，500*10% = 50px*/
 
-	padding-left: 10%; /*这里是基于 width 计算的，500*10% = 50px*/
+  padding-left: 10%; /*这里是基于 width 计算的，500*10% = 50px*/
 }
 ```
 

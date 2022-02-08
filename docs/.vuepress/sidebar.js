@@ -293,8 +293,45 @@ const react = [
   // }
 ];
 
+// 菜谱
+const cookbook = [
+  {
+    title: "热菜",
+    collapsable: true,
+    children: [
+      "hot/大盘鸡",
+      "hot/蚝油生菜",
+      "hot/清炒油麦菜",
+      "hot/西葫芦炒蛋",
+    ],
+  },
+  {
+    title: "煎炸",
+    collapsable: true,
+    children: ["frying/香煎多春鱼"],
+  },
+  {
+    title: "凉菜",
+    collapsable: true,
+    children: ["cool/凉拌黄瓜"],
+  },
+  {
+    title: "汤",
+    collapsable: true,
+    children: [
+      "soup/排骨汤",
+      "soup/西红柿鸡蛋汤",
+      "soup/鲫鱼豆腐汤",
+      "soup/酒酿圆子",
+      "soup/南瓜粥",
+      "soup/小米南瓜粥",
+    ],
+  },
+];
+
 module.exports = {
   "/blog/": blog,
   // '/arithmetic/': arithmetic,
   "/react/": react,
+  "/cookbook/": cookbook,
 };
