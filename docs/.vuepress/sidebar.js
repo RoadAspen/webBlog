@@ -272,16 +272,12 @@ const book = [
   {
     title: "国内",
     collapsable: true,
-    children: [
-      "domestic/活着.md",
-      "domestic/许三观卖血记.md",
-      "domestic/平凡的世界.md",
-    ],
+    children: ["domestic/活着", "domestic/许三观卖血记", "domestic/平凡的世界"],
   },
   {
     title: "国外",
     collapsable: true,
-    children: ["foreign/百年孤独.md", "foreign/当我谈跑步时我谈些什么.md"],
+    children: ["foreign/百年孤独", "foreign/当我谈跑步时我谈些什么"],
   },
 ];
 
