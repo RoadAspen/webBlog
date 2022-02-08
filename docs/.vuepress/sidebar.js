@@ -53,6 +53,7 @@ const blog = [
       "engineering/commitLint",
       "engineering/git",
       "engineering/打造自己的脚手架",
+      "engineering/Eslint插件开发",
       // 'engineering/脚手架的可视化操作',
       // 'engineering/Jenkins安装',
       // 'engineering/sonar简单使用'
