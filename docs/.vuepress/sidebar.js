@@ -137,7 +137,7 @@ const blog = [
   {
     title: "运维相关",
     collapsable: true,
-    children: ["operation/docker-frontend-nginx"],
+    children: ["operation/Docker部署前端项目"],
   },
   // {
   // 	title: "微前端",
