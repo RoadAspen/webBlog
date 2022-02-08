@@ -1,3 +1,6 @@
+/**
+ * 顶部导航
+ */
 const blog = {
   text: "博客",
   link: "/blog/",

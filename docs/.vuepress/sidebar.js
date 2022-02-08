@@ -110,39 +110,34 @@ const blog = [
   {
     title: "ReactNative",
     collapsable: true,
-    children: [
-      "reactnative/基础",
-      //s
-    ],
+    children: ["reactnative/基础"],
   },
   {
     title: "Framework",
     collapsable: true,
     children: [
       "framework/redux",
+      "framework/koa",
       // "framework/react-redux",
       // "framework/react-router",
       // "framework/hooks-redux",
-      "framework/koa",
     ],
   },
   {
     title: "前端安全",
     collapsable: true,
-    children: [
-      // "safety/encryption",
-      "safety/安全",
-    ],
+    children: ["safety/安全"],
   },
   {
     title: "运维相关",
     collapsable: true,
     children: ["operation/Docker部署前端项目"],
   },
-  // {
-  // 	title: "微前端",
-  // 	collapsable: true,
-  // },
+  {
+    title: "微前端",
+    collapsable: true,
+    children: ["microfrontends/qiankun"],
+  },
   // {
   // 	title: "小程序原理",
   // 	collapsable: true,
@@ -150,68 +145,48 @@ const blog = [
 ];
 
 // 算法
-// const arithmetic = [{
-//         titie: '原理',
-//         collapsable: true,
-//         children: [
-//             'principle/skill'
-//         ]
-//     },
-//     {
-//         title: '递归',
-//         collapsable: true,
-//         children: [
-//             'recursion/递归'
-//         ]
-//     },
-//     {
-//         title: '栈',
-//         collapsable: true,
-//         children: [
-//             'stack/栈',
-//             'stack/进制转换',
-//             'stack/有效的括号'
-//         ]
-//     },
-//     {
-//         title: '队列',
-//         collapsable: true,
-//         children: [
-//             "queue/队列",
-//             "queue/练习"
-//         ]
-//     },
-//     {
-//         title: '链表',
-//         collapsable: true,
-//         children: [
-//             'linkedList/链表',
-//             'linkedList/套路'
-//         ]
-//     },
-//     {
-//         title: '字典和散列表',
-//         collapsable: true,
-//         children: [
-//             'dictionary/字典和散列表'
-//         ]
-//     },
-//     {
-//         title: '集合',
-//         collapsable: true,
-//         children: [
-//             'set/集合'
-//         ]
-//     },
-//     {
-//         title: '排序',
-//         collapsable: true,
-//         children: [
-//             "sort/排序和搜索"
-//         ]
-//     },
-
-// ]
+// const arithmetic = [
+//   {
+//     titie: "原理",
+//     collapsable: true,
+//     children: ["principle/skill"],
+//   },
+//   {
+//     title: "递归",
+//     collapsable: true,
+//     children: ["recursion/递归"],
+//   },
+//   {
+//     title: "栈",
+//     collapsable: true,
+//     children: ["stack/栈", "stack/进制转换", "stack/有效的括号"],
+//   },
+//   {
+//     title: "队列",
+//     collapsable: true,
+//     children: ["queue/队列", "queue/练习"],
+//   },
+//   {
+//     title: "链表",
+//     collapsable: true,
+//     children: ["linkedList/链表", "linkedList/套路"],
+//   },
+//   {
+//     title: "字典和散列表",
+//     collapsable: true,
+//     children: ["dictionary/字典和散列表"],
+//   },
+//   {
+//     title: "集合",
+//     collapsable: true,
+//     children: ["set/集合"],
+//   },
+//   {
+//     title: "排序",
+//     collapsable: true,
+//     children: ["sort/排序和搜索"],
+//   },
+// ];
 
 const react = [
   {
@@ -292,6 +267,23 @@ const react = [
   //     ]
   // }
 ];
+// 阅读
+const book = [
+  {
+    title: "国内",
+    collapsable: true,
+    children: [
+      "domestic/活着.md",
+      "domestic/许三观卖血记.md",
+      "domestic/平凡的世界.md",
+    ],
+  },
+  {
+    title: "国外",
+    collapsable: true,
+    children: ["foreign/百年孤独.md", "foreign/当我谈跑步时我谈些什么.md"],
+  },
+];
 
 // 菜谱
 const cookbook = [
@@ -331,7 +323,8 @@ const cookbook = [
 
 module.exports = {
   "/blog/": blog,
-  // '/arithmetic/': arithmetic,
+  // "/arithmetic/": arithmetic,
   "/react/": react,
+  "/book/": book,
   "/cookbook/": cookbook,
 };
