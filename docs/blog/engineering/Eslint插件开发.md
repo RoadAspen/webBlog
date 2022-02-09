@@ -22,6 +22,8 @@ eslint --init
 
 ** Eslint 配置**
 
+`.eslint.js` js 格式的配置风格
+
 ```js
 module.exports = {
   extends: ["alloy", "alloy/react", "alloy/typescript"],
@@ -69,14 +71,14 @@ npm install -g yo generator-eslint
 
 ```js
 // 创建文件夹
-mkdir eslint-plugin-tezign && cd eslint-plugin-tezign
+mkdir eslint-plugin-roadaspen && cd eslint-plugin-roadaspen
 
 // 搭建一个初始化的目录结构,标识这是一个插件
 yo eslint:plugin
 
 // 根据提示
 ? What is your name? niuziyang
-? What is the plugin ID? eslint-plugin-tezign // 这个插件的 ID 是什么
+? What is the plugin ID? eslint-plugin-roadaspen // 这个插件的 ID 是什么
 ? Type a short description of this plugin: XX 公司的定制 ESLint rule // 输入这个插件的描述
 ? Does this plugin contain custom ESLint rules? Yes // 这个插件包含自定义 ESLint 规则吗?
 ? Does this plugin contain one or more processors? No // 这个插件包含一个或多个处理器吗
@@ -106,10 +108,10 @@ yarn // 安装依赖包
 ```js
 yo eslint:rule // 生成默认 eslint rule 模版文件
 
-? What is your name? niuizyang
+? What is your name? niuziyang
 ? Where will this rule be published? (Use arrow keys) // 这个规则将在哪里发布？
-❯ ESLint Core // 官方核心规则 (目前有 200 多个规则)
-ESLint Plugin // 选择 ESLint 插件
+ESLint Core // 官方核心规则 (目前有 200 多个规则)
+❯ ESLint Plugin // 选择 ESLint 插件
 ? What is the rule ID? no-hardcode-domain // 规则的 ID
 ? Type a short description of this rule: 不允许出现域名相关 // 输入该规则的描述
 ? Type a short example of the code that will fail: 占位 // 输入一个失败例子的代码
@@ -122,14 +124,9 @@ create tests/lib/rules/no-hardcode-domain.js
 
 ## 编写规则
 
-eslint-plugin-tezign/lib/rules/no-hardcode-domain.js
+eslint-plugin-roadaspen/lib/rules/no-hardcode-domain.js
 
 ```js
-/**
- * @owner niuziyang
- * @team M1
- * @fileoverview 不允许硬编码业务域名
- */
 "use strict";
 
 module.exports = {
@@ -174,11 +171,6 @@ module.exports = {
 ## 编写测试规则
 
 ```js
-/**
- * @owner niuziyang
- * @team M1
- * @fileoverview 不允许硬编码业务域名
- */
 "use strict";
 
 const rule = require("../../../lib/rules/no-hardcode-domain"),
@@ -247,10 +239,10 @@ npm run test
 npm publish
 ```
 
-**引入 eslint-plugin-tezign**
+**引入 eslint-plugin-roadaspen**
 
 ```js
-npm install eslint-plugin-tezign
+npm install eslint-plugin-roadaspen
 ```
 
 添加到 Eslint 配置
