@@ -25,8 +25,8 @@ const blog = [
     collapsable: true,
     children: [
       "http/计算机网络",
-      "http/http",
-      "http/http版本",
+      "http/HTTP",
+      "http/HTTP版本",
       "http/HTTP缓存",
     ],
   },
@@ -50,7 +50,7 @@ const blog = [
     children: [
       "engineering/node管理工具",
       "engineering/Mock方案",
-      "engineering/commitLint",
+      "engineering/commitlint",
       "engineering/git",
       "engineering/打造自己的脚手架",
       "engineering/Eslint插件开发",
