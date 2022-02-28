@@ -106,6 +106,8 @@ const blog = [
       "ts/类与接口",
       "ts/装饰器",
       "ts/声明文件",
+      "ts/interface和class的区别",
+      "ts/interface和type的区别",
     ],
   },
   {
