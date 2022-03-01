@@ -118,3 +118,11 @@ git reset --hard
 ### checkout
 
 > 切换分支 或 更新本地
+
+### config
+
+> git 配置
+
+#### 大小写敏感
+
+git config core.ignorecase false

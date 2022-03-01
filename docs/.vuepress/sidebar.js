@@ -25,9 +25,9 @@ const blog = [
     collapsable: true,
     children: [
       "http/计算机网络",
-      "http/HTTP",
-      "http/HTTP版本",
-      "http/HTTP缓存",
+      "http/http",
+      "http/http版本",
+      "http/http缓存",
     ],
   },
   {
