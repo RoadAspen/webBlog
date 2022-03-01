@@ -141,12 +141,24 @@ const blog = [
     collapsable: true,
     children: ["microfrontends/qiankun"],
   },
+];
+// 算法
+const arithmetic = [
+  {
+    title: "算法图解",
+    collapsable: true,
+    children: [
+      "algorithmDiagram/二分查找",
+      "algorithmDiagram/排序",
+      "algorithmDiagram/递归",
+    ],
+  },
   // {
-  // 	title: "小程序原理",
-  // 	collapsable: true,
+  //   title: "leetCode",
+  //   collapsable: true,
+  //   children: ["leetCode/测试"],
   // },
 ];
-
 // 算法
 // const arithmetic = [
 //   {
@@ -322,7 +334,7 @@ const cookbook = [
 
 module.exports = {
   "/blog/": blog,
-  // "/arithmetic/": arithmetic,
+  "/arithmetic/": arithmetic,
   "/react/": react,
   "/book/": book,
   "/cookbook/": cookbook,
