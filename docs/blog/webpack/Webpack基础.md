@@ -2,6 +2,8 @@
 
 本质上，webpack 是一个现代 JavaScript 应用程序的静态模块打包工具。当 webpack 处理应用程序时，它会在内部构建一个 依赖图(dependency graph)，此依赖图会映射项目所需的每个模块，并生成一个或多个 bundle。
 
+本文基于 webpack4.x ，相关 loader 和 plugin 的版本都以贴出。
+
 ## webpack-cli 是什么？
 
 webpack-cli 可以让我们以命令的形式执行 webpack 命令。
