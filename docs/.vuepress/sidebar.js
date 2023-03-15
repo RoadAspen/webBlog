@@ -64,8 +64,9 @@ const blog = [
     collapsable: true,
     children: [
       "optimization/浏览器输入网址",
-      "optimization/html解析",
+      "optimization/浏览器解析html",
       "optimization/资源加载优先级",
+      "optimization/浏览器缓存策略",
       // 'optimization/网速检测',
       // 'optimization/资源阻塞',
       // 'optimization/渲染流程',
@@ -82,8 +83,9 @@ const blog = [
     title: "webpack",
     collapsable: true,
     children: [
-      // 'webpack/webpack基础',
-      // 'webpack/代码分割',
+      "webpack/webpack基础",
+      "webpack/代码分割",
+      "webpack/happyPack",
       // 'webpack/webpack打包',
       // 'webpack/源码解析一',
       // 'webpack/源码解析二',
@@ -94,7 +96,6 @@ const blog = [
       // 'webpack/源码分析总结',
       // 'webpack/手写Webpack',
       // 'webpack/webpack优化',
-      // 'webpack/webpack5'
     ],
   },
   {
@@ -151,13 +152,14 @@ const arithmetic = [
       "algorithmDiagram/二分查找",
       "algorithmDiagram/排序",
       "algorithmDiagram/递归",
+      "algorithmDiagram/广度优先遍历",
     ],
   },
-  // {
-  //   title: "leetCode",
-  //   collapsable: true,
-  //   children: ["leetCode/测试"],
-  // },
+  {
+    title: "leetCode",
+    collapsable: true,
+    children: ["深度优先遍历/测试", "数组/加一"],
+  },
 ];
 // 算法
 // const arithmetic = [
