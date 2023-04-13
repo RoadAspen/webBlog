@@ -142,6 +142,11 @@ const blog = [
     collapsable: true,
     children: ["microfrontends/qiankun"],
   },
+  {
+    title: "设计模式",
+    collapsable: true,
+    children: ["设计模式/单例模式", "设计模式/工厂模式"],
+  },
 ];
 // 算法
 const arithmetic = [
