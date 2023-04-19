@@ -1,15 +1,16 @@
 {
-    "cSpell.words": [
-        "dockerignore",
-        "Espree",
-        "microfrontends",
-        "mkdir",
-        "niuizyang",
-        "niuziyang",
-        "qiankun",
-        "reactnative",
-        "roadaspen",
-        "tezign",
-        "WORKDIR"
-    ]
+  "cSpell.words": [
+    "dockerignore",
+    "Espree",
+    "microfrontends",
+    "middlewares",
+    "mkdir",
+    "niuizyang",
+    "niuziyang",
+    "qiankun",
+    "reactnative",
+    "roadaspen",
+    "tezign",
+    "WORKDIR"
+  ]
 }

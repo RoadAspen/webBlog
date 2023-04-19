@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>手写 redux</title>
+  </head>
+  <body>
+    <div>
+      <p>用户列表</p>
+      <ul id="userList"></ul>
+      <p>操作</p>
+      <button id="addUserBtn">新增用户</button>
+      <button id="renameBtn">修改用户姓名</button>
+      <button id="removeBtn">删除用户</button>
+    </div>
+    <div>
+      <p>count:<span id="count"></span></p>
+      <button id="addBtn">+1</button>
+      <button id="minusBtn">-1</button>
+    </div>
+    <script type="module">
+      import { createStore } from "./redux/createStore.js";
+      import { combineReducers } from "./redux/combineReducers.js";
+      import { applyMiddleware } from "./redux/applyMiddleware.js";
+      import { bindActionCreators } from "./redux/bindActionCreators.js";
+      import delayMiddleware from "./middlewares/redux-delay.js";
+      import loggerMiddleware from "./middlewares/redux-logger.js";
+
+      import userReducer from "./reducers/userReducer.js";
+      import countReducer from "./reducers/countReducer.js";
+
+      import { appendOne, renameOne, deleteLatest } from "./actions/user.js";
+      import { add1, minus1 } from "./actions/count.js";
+      const store = createStore(
+        combineReducers({ user: userReducer, count: countReducer }),
+        {},
+        applyMiddleware(delayMiddleware, loggerMiddleware)
+      );
+
+      const actions = bindActionCreators(
+        {
+          appendOne,
+          renameOne,
+          deleteLatest,
+          add1,
+          minus1,
+        },
+        store.dispatch
+      );
+
+      const userList = document.querySelector("#userList");
+      const count = document.querySelector("#count");
+      const addUserBtn = document.querySelector("#addUserBtn");
+      const renameBtn = document.querySelector("#renameBtn");
+      const removeBtn = document.querySelector("#removeBtn");
+      const addBtn = document.querySelector("#addBtn");
+      const minusBtn = document.querySelector("#minusBtn");
+
+      addUserBtn.addEventListener("click", () => {
+        actions.appendOne();
+      });
+      renameBtn.addEventListener("click", () => {
+        actions.renameOne();
+      });
+      removeBtn.addEventListener("click", () => {
+        actions.deleteLatest();
+      });
+      addBtn.addEventListener("click", () => {
+        actions.add1();
+      });
+      minusBtn.addEventListener("click", () => {
+        actions.minus1();
+      });
+
+      store.subscribe((state) => {
+        console.log("这里添加了订阅 user", state.user);
+        let list = "";
+        state.user.forEach((user) => {
+          list += "<li>" + "名称:" + user.name + "；年龄:" + user.age + "</li>";
+        });
+        userList.innerHTML = list;
+      });
+      store.subscribe((state) => {
+        count.innerHTML = state.count;
+        console.log("这里添加了订阅 count", state.count);
+      });
+    </script>
+  </body>
+</html>
