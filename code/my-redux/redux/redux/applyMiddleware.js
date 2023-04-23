@@ -15,7 +15,12 @@ export function applyMiddleware(...middlewares) {
       // chain 同样是一个函数集合，mid(simpleStore) 返回一个 接受下一个middleware 入参的函数。
       const chain = middlewares.map((mid) => mid(simpleStore));
       // chain 中的每一个函数都值接收一个 dispatch。dispatch 最终接受的参数是 action
-      store.dispatch = compose(...chain)(store.dispatch);
+      // compose 返回了 （...rest）=> a(b(...rest))
+      console.log("compose(...chain)", compose(...chain));
+      const composeFunc = compose(...chain);
+      console.log("composeFunc", composeFunc);
+      store.dispatch = composeFunc(store.dispatch);
+      console.log("store.dispatch", store.dispatch);
       return store;
     };
   };
