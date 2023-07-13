@@ -1,11 +1,12 @@
-import constants from "./getconfigdata";
+import config from "./config";
 
 let _env: "dev" | "stage" | "prod" | "test";
 
 const setEnv = (env: typeof _env) => {
   _env = env;
 };
-const conStants = {
+const constants = {
+  ...config,
   COOKIE_X_USER_ID: "vmsxuid",
   COOKIE_X_TOKEN: "vmsxtoken",
   C_XTENANTID: "xtenantid",
@@ -14,4 +15,4 @@ const conStants = {
   X_TOKEN: "X-Token",
 };
 
-export { conStants, setEnv };
+export { constants, setEnv };

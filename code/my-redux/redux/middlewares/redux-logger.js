@@ -1,13 +1,11 @@
 /**
  * 这是一个打印 dispatch logger日志 的中间件
  */
-function loggerMiddleware(store) {
-  console.log("这里指行了 loggerMiddleware", store);
+function loggerMiddleware({ dispatch, getState }) {
   return (next) => {
     return (action) => {
-      console.log("store.getState", store.getState());
-      console.log("loggerMiddleware action", action);
-      next(action);
+      console.log("这里是 loggerMiddleware action", action);
+      return next(action);
     };
   };
 }

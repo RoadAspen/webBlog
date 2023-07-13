@@ -1,5 +1,5 @@
 import OSS from "ali-oss";
-import tenantConfig, { ERRORS } from "../../../config/getconfigdata";
+import tenantConfig, { ERRORS } from "../../../config/config";
 import getFileExtension from "@tezign/commons.js/functions/getFileExtension";
 import UploadDelegate from "@tezign/commons.js/functions/uploadDelegate";
 import { isNull, isNumber } from "../../utils";

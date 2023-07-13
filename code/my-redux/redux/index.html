@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -19,24 +19,28 @@
       <p>count:<span id="count"></span></p>
       <button id="addBtn">+1</button>
       <button id="minusBtn">-1</button>
+      <button id="asyncMinusBtn">-1</button>
     </div>
     <script type="module">
+      // 这里使用ES6 的module，可以使用import导入js模块，但是必须使用一个js服务器启用，直接使用浏览器打开，会有跨域错误.
+      // open with live server
       import { createStore } from "./redux/createStore.js";
       import { combineReducers } from "./redux/combineReducers.js";
       import { applyMiddleware } from "./redux/applyMiddleware.js";
       import { bindActionCreators } from "./redux/bindActionCreators.js";
       import delayMiddleware from "./middlewares/redux-delay.js";
       import loggerMiddleware from "./middlewares/redux-logger.js";
+      import thunkMiddleware from "./middlewares/redux-thunk.js";
 
       import userReducer from "./reducers/userReducer.js";
       import countReducer from "./reducers/countReducer.js";
 
       import { appendOne, renameOne, deleteLatest } from "./actions/user.js";
-      import { add1, minus1 } from "./actions/count.js";
+      import { add1, minus1, asyncMinus1 } from "./actions/count.js";
       const store = createStore(
         combineReducers({ user: userReducer, count: countReducer }),
         {},
-        applyMiddleware(delayMiddleware, loggerMiddleware)
+        applyMiddleware(delayMiddleware, loggerMiddleware, thunkMiddleware)
       );
 
       const actions = bindActionCreators(
@@ -46,6 +50,7 @@
           deleteLatest,
           add1,
           minus1,
+          asyncMinus1,
         },
         store.dispatch
       );
@@ -57,6 +62,7 @@
       const removeBtn = document.querySelector("#removeBtn");
       const addBtn = document.querySelector("#addBtn");
       const minusBtn = document.querySelector("#minusBtn");
+      const asyncMinusBtn = document.querySelector("#asyncMinusBtn");
 
       addUserBtn.addEventListener("click", () => {
         actions.appendOne();
@@ -72,6 +78,9 @@
       });
       minusBtn.addEventListener("click", () => {
         actions.minus1();
+      });
+      asyncMinusBtn.addEventListener("click", () => {
+        actions.asyncMinus1();
       });
 
       store.subscribe((state) => {

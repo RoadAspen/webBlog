@@ -8,6 +8,7 @@ export function createStore(reducer, initState, rewriteCreateStoreFunc) {
   // 如果不想传入initState，又想传入rewriteCreateStoreFunc。
   if (initState && typeof initState === "function") {
     rewriteCreateStoreFunc = initState;
+    // 默认initState为空对象
     initState = {};
   }
   //如果需要覆盖\改造 原始的createStore，传入新的func，并将createStore传入
@@ -29,12 +30,15 @@ export function createStore(reducer, initState, rewriteCreateStoreFunc) {
     listeners.push(listener);
   }
 
-  // dispatch
+  // dispatch 修改state的唯一方法
   function dispatch(action) {
+    console.log(2);
     // 通过reducer，返回新的 state
     state = reducer(state, action);
     // 通知所有的订阅者
     listeners.forEach((fun) => fun(state));
+    // 这里把action打开
+    return action;
   }
 
   // 直接触发一次,获取每个reducer 的默认值，组合成原始的 state。

@@ -1,18 +1,14 @@
 /**
  * 这是一个模拟程序delay时间的中间件
  */
-function delayMiddleware(store) {
-  console.log("这里指行了 delayMiddleware", store);
-  // next 下一个 middleware
+function delayMiddleware({ dispatch, getState }) {
+  // 这个阶段不能使用dispatch
   return (next) => {
-    console.log("next", next);
+    // 这个阶段也不能使用dispatch
     return (action) => {
-      next(action);
-      console.log("delayMiddleware", store.getState());
-      console.log("delayMiddleware action", action);
-      setTimeout(() => {
-        console.log("2s后执行");
-      }, 2000);
+      // 这个阶段可以使用dispatch，此时dispatch已经被加强。
+      console.log("这里是 delayMiddleware action", action, getState());
+      return next(action);
     };
   };
 }

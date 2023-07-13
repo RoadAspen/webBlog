@@ -22,6 +22,7 @@ export default function userReducer(state = initState, action) {
     case "DELETE":
       state.pop();
       return [...state];
+    // 如果不处理action，则返回原引用，不触发更新
     default:
       return state;
   }

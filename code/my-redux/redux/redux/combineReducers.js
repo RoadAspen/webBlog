@@ -1,5 +1,6 @@
 /**
- *  将所有的reducer合并成为一个新的reducer， 使用闭包
+ *  将接收到的reducer合并成为一个大的reducer， 使用闭包
+ * 每次传递一个action，就会通过所有的reducer检验，是否要更改state。
  * @param {[key:string]:func} reducers
  */
 export function combineReducers(reducers) {

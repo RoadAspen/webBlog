@@ -1,5 +1,5 @@
 import COS from "cos-js-sdk-v5";
-import tenantConfig, { ERRORS } from "../../../config/getconfigdata";
+import tenantConfig, { ERRORS } from "../../../config/config";
 import getFileExtension from "@tezign/commons.js/functions/getFileExtension";
 import UploadDelegate from "@tezign/commons.js/functions/uploadDelegate";
 import { isNull, isNumber } from "../../utils";
@@ -94,7 +94,7 @@ function upload(
           ChunkSize: partSize,
           SliceSize: partSize,
           // 必选参数
-          getAuthorization: async function (option, callback) {
+          getAuthorization: async function(option, callback) {
             callback({
               TmpSecretId: feed.accessKeyId,
               TmpSecretKey: feed.accessKeySecret,
@@ -127,7 +127,7 @@ function upload(
             Bucket: feed.bucketName,
             Body: file,
             Key: key,
-            onTaskReady: function (taskId) {
+            onTaskReady: function(taskId) {
               FileMap[file._key].taskId = taskId;
             },
             onProgress({ percent, speed, total, loaded }) {

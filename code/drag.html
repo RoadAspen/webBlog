@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拖拽</title>
+    <style>
+      #draggable {
+        color: red;
+      }
+      #dropTarget {
+        height: 220px;
+        width: 300px;
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="draggable" draggable="true">
+      <p>这是可以拖拽的</p>
+      <img src="" alt="" />
+      <p>123</p>
+    </div>
+    <div id="dropTarget" class="dropTarget">
+      请把拖拽的东西放在这里
+    </div>
+
+    <script>
+      const draggable = document.getElementById("draggable");
+      const dropTarget = document.getElementById("dropTarget");
+
+      draggable.addEventListener("dragstart", (ev) => {
+        const dt = ev.dataTransfer;
+        dt.dropEffect = "copy";
+        dt.setData("text/plain", "text123");
+        console.log("draggable dragstart", dt.types);
+        ev.stopPropagation();
+      });
+
+      draggable.addEventListener("dragend", (ev) => {
+        const dt = ev.dataTransfer;
+        console.log("draggable dragend", dt);
+        ev.stopPropagation();
+        ev.preventDefault();
+      });
+
+      dropTarget.addEventListener("dragenter", (ev) => {
+        const dt = ev.dataTransfer;
+        dt.dropEffect = "copy";
+        console.log("dropTarget dragenter", dt);
+      });
+      dropTarget.addEventListener("dragleave", (ev) => {
+        const dt = ev.dataTransfer;
+        console.log("dropTarget dragleave", dt);
+      });
+      dropTarget.addEventListener("dragover", (ev) => {
+        // dragover 的默认行为是 拒绝接受任何被拖放的元素，所以我们需要阻止浏览器的这种默认行为
+        ev.preventDefault();
+      });
+      dropTarget.addEventListener("drop", (ev) => {
+        const dt = ev.dataTransfer;
+        ev.preventDefault();
+        console.log("dropTarget drop", dt);
+        console.log(dt.getData("text/plain"));
+      });
+    </script>
+  </body>
+</html>

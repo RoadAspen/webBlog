@@ -1,52 +1,129 @@
-# Redux 实现
+# Redux
 
 ## Redux 介绍
 
-Redux 是 Javascript 状态容器，提供可预测化的状态管理。可以让你构建一致化的应用，运行于不同的开发环境，并且易于测试。不仅于此，它还提供了超爽的开发体验，比如 时间旅行器。
-
-## 核心概念
-
-Redux 本身很简单，主要是将 state 变得可预测。 根据触发 action，来更新 state。
+Redux 是 JavaScript 状态容器，提供可预测化的状态管理。
+随着 JavaScript 单页应用（SPA）开发日趋复杂,JavaScript 需要管理比任何时候都要多的 state（状态）,Redux 就是用来降低管理难度的. Redux 不依赖于任何框架,但是它可以适用于任何框架，更像是一种设计模式。
 
 ## 三大原则
 
-1. 单一数据源。
-   整个应用的 state 被储存在一棵 object tree 中，并且这个 object tree 只存在于唯一一个 store 中。
-2. state 是只读的。
-   唯一改变 state 的方法是触发 action，action 是一个用于描述已发生事件的普通对象。
-3. 使用纯函数来执行修改
-   为了表述 action 如何改变 state，你需要编写纯函数 reducers。
+### 单一数据源
 
-## Redux 基础
-
-### action
-
-action 用来表示修改 state 的动作 type 以及 载荷 payload， action 是 store 的唯一数据来源。
+**整个应用的数据 state 全部被存储在一棵对象树中（object tree），并且这个 object tree 只存在于一个 store 中。**
 
 ```js
-// 有载荷
-{
-    type:'add',
-    payload:{
-        count:2
-    }
-}
-
-// 无载荷
-{
-    type:'reset'
-}
-```
-
-可以是一个返回 action 的 action 创建函数
-
-```js
-function addCount(count) {
-  return {
-    type: "add",
-    payload: {
-      count,
+store = {
+  state: {
+    reducer: {
+      age: 20,
+      name: "jack",
     },
-  };
+    reducer2: {
+      speak: "english",
+      loading: true,
+    },
+  },
+  dispatch: () => {},
+  getState: () => {
+    return this.state;
+  },
+};
+```
+
+应用 1 的 state 叫做 reducer ， 应用 2 的 state 叫做 reducer2。
+
+### state 是只读的
+
+**state 是一个不可变对象，不能直接更改 state。唯一可以更改 state 的方法是通过触发 action，action 是一个用于描述已发生事件的描述。**
+
+`action`通常由一个 type 和 一个 payload 来表示行为和行为负载
+
+```js
+action = {
+  type: "修改年龄",
+  payload: {
+    age: 24,
+  },
+};
+
+action = {
+  type: "修改名称",
+  payload: {
+    name: "tom",
+  },
+};
+```
+
+### 使用纯函数来修改 state
+
+**为了描述 action 如何修改 state，即 将 action 和 state 关联起来，我们需要编写 reducer 函数。**
+
+Reducer 是一个纯函数 （同样的输入必定得到同样的输出），它接受当前的 state 和 action，返回新的 state。
+
+```ts
+action = {
+  type: "新增名字",
+  payload: {
+    name: "tom",
+  },
+};
+// 这里的prevState 是  store.reducer
+function reducer(prevState: any = {}, action: { type: string; payload: any }) {
+  switch (action.type) {
+    case "修改年龄":
+      return {
+        ...prevState,
+        // 虚岁 + 1
+        age: action.payload.age + 1,
+      };
+    case "新增名字":
+      return {
+        ...prevState,
+        name: prevState.name + action.payload.name,
+      };
+    default:
+      return { ...prevState };
+  }
 }
 ```
+
+刚开始可能只有一个 reducer，但是随着应用越来越大，就需要拆分成很多个 reducers 出来，分别独立的操作 state tree 的一部分。redux 提供了 combineReducers 用来将 众多的 reducers 再合并起来，形成一个大的 reducer。
+
+```js
+// 这里的prevState 是 store.reducer2
+function reducer2(prevState: any, action: { type: string, state: any }) {
+  if (!action) return prevState;
+  switch (action.type) {
+    case "test":
+      return { ...prevState };
+    default:
+      return prevState;
+  }
+}
+
+const reducers = combineReducers({
+  reducer: reducer,
+  reducer2: reducer2,
+});
+
+// 这里输出一个 {reducer:{},reducer2:{}}  的对象
+const store = createStore(reducers);
+```
+
+## Redux Store 的基础
+
+store 是一个单一对象
+
+- 管理应用给的 state
+- 通过 store.getState() 可以获取当前的完整 state
+- 通过 store.dispatch(action) 来触发 state 更新
+- 通过 store.subscribe(listener) 来注册 state 变化监听器
+- 通过 createStore(reducer, [initialState]) 创建
+
+## redux 实现
+
+[代码实现]()
+
+## redux 中间件
+
+redux 提供了类似后端 Express 的中间件概念,本质的目的是提供第三方插件的模式,自定义拦截 action -> reducer 的过程。变为 action -> middlewares -> reducer 。这种机制可以让我们改变数据流,实现如异步 action ,action 过滤,日志输出,异常报告等功能。 通俗来说,redux 中间件就是对 dispatch 的功能做了扩展。

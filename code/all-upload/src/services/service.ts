@@ -5,7 +5,7 @@ import {
   IFeedConfig,
   IUploadOption,
 } from "./multiCloud/types";
-import constants from "../config/getconfigdata";
+import constants from "../config/config";
 const http = require("@tezign/commons.js/http");
 
 /**
@@ -60,11 +60,10 @@ const getTenantMultiCloud = (): Promise<EMultiCloud> => {
 /**
  * ali-oss 中止上传
  */
-const abortMultiCloud = (
-  path: string,
-  uploadId: string,
-): Promise<any> => {
-  return http.get(`${constants.ABORT_UPLOAD}?path=${path}&uploadId=${uploadId}`);
+const abortMultiCloud = (path: string, uploadId: string): Promise<any> => {
+  return http.get(
+    `${constants.ABORT_UPLOAD}?path=${path}&uploadId=${uploadId}`
+  );
 };
 
 export { getUploadFeedConfig, fileAdd, getTenantMultiCloud, abortMultiCloud };

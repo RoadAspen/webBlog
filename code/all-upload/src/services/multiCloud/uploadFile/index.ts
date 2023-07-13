@@ -12,7 +12,7 @@ import uploadFileAws, {
   cancelUploadAws,
   resumeUploadAws,
 } from "./uploadFileAws";
-import { ERRORS } from "../../../config/getconfigdata";
+import { ERRORS } from "../../../config/config";
 export function getMultiUploadFile(cloudCode: string) {
   switch (cloudCode) {
     case EMultiCloud.ALIYUN:

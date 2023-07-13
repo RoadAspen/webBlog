@@ -2,11 +2,13 @@
  *
  * @param {单个 action} actionCreator
  * @param { 订阅发布 } dispatch
- * @returns func
+ * @returns undefined
+ * @description 把dispatch和action绑定起来
  */
 function bindActionCreator(actionCreator, dispatch) {
   return function(...rest) {
-    return dispatch(actionCreator(rest));
+    // 这里只负责执行dispatch
+    dispatch(actionCreator(rest));
   };
 }
 /**

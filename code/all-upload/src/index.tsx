@@ -12,26 +12,24 @@ import {
   EMultiCloud,
   EObserverKey,
 } from "./services/multiCloud/types";
-import selectFiles from "@tezign/commons.js/functions/selectFiles";
 import { getMultiCloudUploader } from "./services/multiCloud/uploader";
 import {
   observerOss,
   observerOffOss,
-  observerUpSucessOss,
-  observerUpSucessOffOss,
-  observerdraftOss,
-  observerdraftOffOss,
+  observerUpSuccessOss,
+  observerUpSuccessOffOss,
+  observerDraftOss,
+  observerDraftOffOss,
   observerCustomProcessOss,
   observerCustomProcessOffOss,
   observerCustomSuccessOss,
   observerCustomSuccessOffOss,
 } from "./services/multiCloud/observer";
-import { setEnv } from "./config/constants";
+import { setEnv, constants } from "./config/constants";
 import { CheckPoint } from "./services/multiCloud/file-checkpoint";
 import "./index.scss";
 import getMultiUploadFile from "./services/multiCloud/uploadFile";
-import constants, { ERRORS } from "./config/getconfigdata";
-const cloudCode = localStorage.getItem(constants.MULTI_CLOUD_KEY) || "";
+const cloudCode = localStorage.getItem("CLOUD_KEY") || "";
 /** class 实例 */
 const Uploader = getMultiCloudUploader(cloudCode);
 const CombinedContentUploader = getMultiCloudUploader(
@@ -45,8 +43,9 @@ const getUpload = (key?: EObserverKey) => {
   return Uploader;
 };
 /** common 迁移 uploadFile 单个上传 */
-const { cancelUpload, resumeUpload, uploadFile } =
-  getMultiUploadFile(cloudCode);
+const { cancelUpload, resumeUpload, uploadFile } = getMultiUploadFile(
+  cloudCode
+);
 /**
  * 拖拽上传
  * @param param0
@@ -111,7 +110,7 @@ class Upload extends Component<{
   static resumeUploadErrorAll = Uploader.resumeUploadErrorAll;
   static clearByUniques = Uploader.clearByUniques;
   /**
-   * 对比files  comnpareFiles 两个文件是否相同，过滤掉相同的文件列表
+   * 对比files  compareFiles 两个文件是否相同，过滤掉相同的文件列表
    */
   static getNotEqualFiles(
     files: IFile[],
@@ -176,7 +175,7 @@ const observerProcessOss: <T>(params: TObserverParams<T>) => void = ({
     observerCustomProcessOss(key, handler);
     return;
   }
-  observerdraftOss(handler);
+  observerDraftOss(handler);
 };
 
 const offProcessOss: <T>(params: TOffParams<T>) => void = ({
@@ -187,7 +186,7 @@ const offProcessOss: <T>(params: TOffParams<T>) => void = ({
     observerCustomProcessOffOss(key, handler);
     return;
   }
-  observerdraftOffOss(handler);
+  observerDraftOffOss(handler);
 };
 
 const observerSuccessOss: <T>(params: TObserverParams<T>) => void = ({
@@ -198,7 +197,7 @@ const observerSuccessOss: <T>(params: TObserverParams<T>) => void = ({
     observerCustomSuccessOss(key, handler);
     return;
   }
-  observerUpSucessOss(handler);
+  observerUpSuccessOss(handler);
 };
 
 const offSuccessOss: <T>(params: TOffParams<T>) => void = ({
@@ -209,7 +208,7 @@ const offSuccessOss: <T>(params: TOffParams<T>) => void = ({
     observerCustomSuccessOffOss(key, handler);
     return;
   }
-  observerUpSucessOffOss(handler);
+  observerUpSuccessOffOss(handler);
 };
 
 export {
@@ -221,10 +220,10 @@ export {
   showSelectFile,
   observerOss,
   observerOffOss,
-  observerUpSucessOss,
-  observerUpSucessOffOss,
-  observerdraftOss,
-  observerdraftOffOss,
+  observerUpSuccessOss,
+  observerUpSuccessOffOss,
+  observerDraftOss,
+  observerDraftOffOss,
   getUpload,
   observerProcessOss,
   offProcessOss,

@@ -12,5 +12,6 @@
     "roadaspen",
     "tezign",
     "WORKDIR"
-  ]
+  ],
+  "commentTranslate.multiLineMerge": false
 }

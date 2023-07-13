@@ -11,11 +11,6 @@ const arithmetic = {
   link: "/arithmetic/",
 };
 
-const react = {
-  text: "React源码解析",
-  link: "/react/",
-};
-
 const book = {
   text: "阅读",
   link: "/book/",
