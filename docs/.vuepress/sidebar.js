@@ -128,11 +128,10 @@ const blog = [
     title: "Framework",
     collapsable: true,
     children: [
-      "framework/redux",
       "framework/koa",
-      // "framework/react-redux",
-      // "framework/react-router",
-      // "framework/hooks-redux",
+      "framework/redux",
+      "framework/react-redux",
+      "framework/mobx",
     ],
   },
   {
@@ -174,128 +173,70 @@ const arithmetic = [
     children: ["深度优先遍历/测试", "数组/加一"],
   },
 ];
-// 算法
-// const arithmetic = [
-//   {
-//     titie: "原理",
-//     collapsable: true,
-//     children: ["principle/skill"],
-//   },
-//   {
-//     title: "递归",
-//     collapsable: true,
-//     children: ["recursion/递归"],
-//   },
-//   {
-//     title: "栈",
-//     collapsable: true,
-//     children: ["stack/栈", "stack/进制转换", "stack/有效的括号"],
-//   },
-//   {
-//     title: "队列",
-//     collapsable: true,
-//     children: ["queue/队列", "queue/练习"],
-//   },
-//   {
-//     title: "链表",
-//     collapsable: true,
-//     children: ["linkedList/链表", "linkedList/套路"],
-//   },
-//   {
-//     title: "字典和散列表",
-//     collapsable: true,
-//     children: ["dictionary/字典和散列表"],
-//   },
-//   {
-//     title: "集合",
-//     collapsable: true,
-//     children: ["set/集合"],
-//   },
-//   {
-//     title: "排序",
-//     collapsable: true,
-//     children: ["sort/排序和搜索"],
-//   },
-// ];
 
 const react = [
-  {
-    title: "react实现",
-    collapsable: true,
-    children: [
-      "react实现",
-      "react优化",
-      // 'ReactElement',
-      // 'JSX',
-      // 'ReactChildren',
-      // "react-fiber",
-      // "requestAnimationFrame",
-      // "requestIdleCallback",
-    ],
-  },
   {
     title: "基础",
     collapsable: true,
     children: [
-      "API",
-      // 'ReactElement',
-      // 'JSX',
-      // 'ReactChildren',
-      // "react-fiber",
-      // "requestAnimationFrame",
-      // "requestIdleCallback",
+      "基础/React常用API",
+      "基础/ReactElement",
+      "基础/JSX",
+      "基础/ReactChildren",
+      "基础/ReactFiber",
+      "基础/requestAnimationFrame",
+      "基础/requestIdleCallback",
     ],
   },
-  // {
-  //     title: '创建更新',
-  //     collapsable: true,
-  //     children: [
-  //         "Render",
-  //         "update",
-  //         "Fiber",
-  //         "expirationTime",
-  //         "updateQueue"
-  //     ]
-  // },
-  // {
-  //     title: '任务调度',
-  //     collapsable: true,
-  //     children: [
-  //         'scheduleWork',
-  //         '双缓存fiber树',
-  //         'workLoopSync',
-  //         'beginWork',
-  //         'HostComponent',
-  //         'ClassComponent',
-  //         'completeUnitOfWork',
-  //         'DOM创建',
-  //         'finishSyncRender'
-  //     ]
-  // },
-  // {
-  //     title: '功能',
-  //     collapsable: true,
-  //     children: [
-  //         "单节点Diff",
-  //         "多节点Diff",
-  //         "Context",
-  //         "Ref",
-  //         "memo",
-  //         "setState",
-  //         "合成事件",
-  //         "SchedulerHostConfig.default",
-  //     ]
-  // },
-  // {
-  //     title: 'Hooks',
-  //     collapsable: true,
-  //     children: [
-  //         "useState"
-  //         "useEffect",
-  //         "useMemo",
-  //         "useCallback",
-  //     ]
-  // }
+  {
+    title: "创建更新",
+    collapsable: true,
+    children: [
+      "创建更新/Render",
+      "创建更新/updateQueue",
+      "创建更新/Fiber",
+      "创建更新/expirationTime计算",
+    ],
+  },
+  {
+    title: "任务调度",
+    collapsable: true,
+    children: [
+      "任务调度/scheduleWork",
+      "任务调度/双缓存fiber树",
+      "任务调度/workLoopSync",
+      "任务调度/beginWork",
+      "任务调度/HostComponent",
+      "任务调度/ClassComponent",
+      "任务调度/completeUnitOfWork",
+      "任务调度/DOM创建",
+      "任务调度/finishSyncRender",
+    ],
+  },
+  {
+    title: "功能",
+    collapsable: true,
+    children: [
+      "功能/单节点Diff",
+      "功能/多节点Diff",
+      "功能/Context",
+      "功能/Ref",
+      "功能/memo",
+      "功能/setState",
+      "功能/合成事件",
+      "功能/SchedulerHostConfig.default",
+    ],
+  },
+  {
+    title: "Hooks",
+    collapsable: true,
+    children: [
+      "Hooks/useState",
+      "Hooks/useEffect",
+      "Hooks/useMemo",
+      "Hooks/useCallback",
+    ],
+  },
 ];
 // 阅读
 const book = [

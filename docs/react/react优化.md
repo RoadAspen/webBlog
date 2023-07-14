@@ -1,14 +1,14 @@
 # react 优化
 
-在react程序中优化有两个方面，一个是类优化，一个是函数内优化。
+在 react 程序中优化有两个方面，一个是类优化，一个是函数内优化。
 
 ## 类组件优化
 
-主要依赖于 `shouldComponentUpate`。
+主要依赖于 `shouldComponentUpdate`。
 
 ### Component 和 PureComponent 区别
 
-> `React.PureComponent` 与 `React.Component` 几乎完全相同，但 `React.PureComponent` 通过`props`和`state`的浅对比来实现 `shouldComponentUpate()`。如果对象包含复杂的数据结构，它可能会因深层的数据不一致而产生错误的否定判断(表现为对象深层的数据已改变视图却没有更新）。
+> `React.PureComponent` 与 `React.Component` 几乎完全相同，但 `React.PureComponent` 通过`props`和`state`的浅对比来实现 `shouldComponentUpdate()`。如果对象包含复杂的数据结构，它可能会因深层的数据不一致而产生错误的否定判断(表现为对象深层的数据已改变视图却没有更新）。
 
 如果是 PureComponent 则不需要书写 shouldComponentUpdate 这个生命周期。如果写了会被警告。⚠️  
 Component 却需要 shouldComponentUpdate 来优化性能。
@@ -18,7 +18,7 @@ Component 却需要 shouldComponentUpdate 来优化性能。
 ### 调用 setState 时是否更新
 
 1. 每次调用 setState，都会更新，无论值是否发生变化。
-如：
+   如：
 
 ```js
 // 组件为class，无论值改不改变，只要执行setState，就会更新。
@@ -228,30 +228,42 @@ shouldComponentUpdate(nextProps: any, nextState: any) {
 ## 函数组件优化
 
 函数内优化主要采用 `useMemo` 和 `useCallback`。 函数外部优化采用 `React.memo` 。
+
 ### 组件外
+
 #### React.memo
+
 类似于 pureComponent, React.memo 只会检查 props 变更。
+
 ```js
-function App(){
-  return <div>1</div>
+function App() {
+  return <div>1</div>;
 }
-function areEqual(prevProps,nextProps){
+function areEqual(prevProps, nextProps) {
   // 在这里比较 props的变化
 }
-const Napp = React.memo(App, areEqual)
+const Napp = React.memo(App, areEqual);
 ```
+
 ### 组件内
+
 ### useMemo
+
 useMemo 是为了缓存一个经过大量计算得出的变量，如果变量依赖的其他变量没有发生变化，则不会重新计算。
+
 ```js
-a = [1,2,3,4,5]
-let num = useMemo(()=>{
-  return a.reduce((q,w)=>q+w)
-},[a])
+a = [1, 2, 3, 4, 5];
+let num = useMemo(() => {
+  return a.reduce((q, w) => q + w);
+}, [a]);
 ```
-如果变量a不发生任何变化，则 每次都把缓存值赋值给num。
+
+如果变量 a 不发生任何变化，则 每次都把缓存值赋值给 num。
+
 ### useCallback
+
 useCallback 是为了缓存一个函数，如果依赖的变量没有发生变化，则不会重新生成新的函数。
+
 ```js
  // 使用ref，获取真实dom，或者组件本身
   const forms = useRef<HTMLFormElement>(null);
@@ -273,6 +285,7 @@ useCallback 是为了缓存一个函数，如果依赖的变量没有发生变�
     [forms],
   )
 ```
+
 ## 总结
 
 > react 中的性能开销主要在于 `diff（vdom diff）` 和 `reconciliation(vdom->true dom)` ，所以在这两个方面下手来优化 react 性能。

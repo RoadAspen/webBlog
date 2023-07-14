@@ -15,6 +15,10 @@ const book = {
   text: "阅读",
   link: "/book/",
 };
+const react = {
+  text: "React",
+  link: "/react/",
+};
 
 const cookbook = {
   text: "菜谱",
