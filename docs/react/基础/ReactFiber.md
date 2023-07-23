@@ -251,7 +251,7 @@ render 阶段的生命周期：
 - 如果有 child 节点，且已经遍历过，则遍历 sibling 节点。
 - 如果最后返回的节点为顶部，表示所有节点遍历完成。
 
-每个 Fiber 上都有个 `alternate` 属性,指向一个 currentFiber,创建 `WorkInProgress` 节点时优先取 `alternate`,没有的话就创建一个。
+每个 Fiber 上都有个 `alternate` 属性,指向一个 current Fiber 树 的 fiber,创建 `WorkInProgress` 节点时优先取 `alternate`,没有的话就创建一个。
 
 #### 收集 effect list
 

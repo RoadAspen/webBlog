@@ -116,7 +116,7 @@ ReactDOM.render(element, container);
 由于 createElement 最终是为了导出一个对象，那么我们便实现一个 createElement
 
 ```js
-function creatElement(type, props, ...children) {
+function createElement(type, props, ...children) {
   return {
     type,
     props: {
@@ -138,7 +138,7 @@ ReactDOM.render(element, container);
 如果一个节点不是对象，是一个文本节点，那么还需要一个创建文本节点的函数 createTextElement
 
 ```js
-function creatElement(type, props, ...children) {
+function createElement(type, props, ...children) {
 	return {
 		type,
 		props: {
@@ -174,9 +174,9 @@ ReactDOM.render(element, container);
 
 ```js
 const Didact = {
-    creatElement
+    createElement
 }
-function creatElement(type, props, ...children) {
+function createElement(type, props, ...children) {
 	return {
 		type,
 		props: {
@@ -229,7 +229,7 @@ render 负责将传入的元素依次创建并挂载到 container 中
 
 ```js
 const Didact = {
-  creatElement,
+  createElement,
   render,
 };
 function render(element, container) {
@@ -332,7 +332,7 @@ function render(element, container) {
 现在我们运行一下现在的代码，是否可以在[codesandbox](https://codesandbox.io/s/elastic-shaw-x41tn?file=/src/index.js)中执行。
 
 ```js
-function creatElement(type, props, ...children) {
+function createElement(type, props, ...children) {
   return {
     type,
     props: {
@@ -374,7 +374,7 @@ function render(element, container) {
   container.appendChild(dom);
 }
 const Didact = {
-  creatElement,
+  createElement,
   render,
 };
 /** @jsx Didact.createElement */
@@ -401,40 +401,40 @@ element.props.children.forEach((child) => {
 
 **这个递归 render 存在问题**，一旦开始渲染，就不会停止，直到我们渲染了整个 element dom tree。如果元素树很大，则它可能会阻塞主线程很长时间。而且，如果浏览器需要执行高优先级的操作，（处理用户输入或者保持动画流畅）则它必须等到渲染完成为止，这就造成了**卡顿**。
 
-### requestIdleCallwork
+### requestIdleCallback
 
-浏览器刷新一般是 60HZ，所以每一帧大概 16.6ms 内，要完成 js 执行 -> 浏览器渲染 。requestIdleCallwork 函数类似于 setTimeout，可以在浏览器每一帧有剩余时间时让出主线程，执行后台或一些低优先级工作。
+浏览器刷新一般是 60HZ，所以每一帧大概 16.6ms 内，要完成 js 执行 -> 浏览器渲染 。requestIdleCallback 函数类似于 setTimeout，可以在浏览器每一帧有剩余时间时让出主线程，执行后台或一些低优先级工作。
 
 **强烈建议使用 timeout 选项进行必要的工作，否则可能会在触发回调之前经过几秒钟。**
 
 ### 任务拆分
 
-解决办法是将工作分成几个小单元，在完成每个单元后，如果需要执行其他任何高优先级的操作，我们就让浏览器中断渲染，使用 `requestIdleCallwork`做一个循环。
+解决办法是将工作分成几个小单元，在完成每个单元后，如果需要执行其他任何高优先级的操作，我们就让浏览器中断渲染，使 back`做一个循环。
 
 思路：将渲染工作分为多个小单元，每隔一段时间就暂定渲染工作，查看浏览器是否有操作存在，如果存在，则执行浏览器操作，没有则继续执行下一个渲染单元
 
 ```js
 // 在这里我们可以利用setTimeout特性
 // 储存下一个需要执行的任务单元
-let nextUnitofwork = null;
+let nextUnitOfWork = null;
 // 工作循环,传入一个 截止日期
 function workLoop(deadline){
 	// shouldYield 是否需要停止
 	let shouldYield = false；
 	// 	如果存在下一个任务单元，且此时控制权还在渲染上，继续执行下一个任务单元
-	while(nextUnitofwork && !shouldYield){
+	while(nextUnitOfWork && !shouldYield){
 		// performUnitOfWork 函数，传入一个 任务单元，并返回下一个任务单元，该任务是同步的
 		nextInitofwork = performUnitOfWork(nextInitofwork)
 
 		// 截止时间，有一个方法，判断是否需要将控制权交给浏览器
 		shouldYield = deadline.timeRemaining() < 1
 	}
-	// requestIdleCallwork 可以被视作为 setTimeout
-	requestIdleCallwork(workLoop)
+	// requestIdleCallback 可以被视作为 setTimeout
+	requestIdleCallback(workLoop)
 }
 
 // 启动工作
-requestIdleCallwork(workLoop)
+requestIdleCallback(workLoop)
 
 // 执行工作单元。sync
 function performUnitOfWork(nextUnitOfWork){
@@ -642,19 +642,19 @@ function workLoop(deadline){
 	// shouldYield 是否需要停止
 	let shouldYield = false；
 	// 	如果存在下一个任务单元，且此时控制权还在渲染上，继续执行下一个任务单元
-	while(nextUnitofwork && !shouldYield){
+	while(nextUnitOfWork && !shouldYield){
 		// performUnitOfWork 函数，传入一个 任务单元，并返回下一个任务单元，该任务是同步的
-		nextInitofwork = performUnitOfWork(nextInitofwork)
+		nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
 
 		// 截止日期有一个方法，判断是否需要将控制权交给浏览器
 		shouldYield = deadline.timeRemaining() < 1
 	}
 	// =============== 当所有的工作单元执行完之后再统一挂载到dom上 ===================
-	if(!nextUnitofwork && wipRoot){
+	if(!nextUnitOfWork && wipRoot){
 		commitRoot()
 	}
-	// requestIdleCallwork 可以被视作为 setTimeout
-	requestIdleCallwork(workLoop)
+	// requestIdleCallback 可以被视作为 setTimeout
+	requestIdleCallback(workLoop)
 }
 ```
 
@@ -663,7 +663,7 @@ function workLoop(deadline){
 ```js
 function commitRoot() {
   // wipRoot 整个fiber 树
-  commitwork(wipRoot.child);
+  commitWork(wipRoot.child);
   // 内存回收
   wipRoot = null;
 }
@@ -694,7 +694,7 @@ Reconciliation 协调，执行 diff 操作。
 ```js
 function commitRoot() {
   // wipRoot 整个fiber 树
-  commitwork(wipRoot.child);
+  commitWork(wipRoot.child);
 
   // =========保留最后一次提交的wipRoot=============
   currentRoot = wipRoot;
@@ -925,7 +925,7 @@ function updateDom(dom, prevProps, nextProps) {
 ### 完整代码
 
 ```js
-function creatElement(type, props, ...children) {
+function createElement(type, props, ...children) {
   return {
     type,
     props: {
@@ -949,34 +949,34 @@ function createTextElement(text) {
 
 // 在这里我们可以利用setTimeout特性
 // 储存下一个需要执行的任务单元
-let nextUnitofwork = null;
+let nextUnitOfWork = null;
 // 工作循环,传入一个 截止日期
 function workLoop(deadline){
 	// shouldYield 是否需要停止
 	let shouldYield = false；
 	// 	如果存在下一个任务单元，且此时控制权还在渲染上，继续执行下一个任务单元
-	while(nextUnitofwork && !shouldYield){
+	while(nextUnitOfWork && !shouldYield){
 		// performUnitOfWork 函数，传入一个 任务单元，并返回下一个任务单元，该任务是同步的
-		nextInitofwork = performUnitOfWork(nextInitofwork)
+		nextUnitOfWork = performUnitOfWork(nextUnitOfWork)
 
 		// 截止日期有一个方法，判断是否需要将控制权交给浏览器
 		shouldYield = deadline.timeRemaining() < 1
 	}
 	// =============== 当所有的工作单元执行完之后再统一挂载到dom上 ===================
-	if(!nextUnitofwork && wipRoot){
+	if(!nextUnitOfWork && wipRoot){
 		commitRoot()
 	}
-	// requestIdleCallwork 可以被视作为 setTimeout
-	requestIdleCallwork(workLoop)
+	// requestIdleCallback 可以被视作为 setTimeout
+	requestIdleCallback(workLoop)
 }
 
 // 启动工作
-requestIdleCallwork(workLoop)
+requestIdleCallback(workLoop)
 
 function commitRoot() {
 	deletions.forEach(commitWork);
   // wipRoot 整个fiber 树
-  commitwork(wipRoot.child);
+  commitWork(wipRoot.child);
 
   // =========保留最后一次提交的wipRoot=============
   currentRoot = wipRoot;
@@ -1152,7 +1152,7 @@ function render(element, container) {
 let nextUnitOfWork = null;
 let wipRoot = null;
 const Didact = {
-  creatElement,
+  createElement,
   render,
 };
 /** @jsx Didact.createElement */
@@ -1263,7 +1263,7 @@ function Count() {
 let wipFiber = null;
 let hookIndex = null;
 function updateFunctionComponent(fiber) {
-  wipFiber = fober;
+  wipFiber = fiber;
   hookIndex = 0;
   wipFiber.hooks = [];
   const children = [fiber.type(fiber.props)];
@@ -1312,19 +1312,19 @@ function useState(initial) {
 React 实现的流程如下：
 
 1. 创建 React.createElement 用于返回 特定的 react element, 在函数内部根据 tag 类型区分 tag 和 text node。
-2. react element 为 {type:'tagname',parops:{...props,children:[react element]}} 结构。
+2. react element 为 {type:'tagName',props:{...props,children:[react element]}} 结构。
 3. 使用 /\*_@jsx React.createElement_/ 来让 babel/jsx 将 jsx 解析为指定的 createElement 函数。
 4. 创建 render， 用于将 react element tree 递归 添加到 container 中。
-5. render 如果元素树很大，递归比较耗时间，所以采用拆分工作单元，创建 workloop ，使用 settimeout 执行 的方式，区分优先级。
-6. 在 workloop 根据任务优先级执行 performUnitOfWork 或者中断执行，将主线程交还给浏览器。
+5. render 如果元素树很大，递归比较耗时间，所以采用拆分工作单元，创建 workLoop ，使用 setTimeout 执行 的方式，区分优先级。
+6. 在 workLoop 根据任务优先级执行 performUnitOfWork 或者中断执行，将主线程交还给浏览器。
 7. 为了拆分工作单元，我们需要加入 fiber 架构， fiber 架构 = fiber 数据结构 + sheduler(调度) 。
 8. fiber， 每一个 fiber 都有一个 link 指向 parent fiber，一个 child fiber ， 一个 sibling fiber。
-9. 将每一个 fiber 当作是一个 unitOfWork，并在 render 中确定 root fiber，并作为第一个 unitOfwork 传入 performUnitOfWork 函数。
-10. performUnitOfWork 函数 负责根据传入的 unitOfwork 创建对应的 fiber，并确定 下个 unitOfWork，while 循环，根据 deadline shouldYield 判断是否继续递归 performUnitOfWork，否则跳出循环，使用 requestIdleCallback(workLoop) 继续异步执行。
+9. 将每一个 fiber 当作是一个 unitOfWork，并在 render 中确定 root fiber，并作为第一个 unitOfWork 传入 performUnitOfWork 函数。
+10. performUnitOfWork 函数 负责根据传入的 unitOfWork 创建对应的 fiber，并确定 下个 unitOfWork，while 循环，根据 deadline shouldYield 判断是否继续递归 performUnitOfWork，否则跳出循环，使用 requestIdleCallback(workLoop) 继续异步执行。
 11. 调度完成后会返回一个 fiber tree ， 将 fiber tree 传递给 reconciler, 进行 diff，给每一个 fiber 打上 effectTag。
 12. 当 reconciler 完成之后会触发 commit，浏览器根据 effectList， 进行浏览器绘制。 浏览器会根据 effectTag 的类型，去做相应的更改。
 13. function component 函数组件，这个函数组件会返回一个 jsx，fiber 会将这个函数作为 type，在 render 阶段，如果 type 是 function 类型，则执行这个函数，并将 fiber 传入进去，在 commit 阶段，函数组件挂载需要找到最近的一个 hostComponent，而删除也要找到函数内部最近的一个 hostComponent 元素。
-14. hooks ，当处理 type 是 function 的 fiber 时，会给这个 fiber 创建一个 hooks 的数组，并将当前 fiber 作为 wipfiber，传递给全局变量，这样在 useState 等 hooks 执行时，会直接取 全局的 wipfiber，并将 hooks 函数结果依次传入到 hooks 数组中（这也是为什么 hooks 的调用顺序不能更改），如果有旧的 hook，还将旧的 hook 的 state 按照 hookIndex 顺序赋值给新的 fiber 中的 hooks 数组中。在 hook 中的每一项还有一个 queue 队列，用于存储 setState 传入的回调函数，每次执行 setState 都会在 queue 队列中添加一个函数，当函数组件更新时，会遍历 queue 队列，将所有改变 state 的回调依次执行。
+14. hooks ，当处理 type 是 function 的 fiber 时，会给这个 fiber 创建一个 hooks 的数组，并将当前 fiber 作为 wipFiber，传递给全局变量，这样在 useState 等 hooks 执行时，会直接取 全局的 wipFiber，并将 hooks 函数结果依次传入到 hooks 数组中（这也是为什么 hooks 的调用顺序不能更改），如果有旧的 hook，还将旧的 hook 的 state 按照 hookIndex 顺序赋值给新的 fiber 中的 hooks 数组中。在 hook 中的每一项还有一个 queue 队列，用于存储 setState 传入的回调函数，每次执行 setState 都会在 queue 队列中添加一个函数，当函数组件更新时，会遍历 queue 队列，将所有改变 state 的回调依次执行。
 
 ## 鸣谢
 

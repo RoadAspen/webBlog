@@ -1,7 +1,7 @@
 /**
  * 亚马逊云 需要手动分块及所有分块完成之后手动合并并通知亚马逊云已上传完成
  */
-import { IFeedConfig, IFile } from "./types";
+import { IFeedConfig, IFile } from "../../types";
 import awsOSS from "aws-sdk/clients/s3";
 import { AWSError } from "aws-sdk";
 
@@ -227,7 +227,7 @@ export default class AwsSingleFileUpload {
           UploadId: that.uploadId,
           Body: filePart,
         },
-        async function (err, data) {
+        async function(err, data) {
           if (err) {
             console.log(
               "该分块上传失败",
@@ -256,34 +256,34 @@ export default class AwsSingleFileUpload {
           }
         }
       )
-      .on(
-        "httpUploadProgress",
-        function (evt: { loaded: number; total: number }) {
-          console.log("httpUploadProgress", evt);
-          if (that.stopFlag) {
-            that.stopUpload();
-          }
-          // 如果loaded === total ，说明该分块已经上传成功
-          if (evt.loaded == evt.total) {
-            that.progressLoaded += evt.loaded;
-            // 直接删掉
-            delete that.uploadIngArr[partNumber];
-          } else {
-            that.uploadIngArr[partNumber] = {
-              loaded: evt.loaded,
-              objs,
-            };
-          }
-          console.log(
-            "that.progressLoaded",
-            that.progressLoaded,
-            that.uploadIngArr
-          );
-          const loaded = that.progressLoaded + that.getUploadingPartSize();
-          // 更新进度
-          that.onProgressFun(loaded);
+      .on("httpUploadProgress", function(evt: {
+        loaded: number;
+        total: number;
+      }) {
+        console.log("httpUploadProgress", evt);
+        if (that.stopFlag) {
+          that.stopUpload();
         }
-      );
+        // 如果loaded === total ，说明该分块已经上传成功
+        if (evt.loaded == evt.total) {
+          that.progressLoaded += evt.loaded;
+          // 直接删掉
+          delete that.uploadIngArr[partNumber];
+        } else {
+          that.uploadIngArr[partNumber] = {
+            loaded: evt.loaded,
+            objs,
+          };
+        }
+        console.log(
+          "that.progressLoaded",
+          that.progressLoaded,
+          that.uploadIngArr
+        );
+        const loaded = that.progressLoaded + that.getUploadingPartSize();
+        // 更新进度
+        that.onProgressFun(loaded);
+      });
     that.uploadIngArr[partNumber] = {
       loaded: 0,
       objs,
@@ -309,7 +309,7 @@ export default class AwsSingleFileUpload {
           UploadId: that.uploadId,
           MaxParts: 10000,
         },
-        function (err: any, data: { Parts: any }) {
+        function(err: any, data: { Parts: any }) {
           let complete_part;
           if (err) {
             console.log("-----获取已上传的列表失败", err);
@@ -342,7 +342,7 @@ export default class AwsSingleFileUpload {
       alreadyUploadPartNumberList
     );
     const rea: any[] = [];
-    that.partFiles.forEach(function (item, index) {
+    that.partFiles.forEach(function(item, index) {
       const _index = index + 1;
       // 如果还未上传
       if (!alreadyUploadPartNumberList.includes(_index)) {
@@ -391,7 +391,7 @@ export default class AwsSingleFileUpload {
           Parts: partInfoList,
         },
       },
-      function (err: any, data: any) {
+      function(err: any, data: any) {
         if (err) {
           console.log("--------completeUploaderror", err);
         } else {
@@ -415,7 +415,7 @@ export default class AwsSingleFileUpload {
           Key: that.creor.key,
           UploadId: that.uploadId,
         },
-        function (err) {
+        function(err) {
           if (err) console.error("终止请求", that.uploadId, err, err.stack);
           // an error occurred
           else {

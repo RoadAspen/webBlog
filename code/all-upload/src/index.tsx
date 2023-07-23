@@ -42,10 +42,6 @@ const getUpload = (key?: EObserverKey) => {
   }
   return Uploader;
 };
-/** common 迁移 uploadFile 单个上传 */
-const { cancelUpload, resumeUpload, uploadFile } = getMultiUploadFile(
-  cloudCode
-);
 /**
  * 拖拽上传
  * @param param0

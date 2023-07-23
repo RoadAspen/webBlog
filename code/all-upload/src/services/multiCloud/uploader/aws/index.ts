@@ -1,6 +1,6 @@
 const getFileExtension = require("@tezign/commons.js/functions/getFileExtension");
 import awsOSS from "aws-sdk/clients/s3";
-import { createAWS } from "../create";
+import { createAWS } from "../../create";
 import mime from "mime";
 import {
   IFile,
@@ -11,8 +11,8 @@ import {
   MultiUploadBase,
   IFeedConfig,
   IFileStack,
-} from "../types";
-import { CheckPoint } from "../file-checkpoint";
+} from "../../types";
+import { CheckPoint } from "../../file-checkpoint";
 import {
   sendTrackEventCancel,
   sendTrackEventError,
@@ -22,9 +22,9 @@ import {
   sendTrackEventPause,
   sendTrackEventResume,
   sendTrackEventSuccess,
-} from "../../tools";
+} from "../../../tools";
 import { fileAdd } from "src/services/service";
-import AwsSingleFileUpload from "../aws-upload";
+import AwsSingleFileUpload from "./aws-upload";
 
 interface Creor {
   key: string;
@@ -168,7 +168,7 @@ export default class AwsUploader extends MultiUploadBase {
       });
       console.log("开始上传", stackInfo.awsUploadObj);
       await stackInfo.awsUploadObj.beginUpload();
-    } catch (ex: any) {
+    } catch (ex) {
       if (stackInfo) {
         if (stackInfo.retryTimes > 0) {
           //重试上传机制

@@ -2,14 +2,23 @@
 
 React 创建更新的三种方式：
 
-- ReactDOM.render || hydrate
+- ReactDOM.render || hydrate 或者 ReactDOM.createRoot().render()
 - setState
 - forceUpdate
 
 我们在 React 程序的入口文件 index.js 中都会写以下代码：
 
 ```js
+// 老版的入口
 ReactDOM.render(<App />, document.getElementById("root"));
+
+// 新版的 create-react-app 已经使用了 并发模式， 主要是根据 tag 不同决定是否开启 fiber 时间切片。
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 ```
 
 这就是 React 渲染的入口方法。
@@ -18,7 +27,7 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 `ReactDOM` 定义在文件 `packages/react-dom/src/ReactDOM.js` 中.
 
-在 react-dom/client/ReactDOM.js 可以看到导出了 render 等方法
+在 react-dom/client/ReactDOM.js 可以看到导出了 **render** 和 **createRoot** 等方法
 
 ```js
 import {
@@ -28,6 +37,12 @@ import {
   unstable_renderSubtreeIntoContainer,
   unmountComponentAtNode,
 } from "./ReactDOMLegacy";
+
+import {
+  createRoot,
+  createBlockingRoot,
+  isValidContainer,
+} from "./ReactDOMRoot";
 ```
 
 render 实际是从 `ReactDOMLegacy` 文件中引入过来的：
@@ -70,12 +85,9 @@ function legacyRenderSubtreeIntoContainer(
   let fiberRoot;
   // 如果是第一次渲染，container._reactRootContainer 不存在
   if (!root) {
-    // 初始渲染 ，legacyCreateRootFromDOMContainer 方法 从 dom容器创建reactRoot
-    // RootType {
-    //              _internalRoot:FiberRoot,
-    //              render(),
-    //              unmount()
-    //          }
+    // 初始渲染 ，legacyCreateRootFromDOMContainer 方法 从 dom容器创建reactRoot。
+
+    // RootType { _internalRoot:FiberRoot,render(),unmount()   }
     root = container._reactRootContainer = legacyCreateRootFromDOMContainer(
       container,
       forceHydrate
@@ -186,26 +198,17 @@ export function createLegacyRoot(
 ```js
 function ReactDOMBlockingRoot(
   container: Container,
-  tag: RootTag, // 0 | 1 | 2
+  tag: RootTag, // 0 | 1 | 2  这里只有 0 和 1
   options: void | RootOptions
 ) {
   this._internalRoot = createRootImpl(container, tag, options);
 }
-```
 
-我们看到 `ReactDOMBlockingRoot` 只是调用了 `createRootImpl`方法 创建了一个属性 `_internalRoot`。
-
-同时我们发现有一个 `ReactDOMRoot` 方法和`ReactDOMBlockingRoot`类似
-
-```js
 function ReactDOMRoot(container: Container, options: void | RootOptions) {
+  // ConcurrentRoot 这里是 写死 的 2
   this._internalRoot = createRootImpl(container, ConcurrentRoot, options);
 }
-```
 
-而且他们挂在原型的方法也是一样的
-
-```js
 ReactDOMRoot.prototype.render = ReactDOMBlockingRoot.prototype.render = function(
   children: ReactNodeList
 ): void {
@@ -222,7 +225,49 @@ ReactDOMRoot.prototype.unmount = ReactDOMBlockingRoot.prototype.unmount = functi
 };
 ```
 
-为啥一样暂且不讨论，我们先看看 `createRootImpl` 做了什么
+我们看到 `ReactDOMBlockingRoot` 只是调用了 `createRootImpl`方法 创建了一个属性 `_internalRoot`。
+
+同时我们发现有一个 `ReactDOMRoot` 方法和`ReactDOMBlockingRoot`类似，而且他们挂在原型的方法也是一样的。
+
+## createRoot
+
+// 开启 concurrent 模式，是使用的 createRoot
+
+```js
+export function createRoot(
+  container: Container,
+  options?: RootOptions
+): RootType {
+  invariant(
+    isValidContainer(container),
+    "createRoot(...): Target container is not a DOM element."
+  );
+  warnIfReactDOMContainerInDEV(container);
+  return new ReactDOMRoot(container, options);
+}
+```
+
+我们看到 **createRoot** 实际是调用的 **ReactDOMRoot** 构造函数， 这个函数与上边的 **ReactDOMBlockingRoot** 干的事情是一样的，只是把参数的 tag 写死了。
+
+```js
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+// render 方法实际是调用了 updateContainer方法，且不支持回调函数
+ReactDOMRoot.prototype.render = ReactDOMBlockingRoot.prototype.render = function(
+  children: ReactNodeList
+): void {
+  const root = this._internalRoot;
+  updateContainer(children, root, null, null);
+};
+```
+
+我们可以看到 `legacy` 和 `concurrent` 模式 创建 **fiber tree** 用的是同一个方法 **createRootImpl** ， 最后是同样调用了 **updateContainer**开启了渲染， 不同点在于 **tag** 不同；
+
+**tag 为啥不一样暂且不讨论，我们先看看 `createRootImpl` 做了什么**
 
 ```js
 function createRootImpl(
@@ -236,25 +281,26 @@ function createRootImpl(
     (options != null && options.hydrationOptions) || null;
   // 这里调用了 createContainer, 返回 FiberRoot。
   const root = createContainer(container, tag, hydrate, hydrationCallbacks);
+
+  // 将 FiberFoot 关联到 container上
   markContainerAsRoot(root.current, container);
 
   // 以下是服务端渲染的代码
-  if (hydrate && tag !== LegacyRoot) {
-    const doc =
-      container.nodeType === DOCUMENT_NODE
-        ? container
-        : container.ownerDocument;
-    eagerlyTrapReplayableEvents(container, doc);
-  }
+  // --------
   return root;
+}
+
+// markContainerAsRoot 干了什么
+const randomKey = Math.random()
+  .toString(36)
+  .slice(2);
+const internalContainerInstanceKey = "__reactContainere$" + randomKey;
+export function markContainerAsRoot(hostRoot, node) {
+  node[internalContainerInstanceKey] = hostRoot;
 }
 ```
 
-此方法最重要的是调用了 `createContainer` 创建 `FiberRoot` 并返回。
-
-```js
-import { createContainer, updateContainer } from "react-reconciler/inline.dom";
-```
+此方法最重要的是调用了 `createContainer` 创建 `FiberRootNode` 并返回。
 
 我们去 `react-reconciler/src/ReactFiberReconciler.js` 这里去找到 `createContainer`方法。
 
@@ -301,7 +347,7 @@ export function createContainer(
 ): OpaqueRoot {
   return createFiberRoot(containerInfo, tag, hydrate, hydrationCallbacks);
 }
-// 创建 FiberRoot ，并将 FiberRoot 的 current 指向 createHostRootFiber(tag)
+// 创建 FiberRootNode ，并将 FiberRoot 的 current 指向 createHostRootFiber(tag)
 export function createFiberRoot(
   containerInfo: any,
   tag: RootTag,
@@ -314,11 +360,11 @@ export function createFiberRoot(
     root.hydrationCallbacks = hydrationCallbacks;
   }
 
-  // 这里创建了第一个 Fiber 对象
+  // 这里创建了 HostRootFiber 对象, 程序的第一个fiber
   const uninitializedFiber = createHostRootFiber(tag);
-  // 将fiber 挂在了 fiberRoot 的 current 属性
+  // HostRootFiber 挂在了 fiberRoot 的 current 属性
   root.current = uninitializedFiber;
-  // 将 fiberRoot 挂在了 fiber 的 stateNode 属性
+  // 将 fiberRoot 挂在了 HostRootFiber 的 stateNode 属性
   uninitializedFiber.stateNode = root;
 
   // 初始化 fiber.updateQueue,这个留下后边讲
@@ -328,12 +374,15 @@ export function createFiberRoot(
 }
 ```
 
-可以看到 **createContainer** 方法实际调用的是 **createFiberRoot**。 直接返回一个创建的 `FiberRoot` 对象。
+可以看到 **createContainer** 方法实际调用的是 **createFiberRoot**。在 **createFiberRoot** 中实例化创建了 **FiberRootNode**对象 。
 
-我们看看 **createHostRootFIber** 干了什么
+接下来我们看看 **createHostRootFiber** 干了什么
 
 ```js
 export function createHostRootFiber(tag: RootTag): Fiber {
+  // 根据 tag 不同，创建了 mode
+  // legacy 模式 （同步）， Blocking 模式 （过渡模式），Concurrent 模式 （并发模式）
+  // 模式不同点主要在于 开启的功能， legacy 模式就是原始的同步模式， Blocking 是用于过渡的
   let mode;
   if (tag === ConcurrentRoot) {
     mode = ConcurrentMode | BlockingMode | StrictMode;
@@ -365,13 +414,13 @@ const createFiber = function(
 };
 ```
 
-我们看到 **createFiber** 返回了一个 **Fiber** 实例。
+我们看到 **createFiber** 返回了一个 **FiberNode** 实例。
 
 到此我们上面的创建过程就走完，过程如下：
 
 1. 创建 **ReactRoot** 的过程中创建了 **FiberRoot**，挂载到了 dom 元素的 **\_reactRootContainer** 上，从 **new ReactDOMBlockingRoot** 的 **\_internalRoot** 取出创建的 **FiberRoot** 并赋值给了 fiberRoot。
-2. 在创建 **FiberRoot** 过程中，又创建了 第一个**Fiber**，并通过 **FiberRoot.current = Fiber , Fiber.stateNode = FiberRoot** 的方式将二者关联起来。
-3. 初始化 **update** 并赋值给 **Fiber.updateQueue**.
+2. 在创建 **FiberRoot** 过程中，又创建了 第一个**HostRootFiber**，并通过 **FiberRoot.current = HostRootFiber , HostRootFiber.stateNode = FiberRoot** 的方式将二者关联起来。
+3. 创建更新队列 **updateQueue** 并赋值给 **Fiber.updateQueue**.
 
 ## unbatchedUpdates
 
@@ -449,19 +498,36 @@ export function updateContainer(
 
 **updateContainer** 做了以下几件事情
 
-1. 拿到 **Fiber** 节点 (**FiberRoot.current**)
+1. 拿到 **HostRootFiber** 节点 (**FiberRoot.current**)
 2. 设置 **expirationTime**,过期时间,并设置优先级
 3. 调用 **createUpdate** 获得一个 **update**对象。
-4. 调用 **enqueueUpdate** 方法 里面。
+4. 调用 **enqueueUpdate** 方法将 **update** 放入更新队列 里面，并形成 **环形链表**。
 5. 根据 **Fiber** 和 **expirationTime**，开始执行调度 **scheduleWork**。
 
 ## 总结
 
+1.  ReactDOM.render 调用了
+
 - 创建 **ReactRoot**
 - 创建 **ReactRoot** 会调用 **createContainer** 中调用 **createFiberRoot**。
-- **createFiberRoot** 生成 **FiberRoot** 和 **Fiber**，初始化 Fiber.updateQueue ,并关联 FiberRoot 和 Fiber。
+- **createFiberRoot** 生成 **FiberRoot** 和 **HostRootFiber**，初始化 Fiber.updateQueue ,并关联 FiberRoot 和 Fiber。
 - 调用 **unbatchUpdate** 非批次处理 ，调用 **updateContainer**
 - **updateContainer** 中 根据 **current(Fiber)** 设置 **expirationTime** 超时时间。
 - 根据 **expirationTime**, 调用 **createUpdate** 创建 **update**
 - 执行 **enqueueUpdate（current,update）**
 - 进入 **scheduleWork(current, expirationTime)**,执行任务调度
+
+2. ReactDOM.createRoot().render() 调用了
+
+- **createRoot** 创建 **ReactRoot**
+- 创建 **ReactRoot** 会调用 **createContainer** 中调用 **createFiberRoot**。
+- **createFiberRoot** 生成 **FiberRoot** 和 **Fiber**，初始化 Fiber.updateQueue ,并关联 FiberRoot 和 Fiber。
+- 调用 **updateContainer**
+- **updateContainer** 中 根据 **current(Fiber)** 设置 **expirationTime** 超时时间。
+- 根据 **expirationTime**, 调用 **createUpdate** 创建 **update**
+- 执行 **enqueueUpdate（current,update）**
+- 进入 **scheduleWork(current, expirationTime)**,执行任务调度
+
+两者的在调用 createRootImpl 之前不同，但是之后的调用流程是相同的。不同点在于：**后续执行的 mode 是基于 tag 生成， tag 目前一共有三种 legacy 、 block 、concurrent，相对应的 mode 也是三种 legacyMode 、 BlockingMode 、ConcurrentMode。 fiber 树中所有的 mode 都会和 HostRootFiber.mode 一致**。
+
+本章节介绍了 react 应用的 新旧启动方式. 分析了启动后创建了 3 个关键对象（ReactDOMRoot、FiberRoot、HostRootFiber）. 启动过程最后调用 updateContainer 进入 react-reconciler 包,进而调用 schedulerUpdateOnFiber 函数, 与 reconciler 运作流程中的输入阶段相衔接.

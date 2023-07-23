@@ -34,6 +34,8 @@ nvm 是一款管理 node 版本的工具，在使用 nvm 前。卸载本地安�
 
 // nrm use <name>   切换nrm 源
 
+// nrm del <name>   删除nrm 源
+
 // npm config get registry   查看切换后的源地址
 ```
 
@@ -51,6 +53,8 @@ nvm 是一款管理 node 版本的工具，在使用 nvm 前。卸载本地安�
 // yrm add <name> <url> 添加本地的yarn源
 
 // yrm use <name>   切换yarn 源
+
+// yrm del <name>   删除yarn 源
 
 // yarn config get registry   查看切换后的源地址
 ```
