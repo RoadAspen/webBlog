@@ -25,7 +25,7 @@ npm install --save-dev @commitlint/config-conventional @commitlint/cli
 
 ## 配置
 
-1. 项目根目录创建 commitlint.confog.js
+1. 项目根目录创建 commitlint.config.js
 
 ```js
 module.exports = {

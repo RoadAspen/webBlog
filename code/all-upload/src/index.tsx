@@ -13,22 +13,9 @@ import {
   EObserverKey,
 } from "./services/multiCloud/types";
 import { getMultiCloudUploader } from "./services/multiCloud/uploader";
-import {
-  observerOss,
-  observerOffOss,
-  observerUpSuccessOss,
-  observerUpSuccessOffOss,
-  observerDraftOss,
-  observerDraftOffOss,
-  observerCustomProcessOss,
-  observerCustomProcessOffOss,
-  observerCustomSuccessOss,
-  observerCustomSuccessOffOss,
-} from "./services/multiCloud/observer";
 import { setEnv, constants } from "./config/constants";
 import { CheckPoint } from "./services/multiCloud/file-checkpoint";
 import "./index.scss";
-import getMultiUploadFile from "./services/multiCloud/uploadFile";
 const cloudCode = localStorage.getItem("CLOUD_KEY") || "";
 /** class 实例 */
 const Uploader = getMultiCloudUploader(cloudCode);
@@ -57,7 +44,7 @@ const Dropzone: FC<{
     },
     onDragEnter: fileEvent.onDragEnter,
     onDragLeave: fileEvent.onDragLeave,
-    noDragEventsBubbling: fileEvent.option.childComponentnoBubbling || false,
+    noDragEventsBubbling: fileEvent.option.childComponentNoBubbling || false,
   });
 
   return (
@@ -84,8 +71,11 @@ const Dropzone: FC<{
 class Upload extends Component<{
   fileEvent: IUploaderProps;
   children?: ReactNode;
-  observerKey?: EObserverKey;
 }> {
+  props: { fileEvent: any; children: any; observerKey: any };
+  constructor(props) {
+    super(props);
+  }
   static cancelUpload = Uploader.cancelUpload;
   static resumeUpload = Uploader.resumeUpload;
   static abortMultipartUpload = Uploader.abortMultipartUpload;
@@ -110,14 +100,14 @@ class Upload extends Component<{
    */
   static getNotEqualFiles(
     files: IFile[],
-    comnpareFiles: IFile[],
-    isOmitupSource: boolean = false
+    compareFiles: IFile[],
+    isOmitUpSource: boolean = false
   ) {
     const resFiles: IFile[] = [];
     files.forEach((file) => {
       if (
-        !comnpareFiles.find((comnpareFile) =>
-          CheckPoint.sameFileHash(file, comnpareFile, isOmitupSource)
+        !compareFiles.find((compareFile) =>
+          CheckPoint.sameFileHash(file, compareFile, isOmitUpSource)
         )
       ) {
         resFiles.push(file);
@@ -126,7 +116,7 @@ class Upload extends Component<{
     return resFiles;
   }
   render() {
-    // const { fileEvent, children, observerKey } = this.props;
+    const { fileEvent, children, observerKey } = this.props;
     return <Dropzone {...this.props} />;
   }
 }
@@ -227,5 +217,3 @@ export {
   offSuccessOss,
   EObserverKey,
 };
-// 原 common 包 uploadFile
-export { uploadFile, resumeUpload, cancelUpload, getMultiUploadFile, ERRORS };

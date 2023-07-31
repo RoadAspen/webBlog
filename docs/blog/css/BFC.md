@@ -18,7 +18,7 @@
 2. float 属性不为 none。
 3. position 为 absolute 或 fixed。
 4. display 为 inline-block、table-cell、table-caption、flex、inline-flex。
-5. overflo 不为 visiable。
+5. overflow 不为 visible。
 
 - 使用场景
   - 解决处置方向上的外边距折叠问题。

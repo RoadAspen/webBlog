@@ -1,0 +1,79 @@
+{
+  "name": "roadaspen_ui",
+  "version": "0.1.0",
+  "description": "An enterprise-class UI design language and React components implementation",
+  "keywords": [
+    "component",
+    "components",
+    "design",
+    "framework",
+    "frontend",
+    "react",
+    "react-component",
+    "ui",
+    "Modal",
+    "Table",
+    "Form",
+    "Input",
+    "Icon",
+    "react-icon",
+    "Notification",
+    "Button",
+    "Drawer",
+    "Alert",
+    "Tag",
+    "Empty",
+    "Spin",
+    "徐小夕"
+  ],
+  "homepage": "",
+  "license": "MIT",
+  "bugs": {
+    "url": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "contributors": [
+    "alex_xu"
+  ],
+  "scripts": {
+    "dev": "npx --max_old_space_size=8096 father doc dev --host 0.0.0.0",
+    "build": "father build",
+    "build:doc": "father doc build",
+    "deploy": "father doc deploy"
+  },
+  "peerDependencies": {
+    "react": "18.x"
+  },
+  "devDependencies": {
+    "father": "^2.16.0",
+    "pre-commit": "^1.2.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.7.1",
+    "babel-plugin-import": "^1.12.2",
+    "braft-editor": "^2.3.8",
+    "jsoneditor": "^8.1.0",
+    "querystring": "^0.2.0",
+    "rc-notification": "^4.0.0-rc.1",
+    "react-icons": "^3.9.0"
+  },
+  "files": [
+    "dist",
+    "lib",
+    "es"
+  ],
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "browserslist": [
+    "last 2 version",
+    "Firefox ESR",
+    "> 1%",
+    "ie >= 9"
+  ],
+  "publishConfig": {
+    "registry": ""
+  }
+}

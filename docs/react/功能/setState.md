@@ -78,18 +78,85 @@ btn1.addEventLister('click',()=>{
 }
 ```
 
-在 dom 事件和 setTimeout、setInterval 执行的时候 **isBatchingUpdates** 为 false
+在 dom 事件和 setTimeout、setInterval 执行的时候 **isBatchingUpdates** 为 false，所以将会视为同步， 使用 **batchUpdates** 方法，可以将 **同步更新转换为异步更新**
 
 ### 异步
+
+**异步上下文**，执行之前会先将 **isBatchingUpdates** 设置为 true ， 在执行之后 **isBatchingUpdates** 设置为 false，
 
 - 生命周期中
 - React 合成事件中
 
-> 在合成事件和生命周期内的异步调用 setState（ajax 和 setTimeout），也会同步更新。
+在此期间 多次调用 setState 会批量处理，视图也只会更新一次。
+**如果是**
 
 ## isBatchingUpdates 移除
 
-在 React v16.9 版本中，React 官方移除了 **isBatchingUpdates**，任何 setState 操作 全部开始走向 批处理。
+在 React v16.9 版本中，React 官方移除了 **isBatchingUpdates**，新增了 执行上下文 **executionContext**，
+
+1. **LegacyUnbatchedContext(同步上下文)**
+2. **BatchedContext(批量处理上下文)**
+
+如果是处于 **executionContext === LegacyUnbatchedContext(同步上下文)**， 则执行`同步更新`。否则为`异步更新`。
+
+## 同步转异步
+
+ReactDOM 提供了一个方法，
+
+1. **unstable_batchedUpdate** 可以让我们将 定时器中的同步任务转为异步任务
+
+```js
+handleClick = () => {
+  Promise.resolve().then(() => {
+    ReactDOM.unstable_batchedUpdates(() => {
+      this.setState({ numer: this.state.numer + 1 });
+      console.log(this.state.numer);
+      this.setState({ numer: this.state.numer + 1 });
+      console.log(this.state.numer);
+      this.setState({ numer: this.state.numer + 1 });
+      console.log(this.state.numer);
+    });
+  });
+};
+```
+
+渲染次数一次,完美解决批量更新问题。
+
+2. **flushSync** 可以将回调函数中的更新任务，放在一个较高的优先级中并同步更新。
+
+```js
+import ReactDOM from "react-dom";
+class Index extends React.Component {
+  state = { number: 0 };
+  handleClick = () => {
+    setTimeout(() => {
+      this.setState({ number: 1 });
+    });
+    this.setState({ number: 2 });
+    ReactDOM.flushSync(() => {
+      this.setState({ number: 3 });
+    });
+    this.setState({ number: 4 });
+  };
+  render() {
+    const { number } = this.state;
+    console.log(number); // 打印什么？？
+    return (
+      <div>
+        <div>{number}</div>
+        <button onClick={this.handerClick}>测试flushSync</button>
+      </div>
+    );
+  }
+}
+```
+
+打印 0 3 4 1 ，相信不难理解为什么这么打印了。
+
+1. 0 是在挂在阶段 打印
+2. 3 由于是提高了优先级并同步更新，所以先打印
+3. 4 **2 和 4**批量更新，打印了 4
+4. 1 setTimeout 在下一个更新 event loop 执行，所以最后执行。
 
 ## 代码
 
