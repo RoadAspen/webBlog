@@ -197,7 +197,7 @@ yarn add sass-loader sass -D
 
 这里不使用 node-sass ，而使用 Dart Sass 的原因，[官方推荐 Dart Sass](https://webpack.docschina.org/loaders/sass-loader/)：
 
-1. 在国内使用 node-sass， 在 npm 安装的时候大概率会遇到安装出错、下载时间过长等问题。
+1. node-sass 在 npm 安装的时候大概率会安装出错、下载时间过长等问题。
 2. node-sass 已经停止更新。
 3. dart-sass 被 sass 官方指定为未来主要的开发方向，已经被编译为纯 js，极大的减少了安装成本。
 
@@ -469,7 +469,7 @@ module.exports={
 
 ## 管理输出
 
-webpack 的 **entry** 和 **output** 允许你有多个输入和输出。
+webpack 的 entry 和 output 允许你有多个输入和输出。
 
 ### entry
 
@@ -542,11 +542,11 @@ SourceMap 文件就是用来解决这个问题的， 用官方的话来说，就
 1. 生成 sourcemap 文件（这个网上有很多的工具）。
 2. 在转换后的代码尾部，加上一行代码。
 
-```js
+```
 //# sourceMappingURL=index.js.map
 ```
 
-3. **在 chrome 的 F12 中点击设置，把 Enable JavaScript source maps 钩上就完事了**。
+3. 在 chrome 的 F12 中点击设置，把 Enable JavaScript source maps 钩上就完事了。
 
 ### webpack 配置 sourcemap
 
@@ -583,7 +583,7 @@ yarn add html-webpack-plugin -D
 webpack.config.js
 
 ```js
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin);
 module.exports={
   ...
  plugins: [
