@@ -78,7 +78,7 @@ btn1.addEventLister('click',()=>{
 }
 ```
 
-在 dom 事件和 setTimeout、setInterval 执行的时候 **isBatchingUpdates** 为 false，所以将会视为同步， 使用 **batchUpdates** 方法，可以将 **同步更新转换为异步更新**
+在 dom 事件和 setTimeout、setInterval 执行的时候 **isBatchingUpdates** 为 false，所以将会视为同步， 使用 **unstable_batchUpdates** 方法，可以将 **同步更新转换为异步更新**
 
 ### 异步
 
@@ -94,10 +94,10 @@ btn1.addEventLister('click',()=>{
 
 在 React v16.9 版本中，React 官方移除了 **isBatchingUpdates**，新增了 执行上下文 **executionContext**，
 
-1. **LegacyUnbatchedContext(同步上下文)**
+1. **LegacyUnBatchedContext(同步上下文)**
 2. **BatchedContext(批量处理上下文)**
 
-如果是处于 **executionContext === LegacyUnbatchedContext(同步上下文)**， 则执行`同步更新`。否则为`异步更新`。
+如果是处于 **executionContext === LegacyUnBatchedContext(同步上下文)**， 则执行`同步更新`。否则为`异步更新`。
 
 ## 同步转异步
 
@@ -109,12 +109,12 @@ ReactDOM 提供了一个方法，
 handleClick = () => {
   Promise.resolve().then(() => {
     ReactDOM.unstable_batchedUpdates(() => {
-      this.setState({ numer: this.state.numer + 1 });
-      console.log(this.state.numer);
-      this.setState({ numer: this.state.numer + 1 });
-      console.log(this.state.numer);
-      this.setState({ numer: this.state.numer + 1 });
-      console.log(this.state.numer);
+      this.setState({ number: this.state.number + 1 });
+      console.log(this.state.number);
+      this.setState({ number: this.state.number + 1 });
+      console.log(this.state.number);
+      this.setState({ number: this.state.number + 1 });
+      console.log(this.state.number);
     });
   });
 };
