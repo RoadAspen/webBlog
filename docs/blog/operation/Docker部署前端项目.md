@@ -56,7 +56,7 @@ RUN yarn
 # 将除了.dockerignore中的指定文件外的 打包所需的文件全部拷贝进工作目录
 COPY . /workspace
 
-# 打包, 生成 dist 文件夹，包含所有打包后的资源  html css js img iconfont 等
+# 打包, 生成 dist 文件夹，包含所有打包后的资源  html css js img iconFont 等
 RUN yarn build
 
 ```
@@ -160,7 +160,6 @@ http {
     sendfile        on;
     #tcp_nopush     on;
 
-    #keepalive_timeout  0;
     keepalive_timeout  65;
 
     #gzip  on;
