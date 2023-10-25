@@ -136,7 +136,7 @@ interface User {
 // 重复声明，会自动合并
 
 const user: User = {
-  name: "Davide",
+  name: "David",
   age: 30,
 };
 ```

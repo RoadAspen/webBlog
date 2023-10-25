@@ -58,7 +58,7 @@
 | --------- | ---------------------------------------------------------------------- |
 | userAgent | 返回浏览器信息，包括系统标识符，处理器位数，呈现引擎，浏览器版本       |
 | language  | 浏览器语言                                                             |
-| labguages | 浏览器支持的语言                                                       |
+| languages | 浏览器支持的语言                                                       |
 | onLine    | 浏览器的联网状态，使用 window.onOnLine 和 onOffLine 来监听联网状态改变 |
 
 > 主要通过 userAgent 来判断浏览器版本，onLine 判断是否在线。
@@ -91,5 +91,5 @@
 | 更改     | 前后端都可写入 cookie | 前端 setItem 写入      | 前端 setItem 写入    |
 | 后端交互 | 请求自动携带 cookie   | 前端主动添加           | 前端主动添加         |
 | 作用域   | 设置 domain 路径      | 不同浏览器不能访问     | 不同页面不能访问     |
-| 清除     | document.cookie = ""  | localstorage.clear     | sessionstorage.clear |
+| 清除     | document.cookie = ""  | localStorage.clear     | sessionStorage.clear |
 | 获取     | document.cookie       | getItem                | getItem              |
