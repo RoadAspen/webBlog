@@ -13,6 +13,8 @@ cd docs/.vuepress/dist
 # echo 'www.example.com' > CNAME
 
 git init
+# 现在本地创建master分支，才能同步到远程
+git checkout -b master
 git add -A
 git commit -m 'deploy'
 
