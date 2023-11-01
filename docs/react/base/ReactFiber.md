@@ -60,7 +60,7 @@ React Fiber 的思想和 协程的概念是相契合的：**React 渲染的过�
 
 一般情况下浏览器的刷新频率是 60HZ，那么一帧的时间就是大约 16ms。浏览器在一帧内会做哪些事情：
 
-![帧执行](./images/帧执行.png)
+![帧执行](./images/zhenzhixing.png)
 
 1. 处理用户输入事件。
 2. javascript 执行。
@@ -87,7 +87,7 @@ React Fiber 的思想和 协程的概念是相契合的：**React 渲染的过�
 
 Fiber 的另外一种解读是’纤维‘: 这是一种数据结构或者说执行单元。将它视作一个执行单元，每次执行完一个'执行单元', React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去.交互流程如下：
 
-![fiber调度](./images/fiber调度.png)
+![fiber调度](./images/fiberdiaodu.png)
 
 假设用户调用 `setState` 更新组建，这个带更新的任务会先放入队列中，然后通过 `requestIdleCallback`请求浏览器调度。
 
