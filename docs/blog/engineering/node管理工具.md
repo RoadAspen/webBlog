@@ -2,9 +2,16 @@
 
 > 在当前的前端发展中，SPA 项目占了绝大多数，基于 nodejs 和 webpack 的开发模式，赋予了前端工程化相关的能力，随着项目日益增大，又需要一些管理工具帮助我们管理项目依赖。如 多个项目依赖的 node 版本， npm 源等。
 
-## nvm
+## node 版本管理
 
-nvm 是一款管理 node 版本的工具，在使用 nvm 前。卸载本地安装的 node。
+### nvm
+
+nvm 是一款管理 node 版本的工具，在使用 nvm 前。卸载本地安装的 node，在 MacOS 上使用非常方便，windows 上有 nvm-windows。
+安装
+
+```sh
+brew install nvm
+```
 
 使用
 
@@ -19,7 +26,21 @@ nvm 是一款管理 node 版本的工具，在使用 nvm 前。卸载本地安�
 //  sudo nvm remove 4  卸载当前node版本
 ```
 
-## nrm
+**注意：nvm 不兼容 npm set prefix 的写法**
+
+### fnm
+
+fnm 是一款 node 版本的管理工具， 和 nvm 的作用一样，同时兼容 npm set prefix
+
+安装
+
+```sh
+brew install fnm
+```
+
+## npm 源管理工具
+
+### nrm
 
 在日常使用中我们由于网络原因，或者是私有源等问题切换 npm 的源，来回切换很不方便。nrm 是一款管理 npm 源，可以方便切换的管理工具。
 
@@ -39,7 +60,7 @@ nvm 是一款管理 node 版本的工具，在使用 nvm 前。卸载本地安�
 // npm config get registry   查看切换后的源地址
 ```
 
-## yrm
+### yrm
 
 在日常使用中我们由于网络原因，或者是私有源等问题切换 yarn 的源，来回切换很不方便。yrm 是一款管理 yarn 源，可以方便切换的管理工具。
 
@@ -59,7 +80,7 @@ nvm 是一款管理 node 版本的工具，在使用 nvm 前。卸载本地安�
 // yarn config get registry   查看切换后的源地址
 ```
 
-## cgr
+### cgr
 
 在日常使用中我们由于网络原因，或者是私有源等问题切换 npm 或者 yarn 的源，来回切换很不方便。cgr 是一款同时管理 npm 和 yarn 源，可以方便切换的管理工具。
 

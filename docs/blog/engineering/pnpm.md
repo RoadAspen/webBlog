@@ -6,7 +6,7 @@
 
 ## npm
 
-npm 是 node 自带的包管理器，跟随 node 版本一起升级至今，主要经历了几个时期：
+npm 是 node 自带的包管理器，也是第一代的 npm 包管理器，跟随 node 版本一起升级至今，主要经历了几个时期：
 
 ### npm 2.x
 
@@ -34,7 +34,7 @@ npm 和 yarn 都采用了扁平化的方案，那这种方案解决了依赖重�
 
 ## pnpm
 
-yarn 和 npm 采用扁平化方案的原因都是为了解决依赖包复制多次的问题，但是也引出了新的问题。那如果我们不复制，比如设置 link？
+yarn 和 npm 采用扁平化方案的原因都是为了解决依赖包复制多次的问题，但是也引出了新的问题。那如果我们不复制，比如设置 `link`？
 
 ### link
 
@@ -59,4 +59,4 @@ pnpm install
 
 ## 扩展
 
-利用 pnpm + learn，可以快速创建一个 Monorepo 代码管理方案。
+利用 [pnpm + lerna](https://roadaspen.github.io/blog/engineering/monorepo.html)，可以快速创建一个 Monorepo 代码管理方案。
