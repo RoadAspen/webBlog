@@ -152,3 +152,30 @@ yarn 1.x 及以上版本，新增 workspace 能力，不借助 Lerna ，也可�
 ## 选型建议
 
 建议采用渐进式架构方案，即对于轻量级 Monorepo 项目，我们初期可以选择 `Lerna + pnpm workspace + lerna-changelog`，解决了依赖管理、发版管理等问题，为开发者带来便利；随着后续项目迭代，代码变多或多个项目间依赖关系复杂，可以很平滑的接入 Nx 来提升构建打包效率。
+
+## 用法
+
+### 初始化项目
+
+```ssh
+npm init -y
+
+```
+
+### 声明本项目是 workspaces 模式
+
+private 必须设为 true，声明本项目不会被发布到 npm，因为 npm 包不支持 monorepo 的形式
+
+```json
+  "private":"true",
+  "workspaces": [
+    "packages/*"
+  ],
+
+```
+
+workspaces 功能与 lerna 类似，如果只需简单地管理多个包，workspaces 足够了。lerna 具有版本管理，发包提示，简化多包项目发布流程等更多功能。
+
+## 注意
+
+1. 使用 monorepo 时，需要在 package.json 中添加 private=true，否则会报错(因为 monorepo 应用并不是一个可以 npm publish 的包，它只是包管理工具)
