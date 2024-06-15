@@ -1,0 +1,49 @@
+<svg width="800" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- 定义滤镜 -->
+  <defs>
+    <!-- 黄色发光滤镜 -->
+    <filter id="yellow-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feFlood result="flood" flood-color="yellow" flood-opacity="1"/>
+      <feComposite in="flood" result="mask" in2="SourceAlpha" operator="in"/>
+      <feGaussianBlur in="mask" stdDeviation="5" result="blurred"/>
+      <feMerge>
+        <feMergeNode in="blurred"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- 蓝色发光滤镜 -->
+    <filter id="blue-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feFlood result="flood" flood-color="blue" flood-opacity="1"/>
+      <feComposite in="flood" result="mask" in2="SourceAlpha" operator="in"/>
+      <feGaussianBlur in="mask" stdDeviation="5" result="blurred"/>
+      <feMerge>
+        <feMergeNode in="blurred"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- 绿色发光滤镜 -->
+    <filter id="green-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feFlood result="flood" flood-color="green" flood-opacity="1"/>
+      <feComposite in="flood" result="mask" in2="SourceAlpha" operator="in"/>
+      <feGaussianBlur in="mask" stdDeviation="5" result="blurred"/>
+      <feMerge>
+        <feMergeNode in="blurred"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- 文本 -->
+  <text x="50" y="100" font-family="Arial" font-size="16" fill="black" letter-spacing="0.1">
+    普通文本
+    <!-- 应用黄色发光滤镜 -->
+    <tspan filter="url(#yellow-glow)" fill="white" stroke="black" stroke-width="1">黄</tspan>
+    和
+    <!-- 应用蓝色发光滤镜 -->
+    <tspan filter="url(#blue-glow)" fill="white" stroke="black" stroke-width="2">蓝</tspan>
+    和
+    <!-- 应用绿色发光滤镜 -->
+    <tspan filter="url(#green-glow)" fill="white" stroke="black" stroke-width="1">绿</tspan>
+    的发光效果
+  </text>
+</svg>

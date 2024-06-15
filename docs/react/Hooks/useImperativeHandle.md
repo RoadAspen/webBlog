@@ -59,3 +59,5 @@ class Index extends React.Component {
   }
 }
 ```
+
+主要用于子元素将自身实例暴露给父元素，并且预置一些可以调用的方法或者属性提供给父元素使用。

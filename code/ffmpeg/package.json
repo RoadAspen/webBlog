@@ -1,0 +1,18 @@
+{
+  "name": "ffmpeg",
+  "version": "1.0.0",
+  "description": "使用ffmpeg 分割视频 然后合并 的demo",
+  "main": "index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ffmpeg",
+    "react"
+  ],
+  "author": "roadasepn",
+  "license": "ISC",
+  "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.10"
+  }
+}

@@ -10,3 +10,5 @@ const number = useMemo(() => {
   return number;
 }, [props.number]); // 只有 props.number 改变的时候，重新计算number的值。
 ```
+
+我们仅仅只能把 useMemo 作为性能优化的手段

@@ -1,0 +1,8 @@
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+  <text x="20" y="40" font-family="Arial" font-size="24">
+    <tspan x="20" dy="0">这是第一行文本</tspan>
+    <tspan x="20" dy="30">这是第二行文本</tspan>
+    <tspan x="20" dy="30">这是第三行文本</tspan>
+    <tspan x="20" dy="30" font-weight="bold" fill="red">这是加粗和红色的第四行文本</tspan>
+  </text>
+</svg>

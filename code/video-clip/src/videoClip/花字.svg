@@ -1,0 +1,13 @@
+<svg width="300" height="100" xmlns="http://www.w3.org/2000/svg">
+  <text x="10" y="40" font-family="Arial" font-size="24">
+    这是
+     <tspan font-weight="bold" fill="red">加粗</tspan>
+    的文本 
+    <tspan font-weight="bold" fill="red">这是加粗和红色的文本</tspan>
+    这是普通的文本，这是
+    <tspan font-style="italic" text-decoration="underline" font-size="30" fill="blue">
+      斜体、下划线、蓝色且字体更大
+    </tspan>
+    的文本
+  </text>
+</svg>
