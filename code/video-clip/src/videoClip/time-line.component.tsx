@@ -31,7 +31,7 @@ export const TimelineEditor = ({
 }) => {
   console.log("timelineData", timelineData);
   console.log("timelineState", timelineState);
-  const [scale, setScale] = useState(10);
+  const [scale, setScale] = useState(1);
   const [activeAction, setActiveAction] = useState<TLActionWithName | null>(
     null
   );
@@ -78,7 +78,9 @@ export const TimelineEditor = ({
           if (v == null) return;
           timelineState.current = v;
         }}
-        onChange={(d) => {}}
+        onChange={(d) => {
+          console.log("d", d);
+        }}
         style={{ width: "100%", height: "200px" }}
         scale={scale}
         editorData={timelineData}

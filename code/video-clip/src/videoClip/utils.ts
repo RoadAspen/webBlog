@@ -198,29 +198,7 @@ export function createSvg(params: {
   let textListStr = `<text stroke="white" font-size="${fontSize}" x="10" y="40">replace</text>`;
   const tspanStr = textList.reduce((prev, item) => {
     const { text, isLight } = item;
-    if (!isLight) {
-      return prev + text;
-    } else {
-      return (
-        prev +
-        `<tspan ${
-          lightFontStyle?.style?.fill
-            ? `fill="${lightFontStyle.style.fill}"`
-            : ""
-        }
-        ${
-          lightFontStyle?.style?.["stroke"]
-            ? ` stroke="${lightFontStyle.style["stroke"]}"`
-            : ""
-        }
-        ${
-          lightFontStyle?.style?.["stroke-width"]
-            ? ` stroke-width="${lightFontStyle.style["stroke-width"]}"`
-            : ""
-        }
-        >${text}</tspan>`
-      );
-    }
+    return prev + text;
   }, "");
   console.log("tspanStr", tspanStr);
   textListStr = textListStr.replace("replace", tspanStr);
