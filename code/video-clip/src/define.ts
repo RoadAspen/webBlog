@@ -26,15 +26,21 @@ export interface SingleText {
   textList: TextItem[];
 }
 
-/** 成片 */
-export interface AIGCClipItem {
+/** 单个成片 */
+export interface AIGCClip {
   /** id */
   id: string;
-  /** 成片时长 */
+  /** 成片时长 s*/
   duration: number;
+  /**  */
+  pointNum: number;
+  /** group num */
+  groupNum: number;
+  /**  */
+  description: string;
   /** 片段列表 */
   info: {
-    id?: string;
+    id: string;
     /** 卖点 */
     point: string;
     /** 句子组 */
@@ -42,9 +48,9 @@ export interface AIGCClipItem {
     /** 片段时长 */
     duration: number;
     /** 片段高清url */
-    hd_video_url: string;
+    hdVideoUrl: string;
     /** 片段低分辨率url */
-    compress_video_url: string;
+    sdVideoUrl: "";
     /** 句子组 */
     sens: {
       /** 是否选中 */
@@ -59,6 +65,8 @@ export interface AIGCClipItem {
       timestamp: number[];
       /** 前端拼接的 字幕svgText */
       svgText: string;
+      /** 图片url */
+      imgUrl: string;
     }[];
   }[];
 }

@@ -1,5 +1,5 @@
 import { AVCanvas } from "@webav/av-canvas";
-import { FontStyle, TextItem } from "./define";
+import { FontStyle, TextItem } from "../define";
 
 export function assetsPrefix<T extends string[] | Record<string, string>>(
   assetsURL: T

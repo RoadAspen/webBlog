@@ -13,26 +13,27 @@ import {
   fontSizeList,
   fontStyleList,
   lightFontStyleList,
-} from "./constant";
-import { FontFamily, FontSize, FontStyle, SingleText } from "./define";
-import { TLActionWithName, TimelineEditor } from "./time-line.component";
+} from "../constant";
+import { FontFamily, FontSize, FontStyle, SingleText } from "../define";
 import {
   convertSvgToPngStream,
   createSvg,
   getHtmlStringFromContentEditable,
   getSelectionAndTransform,
   getStringFromHtml,
-} from "./utils";
+} from "../utils/utils";
+import { TLActionWithName, TimelineEditor } from "./time-line.component";
 
 const actionSpriteMap = new WeakMap<TimelineAction, VisibleSprite>();
 const actionIdMap = new Map<string, TimelineAction>();
 const trackId = "video";
 const trackId2 = "video2";
-let currentTime = 0;
-
+let preVideoTime = 0;
 export function VideoClip() {
   const [avCvs, setAVCvs] = useState<AVCanvas | null>(null);
   const tlState = useRef<TimelineState>();
+  const [allTime, setAllTime] = useState<number>(0);
+  const [currentTime, setCurrentTime] = useState<number>(0);
 
   const [playing, setPlaying] = useState(false);
   const [allTextList, setAllTextList] = useState<Array<SingleText>>([
@@ -73,6 +74,7 @@ export function VideoClip() {
     cvs.on("timeupdate", (time) => {
       if (tlState.current == null) return;
       tlState.current.setTime(time / 1e6);
+      console.log("time", time);
     });
     cvs.on("playing", () => {
       setPlaying(true);
@@ -91,9 +93,13 @@ export function VideoClip() {
     const clips = new MP4Clip(videoStream);
     const data = await clips.ready;
     const spr = new VisibleSprite(clips);
-    console.log("currentTime", currentTime);
-    spr.time.offset = currentTime * 1e6;
+    console.log("preVideoTime", preVideoTime);
+    spr.time.offset = preVideoTime * 1e6;
     spr.time.duration = data.duration * 1e6;
+    console.log("clips.meta.width", clips.meta.width);
+    console.log("clips.meta.height", clips.meta.height);
+    spr.rect.w = clips.meta.width;
+    spr.rect.h = clips.meta.height;
     await avCvs?.addSprite(spr);
     const meta = spr.getClip().meta;
     const duration = meta.duration;
@@ -101,7 +107,7 @@ export function VideoClip() {
       id: trackId,
       actions: [],
     };
-    const end = duration / 1e6 + currentTime;
+    const end = duration / 1e6 + preVideoTime;
     const action = {
       id: Math.random().toString(),
       start: spr.time.offset / 1e6,
@@ -109,7 +115,7 @@ export function VideoClip() {
       effectId: trackId,
       name: "视频",
     };
-    currentTime = end;
+    preVideoTime = end;
     actionSpriteMap.set(action, spr);
     actionIdMap.set(trackId, action);
     track.actions.push(action);
@@ -158,6 +164,7 @@ export function VideoClip() {
     actionIdMap.set(trackId, action);
     track.actions = [action];
     avCvs?.previewFrame(svgText.start);
+    avCvs?.play({ start: svgText.start || 0 });
     setTLData((pre) => {
       const next = [track, ...pre];
       return next;
@@ -196,46 +203,60 @@ export function VideoClip() {
       <div className="flex mx-10">
         <div className="w-1/2 pt-10">
           <div ref={(el) => setCvsWrapEl(el)}></div>
-          <TimelineEditor
-            timelineData={tlData}
-            timelineState={tlState}
-            onPreviewTime={(time) => {
-              console.log("onPreviewTime", time);
-              avCvs?.previewFrame(time * 1e6);
-            }}
-            onOffsetChange={(action) => {
-              console.log("onOffsetChange", action);
-              const spr = actionSpriteMap.get(action);
-              console.log("spr", spr);
-              if (spr == null) return;
-              spr.time.offset = action.start * 1e6;
-            }}
-            onDuraionChange={({ action, start, end }) => {
-              console.log("onDuraionChange", action, start, end);
-              const spr = actionSpriteMap.get(action);
-              if (spr == null) return false;
-              const duration = (end - start) * 1e6;
-              if (duration > spr.getClip().meta.duration) return false;
-              spr.time.duration = duration;
-              return true;
-            }}
-            onDeleteAction={(action) => {
-              console.log("onDeleteAction", action);
-              const spr = actionSpriteMap.get(action);
-              if (spr == null) return;
-              avCvs?.removeSprite(spr);
-              actionSpriteMap.delete(action);
-              const track = tlData
-                .map((t) => t.actions)
-                .find((actions) => actions.includes(action));
-              if (track == null) return;
-              track.splice(track.indexOf(action), 1);
-              setTLData([...tlData]);
-            }}
-            onSplitAction={async (action: TLActionWithName) => {
-              console.log("onSplitAction", action);
-            }}
-          ></TimelineEditor>
+          <div className="flex my-5">
+            <button
+              className="mx-[10px]"
+              onClick={async () => {
+                if (avCvs == null) return;
+                if (playing) {
+                  avCvs.pause();
+                } else {
+                  avCvs.play({ start: 0 });
+                }
+              }}
+            >
+              {playing ? "暂停" : "播放"}
+            </button>
+            <Slider
+              className="mx-10 flex-1"
+              min={0}
+              max={allTime}
+              value={currentTime}
+            ></Slider>
+            <div className="flex flex-row w-[300]">
+              <p className="mr-5">倍速播放</p>
+              <Select
+                className="w-40"
+                onChange={(val) => {
+                  avCvs?.play({
+                    start: 0,
+                    playbackRate: val,
+                  });
+                }}
+              >
+                <Select.Option key={1} value={1}>
+                  1
+                </Select.Option>
+                <Select.Option key={1.5} value={1.5}>
+                  1.5
+                </Select.Option>
+                <Select.Option key={2} value={2}>
+                  2
+                </Select.Option>
+              </Select>
+            </div>
+            <div className="mx-5 flex">
+              <p className="mr-5">音量控制</p>
+              <Slider
+                className="flex-1 w-20"
+                min={1}
+                max={100}
+                onChange={(val) => {
+                  avCvs?.changeVolume(val / 100);
+                }}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="flex flex-col items-center w-1/2 pt-10">
@@ -401,18 +422,7 @@ export function VideoClip() {
               </label>
             </div>
             <div>
-              <div>
-                <Button
-                  onClick={() => {
-                    avCvs?.play({
-                      start: 0,
-                      playbackRate: 2,
-                    });
-                  }}
-                >
-                  二倍速播放
-                </Button>
-              </div>
+              <div></div>
               <div className="flex">
                 <p className="mr-5">音量控制</p>
                 <Slider
@@ -457,20 +467,47 @@ export function VideoClip() {
           />
         </label>
       </div>
-      <span className="mx-[10px]">|</span>
-      <button
-        className="mx-[10px]"
-        onClick={async () => {
-          if (avCvs == null || tlState.current == null) return;
-          if (playing) {
-            avCvs.pause();
-          } else {
-            avCvs.play({ start: tlState.current.getTime() * 1e6 });
-          }
+      <TimelineEditor
+        timelineData={tlData}
+        timelineState={tlState}
+        onPreviewTime={(time) => {
+          console.log("onPreviewTime", time, tlState.current?.getTime?.());
+          avCvs?.previewFrame(time * 1e6);
+          avCvs?.play({ start: (tlState.current?.getTime?.() || 0) * 1e6 });
         }}
-      >
-        {playing ? "暂停" : "播放"}
-      </button>
+        onOffsetChange={(action) => {
+          console.log("onOffsetChange", action);
+          const spr = actionSpriteMap.get(action);
+          console.log("spr", spr);
+          if (spr == null) return;
+          spr.time.offset = action.start * 1e6;
+        }}
+        onDuraionChange={({ action, start, end }) => {
+          console.log("onDuraionChange", action, start, end);
+          const spr = actionSpriteMap.get(action);
+          if (spr == null) return false;
+          const duration = (end - start) * 1e6;
+          if (duration > spr.getClip().meta.duration) return false;
+          spr.time.duration = duration;
+          return true;
+        }}
+        onDeleteAction={(action) => {
+          console.log("onDeleteAction", action);
+          const spr = actionSpriteMap.get(action);
+          if (spr == null) return;
+          avCvs?.removeSprite(spr);
+          actionSpriteMap.delete(action);
+          const track = tlData
+            .map((t) => t.actions)
+            .find((actions) => actions.includes(action));
+          if (track == null) return;
+          track.splice(track.indexOf(action), 1);
+          setTLData([...tlData]);
+        }}
+        onSplitAction={async (action: TLActionWithName) => {
+          console.log("onSplitAction", action);
+        }}
+      ></TimelineEditor>
     </div>
   );
 }

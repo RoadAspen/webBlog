@@ -113,7 +113,7 @@ const SVGText: React.FC<SVGTextProps> = ({
   );
 };
 
-const App: React.FC = () => {
+export const SvgText: React.FC = () => {
   const [text, setText] = useState("测试文字");
   const [font, setFont] = useState(
     "SourceHanSansCN-Bold-GBpc-EUC-H, Source Han Sans CN"
@@ -185,5 +185,3 @@ const App: React.FC = () => {
     </div>
   );
 };
-
-export default App;
