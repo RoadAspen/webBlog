@@ -45,20 +45,23 @@ export interface AIGCClip {
     point: string;
     /** 句子组 */
     group: string;
+    /** preDuration */
+    preDuration: number;
     /** 片段时长 */
     duration: number;
     /** 片段高清url */
     hdVideoUrl: string;
     /** 片段低分辨率url */
-    sdVideoUrl: "";
+    sdVideoUrl: string;
     /** 句子组 */
     sens: {
+      id: string;
       /** 是否选中 */
       select: 0 | 1;
       /** 文案 */
       text: string;
       /** 字幕高亮 */
-      textList: { id: string; text: string; isLight: boolean }[];
+      textList: { text: string; isLight: boolean }[];
       /** 句子时长 */
       duration: number;
       /** 句子开始时间、结束时间 */

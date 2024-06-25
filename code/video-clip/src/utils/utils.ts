@@ -1,4 +1,5 @@
 import { AVCanvas } from "@webav/av-canvas";
+import { nanoid } from "nanoid";
 import { FontStyle, TextItem } from "../define";
 
 export function assetsPrefix<T extends string[] | Record<string, string>>(
@@ -170,11 +171,11 @@ export function getSelectionAndTransform(textList: TextItem[]) {
       const splitList = text.split(selectedText);
       const nextTextList = [];
       if (splitList[0]) {
-        nextTextList.push({ text: splitList[0], isLight: false });
+        nextTextList.push({ id: nanoid(), text: splitList[0], isLight: false });
       }
-      nextTextList.push({ text: selectedText, isLight: true });
+      nextTextList.push({ id: nanoid(), text: selectedText, isLight: true });
       if (splitList[1]) {
-        nextTextList.push({ text: splitList[1], isLight: false });
+        nextTextList.push({ id: nanoid(), text: splitList[1], isLight: false });
       }
       return nextTextList;
     } else {
@@ -195,7 +196,7 @@ export function createSvg(params: {
   const { fontFamily, fontSize, fontStyle, lightFontStyle, textList } = params;
   const prefixSvg = `<svg font-family="${fontFamily}" width="800" height="200" xmlns="http://www.w3.org/2000/svg">`;
   const afterSvg = `</svg>`;
-  let textListStr = `<text stroke="white" font-size="${fontSize}" x="10" y="40">replace</text>`;
+  let textListStr = `<text stroke="black" font-size="${fontSize}" x="10" y="40">replace</text>`;
   const tspanStr = textList.reduce((prev, item) => {
     const { text, isLight } = item;
     return prev + text;

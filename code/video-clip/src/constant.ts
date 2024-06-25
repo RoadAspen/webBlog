@@ -48,25 +48,31 @@ export const currentConfig = {
 export const videoClipPiece: AIGCClip = {
   id: "piece",
   duration: 90,
+  pointNum: 50,
+  groupNum: 9,
+  description: "",
   info: [
     {
-      id: "info_1",
+      id: "video_1",
       point: "测试",
       group: "测试哈哈哈",
-      duration: 30,
+      preDuration: 0,
+      duration: 23,
       hdVideoUrl: "",
-      sdVideoUrl: "",
+      sdVideoUrl: "https://bilibili.github.io/WebAV/video/bunny_0.mp4",
       sens: [
         {
+          id: "video_1_sen1",
           select: 0,
           text: "这是第一条字幕",
           textList: [],
           duration: 0,
-          timestamp: [0, 1.7],
+          timestamp: [1, 1.7],
           svgText: "",
           imgUrl: "",
         },
         {
+          id: "video_1_sen2",
           select: 0,
           text: "这是第二条字幕",
           textList: [],
@@ -76,6 +82,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_1_sen3",
           select: 0,
           text: "这是第三条字幕",
           textList: [],
@@ -85,6 +92,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_1_sen4",
           select: 1,
           text: "这是第四条字幕",
           textList: [],
@@ -94,6 +102,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_1_sen5",
           select: 1,
           text: "这是第五条字幕",
           textList: [],
@@ -103,6 +112,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_1_sen6",
           select: 1,
           text: "这是第六条字幕",
           textList: [],
@@ -112,6 +122,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_1_sen7",
           select: 1,
           text: "这是第七条字幕",
           textList: [],
@@ -121,6 +132,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_1_sen8",
           select: 1,
           text: "这是第八条字幕",
           textList: [],
@@ -130,6 +142,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_1_sen9",
           select: 0,
           text: "这是第九条字幕",
           textList: [],
@@ -139,6 +152,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_1_sen10",
           select: 0,
           text: "这是第十条字幕",
           textList: [],
@@ -150,22 +164,26 @@ export const videoClipPiece: AIGCClip = {
       ],
     },
     {
+      id: "video_2",
       point: "测试",
       group: "测试哈哈哈",
-      duration: 30,
+      preDuration: 23,
+      duration: 23,
       hdVideoUrl: "",
-      sdVideoUrl: "",
+      sdVideoUrl: "https://bilibili.github.io/WebAV/video/bunny_0.mp4",
       sens: [
         {
+          id: "video_2_sen1",
           select: 0,
           text: "这是第一条字幕",
           textList: [],
           duration: 0,
-          timestamp: [0, 1.7],
+          timestamp: [1, 1.7],
           svgText: "",
           imgUrl: "",
         },
         {
+          id: "video_2_sen2",
           select: 0,
           text: "这是第二条字幕",
           textList: [],
@@ -175,6 +193,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_2_sen3",
           select: 0,
           text: "这是第三条字幕",
           textList: [],
@@ -184,6 +203,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_2_sen4",
           select: 1,
           text: "这是第四条字幕",
           textList: [],
@@ -193,6 +213,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_2_sen5",
           select: 1,
           text: "这是第五条字幕",
           textList: [],
@@ -202,6 +223,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_2_sen6",
           select: 1,
           text: "这是第六条字幕",
           textList: [],
@@ -211,6 +233,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_2_sen7",
           select: 1,
           text: "这是第七条字幕",
           textList: [],
@@ -220,6 +243,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_2_sen8",
           select: 1,
           text: "这是第八条字幕",
           textList: [],
@@ -229,6 +253,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_2_sen9",
           select: 0,
           text: "这是第九条字幕",
           textList: [],
@@ -238,6 +263,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_2_sen10",
           select: 0,
           text: "这是第十条字幕",
           textList: [],
@@ -249,22 +275,26 @@ export const videoClipPiece: AIGCClip = {
       ],
     },
     {
+      id: "video_3",
       point: "测试",
       group: "测试哈哈哈",
-      duration: 30,
+      preDuration: 46,
+      duration: 23,
       hdVideoUrl: "",
-      sdVideoUrl: "",
+      sdVideoUrl: "https://bilibili.github.io/WebAV/video/bunny_0.mp4",
       sens: [
         {
+          id: "video_3_sen1",
           select: 0,
           text: "这是第一条字幕",
           textList: [],
           duration: 0,
-          timestamp: [0, 1.7],
+          timestamp: [1, 1.7],
           svgText: "",
           imgUrl: "",
         },
         {
+          id: "video_3_sen2",
           select: 0,
           text: "这是第二条字幕",
           textList: [],
@@ -274,6 +304,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_3_sen3",
           select: 0,
           text: "这是第三条字幕",
           textList: [],
@@ -283,6 +314,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_3_sen4",
           select: 1,
           text: "这是第四条字幕",
           textList: [],
@@ -292,6 +324,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_3_sen5",
           select: 1,
           text: "这是第五条字幕",
           textList: [],
@@ -301,6 +334,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_3_sen6",
           select: 1,
           text: "这是第六条字幕",
           textList: [],
@@ -310,6 +344,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_3_sen7",
           select: 1,
           text: "这是第七条字幕",
           textList: [],
@@ -319,6 +354,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_3_sen8",
           select: 1,
           text: "这是第八条字幕",
           textList: [],
@@ -328,6 +364,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_3_sen9",
           select: 0,
           text: "这是第九条字幕",
           textList: [],
@@ -337,6 +374,7 @@ export const videoClipPiece: AIGCClip = {
           imgUrl: "",
         },
         {
+          id: "video_3_sen10",
           select: 0,
           text: "这是第十条字幕",
           textList: [],

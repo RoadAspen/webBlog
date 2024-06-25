@@ -36,23 +36,29 @@ dependencies:
     specifier: ^5.3.3
     version: 5.3.3
   '@webav/av-canvas':
-    specifier: ^0.10.0
-    version: 0.10.0
+    specifier: ^0.12.2
+    version: 0.12.2
   '@webav/av-cliper':
-    specifier: ^0.10.0
-    version: 0.10.0
+    specifier: 0.12.2
+    version: 0.12.2
   '@xzdarcy/react-timeline-editor':
     specifier: ^0.1.9
     version: 0.1.9(react-dom@18.3.1)(react@18.3.1)
   antd:
     specifier: ^5.18.1
     version: 5.18.1(react-dom@18.3.1)(react@18.3.1)
+  immer:
+    specifier: ^10.1.1
+    version: 10.1.1
   loadsh:
     specifier: ^0.0.4
     version: 0.0.4
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
+  nanoid:
+    specifier: ^5.0.7
+    version: 5.0.7
   react:
     specifier: ^18.3.1
     version: 18.3.1
@@ -2742,10 +2748,6 @@ packages:
       '@types/node': 16.18.98
     dev: false
 
-  /@types/dom-webcodecs@0.1.11:
-    resolution: {integrity: sha512-yPEZ3z7EohrmOxbk/QTAa0yonMFkNkjnVXqbGb7D4rMr+F1dGQ8ZUFxXkyLLJuiICPejZ0AZE9Rrk9wUCczx4A==}
-    dev: false
-
   /@types/eslint-scope@3.7.7:
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
     dependencies:
@@ -3263,19 +3265,18 @@ packages:
       '@xtuc/long': 4.2.2
     dev: false
 
-  /@webav/av-canvas@0.10.0:
-    resolution: {integrity: sha512-fEY98SMnL6cQKP3IQU7FEl7Z++vvWjyru1fgCGgNsT5pQsZhudXnfS6hqSOPpVgp05miWI5kTC1MoZLAVxqO0g==}
+  /@webav/av-canvas@0.12.2:
+    resolution: {integrity: sha512-gbaQO5jA6an5Vvh8vAuRZyeRskQ8pf+K+tC3ZoIUPsZBdJbjTBMimxvcXmjJm5P+bOmOtq3DE7BbSA0OLwDQyA==}
     dependencies:
-      '@webav/av-cliper': 0.10.0
+      '@webav/av-cliper': 0.12.2
     dev: false
 
-  /@webav/av-cliper@0.10.0:
-    resolution: {integrity: sha512-5pQtZdDpsnIJWX2OjYN962iCB8U+tSfuyBIHbvw98BNsHzy7kdBGH1aNJA+UgwLkUhl1EYwLuAFc0dPPk0QXDg==}
+  /@webav/av-cliper@0.12.2:
+    resolution: {integrity: sha512-KTlUdXhLmsrB+itwm8HwFJm18NBrcF1Wo5v+xcuLayqx4mm8U6KEfiMKe+V8xrh/iSxNR/39n/jmeAeOPEUmww==}
     dependencies:
-      '@types/dom-webcodecs': 0.1.11
       '@webav/mp4box.js': 0.5.3-fenghen
       m3u8-parser: 7.1.0
-      opfs-tools: 0.5.1
+      opfs-tools: 0.5.4
       wave-resampler: 1.0.0
     dev: false
 
@@ -6373,6 +6374,10 @@ packages:
     engines: {node: '>= 4'}
     dev: false
 
+  /immer@10.1.1:
+    resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
+    dev: false
+
   /immer@9.0.21:
     resolution: {integrity: sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==}
     dev: false
@@ -7855,6 +7860,12 @@ packages:
     hasBin: true
     dev: false
 
+  /nanoid@5.0.7:
+    resolution: {integrity: sha512-oLxFY2gd2IqnjcYyOXD8XGCftpGtZP2AbHbOkthDkvRywH5ayNtPVy9YlOPcHckXzbLTCHpkb7FB+yuxKV13pQ==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    dev: false
+
   /natural-compare-lite@1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
     dev: false
@@ -8064,8 +8075,8 @@ packages:
       is-wsl: 2.2.0
     dev: false
 
-  /opfs-tools@0.5.1:
-    resolution: {integrity: sha512-3efBndh+72eOqWbf1ZQNOTvBMT1xE5nYFn1anyS5BFGnDrMHVe6zhEepfvu0JPuuSbUI9VCfSmMHylyb7pcyZQ==}
+  /opfs-tools@0.5.4:
+    resolution: {integrity: sha512-bgPB3DM786CJKcTfB3QD8MtQYt5UWMxO+p3AX7PRPPulJ86a2o0KFrgwZ0fzIjOJVJHpZNeOtBx2uycHf6BhEw==}
     dev: false
 
   /optionator@0.8.3:

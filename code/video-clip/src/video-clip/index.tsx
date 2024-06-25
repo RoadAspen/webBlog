@@ -9,6 +9,10 @@ import { useEffect, useRef, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { AVCanvas } from "../av-canvas";
 import {
+  TLActionWithName,
+  TimelineEditor,
+} from "../components/time-line.component";
+import {
   fontFamilyList,
   fontSizeList,
   fontStyleList,
@@ -22,7 +26,6 @@ import {
   getSelectionAndTransform,
   getStringFromHtml,
 } from "../utils/utils";
-import { TLActionWithName, TimelineEditor } from "./time-line.component";
 
 const actionSpriteMap = new WeakMap<TimelineAction, VisibleSprite>();
 const actionIdMap = new Map<string, TimelineAction>();
