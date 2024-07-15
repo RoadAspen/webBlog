@@ -114,7 +114,7 @@ export function VideoClipClass() {
                 max={100}
                 onChange={(val) => {
                   if (videoRef.current) {
-                    videoRef.current.volume = val / 100;
+                    videoRef.current.volume = val;
                   }
                 }}
               />

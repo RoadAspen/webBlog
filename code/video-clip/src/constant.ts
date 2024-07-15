@@ -59,7 +59,7 @@ export const videoClipPiece: AIGCClip = {
       preDuration: 0,
       duration: 23,
       hdVideoUrl: "",
-      sdVideoUrl: "https://bilibili.github.io/WebAV/video/bunny_0.mp4",
+      sdVideoUrl: "/static/video1",
       sens: [
         {
           id: "video_1_sen1",
@@ -170,7 +170,7 @@ export const videoClipPiece: AIGCClip = {
       preDuration: 23,
       duration: 23,
       hdVideoUrl: "",
-      sdVideoUrl: "https://bilibili.github.io/WebAV/video/bunny_0.mp4",
+      sdVideoUrl: "/static/video2",
       sens: [
         {
           id: "video_2_sen1",
@@ -281,7 +281,7 @@ export const videoClipPiece: AIGCClip = {
       preDuration: 46,
       duration: 23,
       hdVideoUrl: "",
-      sdVideoUrl: "https://bilibili.github.io/WebAV/video/bunny_0.mp4",
+      sdVideoUrl: "/static/video3",
       sens: [
         {
           id: "video_3_sen1",

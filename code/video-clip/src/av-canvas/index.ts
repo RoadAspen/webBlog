@@ -27,26 +27,44 @@ function createInitCvsEl(resolution: IResolution): HTMLCanvasElement {
 }
 
 export class AVCanvas {
+  /** canvas 元素 */
   #cvsEl: HTMLCanvasElement;
-
+  /** sprite 管理器 */
   #spriteManager: SpriteManager;
-
+  /** canvas 画布 */
   #cvsCtx: CanvasRenderingContext2D;
-
+  /** 是否销毁 */
   #destroyed = false;
-
+  /** 需要清空的数组 */
   #clears: Array<() => void> = [];
+  /** 当前渲染的时间 */
+  #renderTime = 0;
+  /** 帧率 */
+  #frameRate = 30;
+  /** 停止播放方法 */
   #stopRender: () => void;
-
+  /** 事件中心 */
   #evtTool = new EventTool<{
     timeupdate: (time: number) => void;
     paused: () => void;
     playing: () => void;
     activeSpriteChange: (sprite: VisibleSprite | null) => void;
   }>();
+  /** 事件绑定 */
   on = this.#evtTool.on;
-
+  /**  */
   #opts;
+  /** 播放配置 */
+  #playState = {
+    /** 开始时间 */
+    start: 0,
+    /** 结束时间 */
+    end: 0,
+    /** 播放速度 */
+    step: 0,
+    // step: (1000 / 30) * 1000,
+    audioPlayAt: 0,
+  };
 
   constructor(
     attchEl: HTMLElement,
@@ -87,7 +105,7 @@ export class AVCanvas {
     let lastRenderTime = this.#renderTime;
     let start = performance.now();
     let runCnt = 0;
-    const expectFrameTime = 1000 / 30;
+    const expectFrameTime = 1000 / this.#frameRate;
     /** 视频音量 */
     this.gainNode.gain.value = 0.1;
     this.gainNode.connect(this.#audioCtx.destination);
@@ -107,11 +125,8 @@ export class AVCanvas {
         this.#evtTool.emit('timeupdate', Math.round(lastRenderTime));
       }
     }, expectFrameTime);
-
-    // ;(window as any).cvsEl = this.#cvsEl
   }
-
-  #renderTime = 0e6;
+  /** 更新当前渲染时间 */
   #updateRenderTime(time: number) {
     this.#renderTime = time;
     this.#spriteManager.updateRenderTime(time);
@@ -130,10 +145,10 @@ export class AVCanvas {
     }
     this.#playingAudioCache.clear();
   }
-
+  /** 创建音频 */
   #audioCtx = new AudioContext();
+  /**  */
   #captureAudioDest = this.#audioCtx.createMediaStreamDestination();
-
   #playingAudioCache: Set<AudioBufferSourceNode> = new Set();
     /** 创建音量控制器 */
   gainNode = this.#audioCtx.createGain();
@@ -181,15 +196,6 @@ export class AVCanvas {
       this.#playState.audioPlayAt = curAudioTime + addTime;
     }
   }
-
-  #playState = {
-    start: 0,
-    end: 0,
-    // paused state when step equal 0
-    step: 0,
-    // step: (1000 / 30) * 1000,
-    audioPlayAt: 0,
-  };
   play(opts: { start: number; end?: number; playbackRate?: number }) {
     const spriteTimes = this.#spriteManager
       .getSprites({ time: false })
@@ -250,6 +256,7 @@ export class AVCanvas {
     await this.#spriteManager.addSprite(vs);
   };
   removeSprite: SpriteManager['removeSprite'] = (vs) => {
+    /**  */
     this.#sprMapAudioNode.get(vs)?.disconnect();
     this.#spriteManager.removeSprite(vs);
   };

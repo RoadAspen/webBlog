@@ -111,8 +111,6 @@ export default function Home() {
     });
     const combinedUrl = URL.createObjectURL(combinedBlob);
     setCombineUrl(combinedUrl);
-
-    console.log("combinedUrl", combinedUrl);
     // Create subtitles file
     const subtitles = `
     [Script Info]

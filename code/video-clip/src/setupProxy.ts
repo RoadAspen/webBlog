@@ -1,10 +1,9 @@
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const proxy = require("http-proxy-middleware");
 
 module.exports = function(app: any) {
   app.use(
-    "/static",
-    createProxyMiddleware({
-      target: "http://localhost:3002",
+    proxy("/static", {
+      target: "http://127.0.0.1:3002",
       changeOrigin: true,
     })
   );

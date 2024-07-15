@@ -51,6 +51,8 @@ export class VideoCanvas {
   #playing: boolean = false;
   /** 倍速 */
   #playbackRate:number = 1.0;
+  /** currentTime */
+  currentTime:number = 0;
   /** 实例 */
   constructor(props: VideoCanvasConstructor) {
     const {
@@ -78,7 +80,7 @@ export class VideoCanvas {
     
     this.avCvs = new AVCanvas(cvsWrapEl, canvasStyle);
     this.avCvs.on("timeupdate", (time) => {
-      console.log('timeUpdate',time);
+      this.currentTime = time;
       handleTimeUpdate?.(time)}
     );
     this.avCvs.on("playing", () => {
