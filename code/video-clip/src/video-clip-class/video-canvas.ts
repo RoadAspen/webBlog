@@ -13,10 +13,10 @@ interface VideoCanvasConstructor {
     width: number;
     height: number;
   };
-  fontSize: number;
-  fontStyle: FontStyle;
-  lightFontStyle: FontStyle;
-  fontFamily: string;
+  fontSize?: number;
+  fontStyle?: FontStyle;
+  lightFontStyle?: FontStyle;
+  fontFamily?: string;
   clipConfig: AIGCClip;
   volume?: number;
   playing?:boolean;
@@ -32,13 +32,13 @@ export class VideoCanvas {
   /** 播放状态 */
   tlState?: TimelineState;
   /** fontSize */
-  #fontSize: number;
+  #fontSize?: number;
   /** 花字 */
-  #fontStyle: FontStyle;
+  #fontStyle?: FontStyle;
   /** 重点花字 */
-  #lightFontStyle: FontStyle;
+  #lightFontStyle?: FontStyle;
   /** 字体 */
-  #fontFamily: FontFamily;
+  #fontFamily?: FontFamily;
   /** 上一个视频结尾时间 */
   preVideoTime = 0;
   /** 视频分辨率 和 canvas 尺寸的缩放比例 */
@@ -157,8 +157,8 @@ export class VideoCanvas {
     const { trackId, svgText, name } = params;
     const svgImg = createSvg({
       textList: svgText.textList,
-      fontSize: this.#fontSize,
-      fontFamily: this.#fontFamily,
+      fontSize: this.#fontSize || 20,
+      fontFamily: this.#fontFamily || '',
       fontStyle: this.#fontStyle,
       lightFontStyle: this.#lightFontStyle,
     });
@@ -172,10 +172,10 @@ export class VideoCanvas {
     spr.time.duration = svgText.end - svgText.start;
 
     const action = {
-      id: Math.random().toString(),
+      id: trackId,
       start: svgText.start / 1e6,
       end: svgText.end / 1e6,
-      effectId: "",
+      effectId: trackId,
       name,
     };
     this.actionIdMap.set(trackId, action);

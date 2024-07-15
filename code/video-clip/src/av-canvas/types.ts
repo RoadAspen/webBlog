@@ -3,12 +3,10 @@ export interface IPoint {
   y: number;
 }
 
+/** 视频分辨率 */
 export interface IResolution {
+  /** 宽 */
   width: number;
+  /** 高 */
   height: number;
-}
-
-export interface ICvsRatio {
-  w: number;
-  h: number;
 }

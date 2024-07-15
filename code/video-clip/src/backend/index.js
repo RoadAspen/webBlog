@@ -5,17 +5,17 @@ const PORT = 3002;
 
 app.use(express.static("static"));
 
-app.get("/video1", (req, res) => {
+app.get("/static/video1", (req, res) => {
   console.log("video1");
   const videoPath = path.resolve(__dirname, "./static/test_video_1.mp4");
   res.sendFile(videoPath);
 });
-app.get("/video2", (req, res) => {
+app.get("/static/video2", (req, res) => {
   console.log("video2");
   const videoPath = path.resolve(__dirname, "./static/test_video_2.mp4");
   res.sendFile(videoPath);
 });
-app.get("/video3", (req, res) => {
+app.get("/static/video3", (req, res) => {
   console.log("video3");
   const videoPath = path.resolve(__dirname, "./static/test_video_3.mp4");
   res.sendFile(videoPath);

@@ -60,7 +60,7 @@ export class AVCanvas {
     start: 0,
     /** 结束时间 */
     end: 0,
-    /** 播放速度 */
+    /** 每一帧之间的间隔时间 */
     step: 0,
     // step: (1000 / 30) * 1000,
     audioPlayAt: 0,
@@ -145,13 +145,15 @@ export class AVCanvas {
     }
     this.#playingAudioCache.clear();
   }
-  /** 创建音频 */
+  /** 创建音频实例 */
   #audioCtx = new AudioContext();
-  /**  */
+  /** 音频播放流 */
   #captureAudioDest = this.#audioCtx.createMediaStreamDestination();
+  /** 音频缓存 */
   #playingAudioCache: Set<AudioBufferSourceNode> = new Set();
-    /** 创建音量控制器 */
+  /** 创建音量控制器 */
   gainNode = this.#audioCtx.createGain();
+  /** 渲染 */
   #render() {
     const cvsCtx = this.#cvsCtx;
     let ts = this.#renderTime;
