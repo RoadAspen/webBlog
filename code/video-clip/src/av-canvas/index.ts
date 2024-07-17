@@ -13,12 +13,11 @@ import {ESpriteManagerEvt,SpriteManager} from './sprites/sprite-manager';
 import {IResolution} from './types';
 import {createEl} from './utils';
 
-function createInitCvsEl(resolution: IResolution): HTMLCanvasElement {
+function createInitCvsEl(resolution: IResolution & {style:string}): HTMLCanvasElement {
   const cvsEl = createEl('canvas') as HTMLCanvasElement;
   cvsEl.style.cssText = `
-    width: 100%;
-    height: 100%;
     display: block;
+   ${resolution.style}
   `;
   cvsEl.width = resolution.width;
   cvsEl.height = resolution.height;
@@ -64,12 +63,15 @@ export class AVCanvas {
     step: 0,
     // step: (1000 / 30) * 1000,
     audioPlayAt: 0,
+    // 倍速
+    playbackRate:1.0
   };
 
   constructor(
     attchEl: HTMLElement,
     opts: {
       bgColor: string;
+      style:string
     } & IResolution,
   ) {
     this.#opts = opts;
@@ -77,11 +79,7 @@ export class AVCanvas {
     const ctx = this.#cvsEl.getContext('2d', { alpha: false });
     if (ctx == null) throw Error('canvas context is null');
     this.#cvsCtx = ctx;
-    const container = createEl('div');
-    container.style.cssText =
-      'width: 100%; height: 100%; position: relative; overflow: hidden;';
-    container.appendChild(this.#cvsEl);
-    attchEl.appendChild(container);
+    attchEl.appendChild(this.#cvsEl);
 
     createEmptyOscillatorNode(this.#audioCtx).connect(this.#captureAudioDest);
 
@@ -170,7 +168,6 @@ export class AVCanvas {
       cvsCtx.save();
       const { audio } = s.render(cvsCtx, ts - s.time.offset);
       cvsCtx.restore();
-
       ctxDestAudioData.push(audio);
     }
     cvsCtx.resetTransform();
@@ -198,7 +195,7 @@ export class AVCanvas {
       this.#playState.audioPlayAt = curAudioTime + addTime;
     }
   }
-  play(opts: { start: number; end?: number; playbackRate?: number }) {
+  play(opts: { start: number; end: number; playbackRate?: number }) {
     const spriteTimes = this.#spriteManager
       .getSprites({ time: false })
       .map((s) => s.time.offset + s.time.duration);
@@ -220,7 +217,7 @@ export class AVCanvas {
     this.#playState.start = opts.start;
     this.#playState.end = end;
     // AVCanvas 30FPS，将播放速率转换成步长
-    this.#playState.step = (opts.playbackRate ?? 1) * (1000 / 30) * 1000;
+    this.#playState.step = (opts.playbackRate || this.#playState.playbackRate) * (1000 / this.#frameRate) * 1000;
     this.#audioCtx.resume();
     this.#playState.audioPlayAt = 0;
 
@@ -233,6 +230,11 @@ export class AVCanvas {
   previewFrame(time: number) {
     this.#updateRenderTime(time);
     this.#pause();
+  }
+/** 设置倍速 */
+  set playbackRate(nextPlaybackRate:number){
+    this.#playState.playbackRate = nextPlaybackRate
+    this.#playState.step = (nextPlaybackRate ?? 1) * (1000 / this.#frameRate) * 1000;
   }
 
   get activeSprite() {

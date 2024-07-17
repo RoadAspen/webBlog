@@ -12,6 +12,7 @@ interface VideoCanvasConstructor {
     bgColor: string;
     width: number;
     height: number;
+    style:string
   };
   fontSize?: number;
   fontStyle?: FontStyle;
@@ -41,9 +42,7 @@ export class VideoCanvas {
   #fontFamily?: FontFamily;
   /** 上一个视频结尾时间 */
   preVideoTime = 0;
-  /** 视频分辨率 和 canvas 尺寸的缩放比例 */
-  scale: number = 1;
-  /** clipConfig */
+  /** 视频切片配置 */
   clipConfig: AIGCClip;
   /** 音量 */
   #volume: number;
@@ -59,7 +58,7 @@ export class VideoCanvas {
       cvsWrapEl,
       handleTimeUpdate,
       onPlayingChange,
-      canvasStyle = { width: 1280, height: 720, bgColor: "#999" },
+      canvasStyle = { width: 1280, height: 720, bgColor: "#999",style:"" },
       fontSize,
       fontStyle,
       lightFontStyle,
@@ -67,7 +66,7 @@ export class VideoCanvas {
       clipConfig,
       volume,
       playing,
-      playbackRate
+      playbackRate,
     } = props;
     this.#fontSize = fontSize;
     this.#fontStyle = fontStyle;
@@ -79,6 +78,7 @@ export class VideoCanvas {
     this.clipConfig = clipConfig;
     
     this.avCvs = new AVCanvas(cvsWrapEl, canvasStyle);
+    this.avCvs.playbackRate = this.#playbackRate
     this.avCvs.on("timeupdate", (time) => {
       this.currentTime = time;
       handleTimeUpdate?.(time)}
@@ -100,25 +100,20 @@ export class VideoCanvas {
   /** 初始化所有的sprite */
   private createAllSprite = async () => {
     const {info} = this.clipConfig;
-    let duration = 0;
     for await(const group of info) {
       const video = (await fetch(group.sdVideoUrl)).body
       if(video){  
-        console.log(video);
        await this.addVideoSprite2Track(video,group.id)
       }
       const {sens} = group;
       for (const sen of sens) {
-        if(sen.select){
-          await this.addImageSprite2Track({trackId:sen.text,svgText:{
-             id:group.id + sen.id,
-             start:duration*1e6 + sen.timestamp[0] * 1e6,
-             end:duration*1e6 + sen.timestamp[1] * 1e6,
-             textList:[{text:sen.text,isLight:false}]
-           }})
-        }
+        await this.addImageSprite2Track({trackId:sen.id,sen:{
+          id:group.id + sen.id,
+          start:sen.originTimestamp[0]*1e6,
+          end:sen.originTimestamp[0]*1e6,
+          textList:[{text:sen.text,isLight:false}]
+        }})
       }
-      duration += group.duration
     }
   };
   /** 添加 视频 track */
@@ -126,7 +121,6 @@ export class VideoCanvas {
     const clips = new MP4Clip(videoStream,{audio:{volume:0.1}});
     const data = await clips.ready;
     const spr = new VisibleSprite(clips);
-    console.log("preVideoTime", this.preVideoTime);
     spr.time.offset = this.preVideoTime * 1e6;
     spr.time.duration = data.duration * 1e6;
     spr.rect.w = clips.meta.width;
@@ -149,47 +143,49 @@ export class VideoCanvas {
   public addImageSprite2Track = async (
     params: {
       trackId: string;
-      svgText: SingleText;
+      sen: SingleText;
       name?: string;
     },
     isPreviewFrame?: boolean
   ) => {
-    const { trackId, svgText, name } = params;
+    const { trackId, sen, name } = params;
     const svgImg = createSvg({
-      textList: svgText.textList,
+      textList: sen.textList,
       fontSize: this.#fontSize || 20,
       fontFamily: this.#fontFamily || '',
       fontStyle: this.#fontStyle,
       lightFontStyle: this.#lightFontStyle,
+      resolution: this.clipConfig.resolution,
     });
-    console.log("svgImg", svgImg);
     const imageStream = await convertSvgToPngStream(svgImg);
     const imageClip = new ImgClip(imageStream);
     await imageClip.ready;
     const spr = new VisibleSprite(imageClip);
+    spr.rect.x = 0;
+    spr.rect.y = 1000;
     await this.avCvs?.addSprite(spr);
-    spr.time.offset = svgText.start;
-    spr.time.duration = svgText.end - svgText.start;
+    spr.time.offset = sen.start;
+    spr.time.duration = sen.end - sen.start;
 
     const action = {
       id: trackId,
-      start: svgText.start / 1e6,
-      end: svgText.end / 1e6,
+      start: sen.start / 1e6,
+      end: sen.end / 1e6,
       effectId: trackId,
       name,
     };
     this.actionIdMap.set(trackId, action);
     this.actionSpriteMap.set(action, spr);
     if (isPreviewFrame) {
-      this.avCvs?.previewFrame(svgText.start);
-      this.avCvs?.play({ start: svgText.start || 0 });
+      this.avCvs?.previewFrame(sen.start);
+      this.avCvs?.play({ start: sen.start || 0 ,end:9000 * 1e6});
     }
     return { trackId, spr, action };
   };
   /** 更新 句子 track */
   public updateImageSprite2Track = async (params: {
     trackId: string;
-    svgText: SingleText;
+    sen: SingleText;
     name?: string;
   }) => {
     const { trackId } = params;
@@ -227,7 +223,6 @@ export class VideoCanvas {
     this.avCvs?.previewFrame(0);
     this.preVideoTime = 0;
     this.avCvs?.pause();
-    this.scale = 1;
     this.#playing = false;
     this.removeAllSprite2Track();
   };
@@ -256,13 +251,6 @@ export class VideoCanvas {
     this.removeAllSprite2Track();
     await this.init(this.clipConfig);
   };
-  /** 更改倍速 */
-  public setPlayBackRate = (rate: number) => {
-    this.avCvs?.play({
-      start: 0,
-      playbackRate: rate,
-    });
-  };
   /** 音量 */
   get volume() {
     return this.#volume * 100;
@@ -277,7 +265,7 @@ export class VideoCanvas {
     end?: number | undefined;
     playbackRate?: number | undefined;}){
       const {start,end,playbackRate} = params
-    this.avCvs?.play({start,end:end ?? 900000000,playbackRate:playbackRate ?? this.#playbackRate})
+    this.avCvs?.play({start,end:end ?? 900000000,playbackRate})
     this.#playing = true
   }
   /** 暂停 */
@@ -285,19 +273,16 @@ export class VideoCanvas {
     this.#playing = false
     this.avCvs?.pause()
   }
-  /** 倍速 */
-  get playbackRate() {
-    return this.#playbackRate;
-  }
+  /** 更改倍速 */
   set playbackRate(nextPlaybackRate: number){
     this.#playbackRate = nextPlaybackRate;
-    this.avCvs?.play({
-      start:0,
-      playbackRate:this.#playbackRate
-    })
+    if(this.avCvs){
+      this.avCvs.playbackRate = nextPlaybackRate
+    }
   }
   public previewFrame = (time:number) => {
     this.avCvs?.previewFrame(time);
+    this.currentTime = time
   };
   /** 整个实例销毁 */
   public destroy = () => {

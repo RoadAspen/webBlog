@@ -1,6 +1,7 @@
 import { AVCanvas } from "@webav/av-canvas";
+import _ from "lodash";
 import { nanoid } from "nanoid";
-import { FontStyle, TextItem } from "../define";
+import { AIGCClip, FontStyle, TextItem } from "../define";
 
 export function assetsPrefix<T extends string[] | Record<string, string>>(
   assetsURL: T
@@ -192,6 +193,11 @@ export function createSvg(params: {
   fontStyle?: FontStyle | null;
   lightFontStyle?: FontStyle | null;
   textList: TextItem[];
+  /** 视频分辨率 */
+  resolution: {
+    width: number;
+    height: number;
+  };
 }): string {
   const { fontFamily, fontSize, fontStyle, lightFontStyle, textList } = params;
   const prefixSvg = `<svg font-family="${fontFamily}" width="800" height="200" xmlns="http://www.w3.org/2000/svg">`;
@@ -201,7 +207,6 @@ export function createSvg(params: {
     const { text, isLight } = item;
     return prev + text;
   }, "");
-  console.log("tspanStr", tspanStr);
   textListStr = textListStr.replace("replace", tspanStr);
   return prefixSvg + textListStr + afterSvg;
 }
@@ -213,4 +218,46 @@ export function createSvg(params: {
  */
 export function jumpToVideoTime(avCanvas: AVCanvas, time: number) {
   avCanvas.previewFrame(time * 1e6);
+}
+
+/**
+ * 添加textList 和 片段的preDuration
+ */
+export function transformClipConfig(videoClipPiece: AIGCClip) {
+  let preDuration = 0;
+  const deepConfig = _.cloneDeep(videoClipPiece);
+  for (const info of deepConfig.info) {
+    info.preDuration = preDuration;
+    for (const sen of info.sens) {
+      sen.textList = sen.textList?.length
+        ? sen.textList
+        : [{ text: sen.text, isLight: false }];
+
+      sen.originTimestamp = sen.originTimestamp?.length
+        ? sen.originTimestamp
+        : sen.timestamp.map((time) => time + info.preDuration);
+    }
+    preDuration += info.duration;
+  }
+  return { ...deepConfig };
+}
+
+/** 获取canvas画布等比例缩放的样式 */
+export function getCanvasScaleStyleByResolutionAndContainerRect(
+  resolution: { width: number; height: number },
+  containerRect: { width: number; height: number }
+) {
+  const scaleW = containerRect.width / resolution.width;
+  const scaleH = containerRect.height / resolution.height;
+  if (scaleW < scaleH) {
+    const y = (containerRect.height - resolution.height * scaleW) / 2;
+    return `transform: scale(${scaleW});
+      transform-origin: 0px 0px;
+      margin-top: ${y}px;`;
+  } else {
+    const x = (containerRect.width - resolution.width * scaleH) / 2;
+    return `transform: scale(${scaleH});
+      transform-origin: 0px 0px;
+      margin-left: ${x}px;`;
+  }
 }

@@ -1,3 +1,4 @@
+import { useMemoizedFn } from "ahooks";
 import { Button, Checkbox, Select, Slider } from "antd";
 import { produce } from "immer";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -11,54 +12,35 @@ import {
 } from "../constant";
 import { AIGCClip, FontFamily, FontSize, FontStyle } from "../define";
 import {
+  getCanvasScaleStyleByResolutionAndContainerRect,
   getHtmlStringFromContentEditable,
   getSelectionAndTransform,
   getStringFromHtml,
+  transformClipConfig,
 } from "../utils/utils";
 import { VideoCanvas } from "./video-canvas";
-
 export function VideoClipClass() {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const canvasContainerRef = useRef<HTMLDivElement | null>(null);
   /** 视频class实例 */
   const videoCanvasInstanceRef = useRef<VideoCanvas>();
   const [currentVideoClipPiece, setCurrentVideoClipPiece] = useState<AIGCClip>(
-    videoClipPiece
+    transformClipConfig(videoClipPiece)
   );
   const [playing, setPlaying] = useState(false);
   const [fontFamily, setFontFamily] = useState<FontFamily>(fontFamilyList[0]);
   const [fontSize, setFontSize] = useState<FontSize>(60);
+  /** 更新的  */
+  const currentVideoClipPieceRef = useRef<AIGCClip>(currentVideoClipPiece);
+  const currentIntervalIndexRef = useRef(0);
   const [fontStyle, setFontStyle] = useState<FontStyle | undefined>(
     fontStyleList[0]
   );
   const [lightFontStyle, setLightFontStyle] = useState<FontStyle | undefined>(
     lightFontStyleList[0]
   );
-  useEffect(() => {
-    if (canvasContainerRef.current && !videoCanvasInstanceRef.current) {
-      videoCanvasInstanceRef.current = new VideoCanvas({
-        cvsWrapEl: canvasContainerRef.current,
-        clipConfig: currentVideoClipPiece,
-        fontSize,
-        fontStyle,
-        lightFontStyle,
-        fontFamily,
-        handleTimeUpdate: (time) => {
-          requestAnimationFrame(() => {
-            setCurrentTime(time);
-          });
-        },
-        canvasStyle: {
-          width: 1862,
-          height: 1080,
-          bgColor: "#999",
-        },
-      });
-      videoCanvasInstanceRef.current.init(videoClipPiece);
-    }
-  }, [currentVideoClipPiece, fontFamily, fontSize, fontStyle, lightFontStyle]);
   /** 选中的句子的总时长 */
-  const duration = useMemo(() => {
+  const allPieceDuration = useMemo(() => {
     let duration = 0;
     currentVideoClipPiece.info.forEach((info) => {
       info.sens.forEach((sen) => {
@@ -69,44 +51,134 @@ export function VideoClipClass() {
     });
     return duration;
   }, [currentVideoClipPiece]);
-  /** 原视频各片段的总和时长 */
+  /** 支持播放的时长数组 */
   const senPlayList = useMemo(() => {
-    let currentTime = 0;
-    currentVideoClipPiece.info.forEach((info) => {
-      info.sens.forEach((sen) => {
-        if (sen.select) {
-          currentTime += sen.duration;
-        }
-      });
-    });
-    return duration;
-  }, [currentVideoClipPiece]);
-  /** 根据当前的时间，获取到原视频的的播放时间 */
-  const getPlayTime = (currentPreviewTime: number) => {
-    let previewTime = 0;
-    let allTime = 0;
-    let prevTime = 0;
+    const playListTime = [];
     for (const info of currentVideoClipPiece.info) {
       for (const sen of info.sens) {
-        allTime += sen.duration;
         if (sen.select) {
-          previewTime += sen.duration;
+          playListTime.push({
+            start: sen.originTimestamp[0],
+            end: sen.originTimestamp[1],
+          });
         }
-        if (currentPreviewTime <= previewTime) {
-          prevTime = prevTime + previewTime - currentPreviewTime;
-          break;
-        }
-        prevTime = allTime;
       }
     }
-    return prevTime;
-  };
+    return playListTime;
+  }, [currentVideoClipPiece]);
+  /** 根据进度条的时间，获取到原视频的的播放时间 */
+  const getPlayTimeByProgress = useMemoizedFn((currentPreviewTime: number) => {
+    let progressTime = 0;
+    let allTime = 0;
+    for (const info of currentVideoClipPiece.info) {
+      for (const sen of info.sens) {
+        if (sen.select) {
+          const nextProgressTime = progressTime + sen.duration;
+          if (currentPreviewTime <= nextProgressTime) {
+            allTime = allTime + currentPreviewTime - progressTime;
+            break;
+          }
+          progressTime = nextProgressTime;
+        }
+        allTime += sen.duration;
+      }
+    }
+    return allTime;
+  });
+  useEffect(() => {
+    if (canvasContainerRef.current && !videoCanvasInstanceRef.current) {
+      videoCanvasInstanceRef.current = new VideoCanvas({
+        cvsWrapEl: canvasContainerRef.current,
+        clipConfig: currentVideoClipPiece,
+        fontSize,
+        fontStyle,
+        lightFontStyle,
+        fontFamily,
+        playbackRate: 1,
+        handleTimeUpdate: (time) => {
+          const currentTime = time / 1e6;
+          const currentInterval = senPlayList[currentIntervalIndexRef.current];
+          if (currentInterval) {
+            // 跳过不需要播放的区间
+            if (currentTime >= currentInterval.end) {
+              currentIntervalIndexRef.current++;
+              if (currentIntervalIndexRef.current < senPlayList.length) {
+                const nextInterval =
+                  senPlayList[currentIntervalIndexRef.current];
+                if (currentInterval.end < nextInterval.start) {
+                  videoCanvasInstanceRef.current?.play({
+                    start: nextInterval.start * 1e6,
+                  });
+                }
+                const elapsedPlayTime =
+                  senPlayList
+                    .slice(0, currentIntervalIndexRef.current)
+                    .reduce(
+                      (total, interval) =>
+                        total + (interval.end - interval.start),
+                      0
+                    ) +
+                  (currentTime - currentInterval.start);
+                setCurrentTime(elapsedPlayTime);
+              } else {
+                currentIntervalIndexRef.current = 0;
+                setCurrentTime(0);
+                videoCanvasInstanceRef.current?.play({
+                  start:
+                    senPlayList[currentIntervalIndexRef.current].start * 1e6,
+                });
+              }
+            } else {
+              const elapsedPlayTime =
+                senPlayList
+                  .slice(0, currentIntervalIndexRef.current)
+                  .reduce(
+                    (total, interval) =>
+                      total + (interval.end - interval.start),
+                    0
+                  ) +
+                (currentTime - currentInterval.start);
+              setCurrentTime(elapsedPlayTime);
+            }
+          } else {
+            currentIntervalIndexRef.current = 0;
+            setCurrentTime(0);
+            videoCanvasInstanceRef.current?.play({
+              start: senPlayList[currentIntervalIndexRef.current].start * 1e6,
+            });
+          }
+        },
+        onPlayingChange: (play: boolean) => {
+          setPlaying(play);
+        },
+        canvasStyle: {
+          width: currentVideoClipPiece.resolution.width,
+          height: currentVideoClipPiece.resolution.height,
+          bgColor: "#999",
+          style: getCanvasScaleStyleByResolutionAndContainerRect(
+            currentVideoClipPiece.resolution,
+            { width: 600, height: 560 }
+          ),
+        },
+      });
+      videoCanvasInstanceRef.current.init(videoClipPiece);
+    }
+  }, [
+    allPieceDuration,
+    currentVideoClipPiece,
+    fontFamily,
+    fontSize,
+    fontStyle,
+    lightFontStyle,
+    senPlayList,
+  ]);
+
   return (
     <div className="canvas-wrap">
       <div className="flex mx-10">
         <div className="w-1/2 pt-10">
           <div
-            className="w-[600px] h-[560px] bg-black"
+            className="w-[600px] h-[560px] bg-black overflow-hidden"
             ref={canvasContainerRef}
           ></div>
           <div className="flex my-5">
@@ -118,7 +190,14 @@ export function VideoClipClass() {
                 if (playing) {
                   videoCanvasInstanceRef.current.pause();
                 } else {
-                  videoCanvasInstanceRef.current.play({ start: currentTime });
+                  if (currentTime === 0) {
+                    currentIntervalIndexRef.current = 0;
+                    videoCanvasInstanceRef.current.play({
+                      start:
+                        senPlayList[currentIntervalIndexRef.current].start *
+                        1e6,
+                    });
+                  }
                 }
               }}
             >
@@ -127,23 +206,23 @@ export function VideoClipClass() {
             <Slider
               className="mx-10 flex-1"
               min={0}
-              max={duration * 1e6}
+              max={allPieceDuration}
               value={currentTime}
+              step={0.1}
               onChange={(val) => {
-                const previewTime = getPlayTime(val);
-                videoCanvasInstanceRef.current?.previewFrame(previewTime);
-                setCurrentTime(previewTime);
+                console.log("val", allPieceDuration, val, currentTime);
+                const previewTime = getPlayTimeByProgress(val);
+                videoCanvasInstanceRef.current?.previewFrame(previewTime * 1e6);
               }}
             ></Slider>
-            <div className="flex flex-row">
+            {/* <div className="flex flex-row">
               <p className="mr-5">倍速播放</p>
               <Select
                 className="w-10"
                 onChange={(val) => {
-                  videoCanvasInstanceRef.current?.play({
-                    start: currentTime,
-                    playbackRate: val,
-                  });
+                  if (videoCanvasInstanceRef.current) {
+                    videoCanvasInstanceRef.current.playbackRate = val;
+                  }
                 }}
               >
                 <Select.Option key={1} value={1}>
@@ -169,7 +248,7 @@ export function VideoClipClass() {
                   }
                 }}
               />
-            </div>
+            </div> */}
           </div>
           <div>
             <label htmlFor="" style={{ display: "flex", marginBottom: 10 }}>
@@ -273,45 +352,38 @@ export function VideoClipClass() {
                                   const currentVideoClip = draft.info.find(
                                     (clipItem) => clipItem.id === videoClip.id
                                   );
-                                  if (!currentVideoClip) return;
-                                  const currentText = currentVideoClip.sens.find(
-                                    (textItem) => textItem.id === sen.id
-                                  );
-                                  if (!currentText) return draft;
-                                  currentText.select = checked ? 1 : 0;
-                                  console.log(
-                                    "currentText.select",
-                                    currentText.select
-                                  );
-                                  if (currentText.select) {
-                                    videoCanvasInstanceRef.current?.addImageSprite2Track(
-                                      {
-                                        trackId: sen.id,
-                                        svgText: {
-                                          id: sen.id,
-                                          start:
-                                            videoClip.preDuration * 1e6 +
-                                            sen.timestamp[0] * 1e6,
-                                          end:
-                                            videoClip.preDuration * 1e6 +
-                                            sen.timestamp[1] * 1e6,
-                                          textList: [
-                                            { text: sen.text, isLight: false },
-                                          ],
-                                        },
+                                  if (currentVideoClip) {
+                                    const currentText = currentVideoClip.sens.find(
+                                      (textItem) => textItem.id === sen.id
+                                    );
+                                    if (currentText) {
+                                      currentText.select = checked ? 1 : 0;
+                                      console.log(
+                                        "currentText.select",
+                                        currentText.select
+                                      );
+                                      if (currentText.select) {
+                                        videoCanvasInstanceRef.current?.addImageSprite2Track(
+                                          {
+                                            trackId: sen.id,
+                                            sen: {
+                                              id: sen.id,
+                                              start:
+                                                sen.originTimestamp?.[0] || 0,
+                                              end:
+                                                sen.originTimestamp?.[1] || 0,
+                                              textList: sen.textList,
+                                            },
+                                          }
+                                        );
+                                      } else {
+                                        videoCanvasInstanceRef.current?.removeSprite2Track(
+                                          {
+                                            trackId: sen.id,
+                                          }
+                                        );
                                       }
-                                    );
-                                    videoCanvasInstanceRef.current?.previewFrame(
-                                      videoClip.preDuration * 1e6 +
-                                        sen.timestamp[0] * 1e6
-                                    );
-                                  } else {
-                                    videoCanvasInstanceRef.current?.pause();
-                                    videoCanvasInstanceRef.current?.removeSprite2Track(
-                                      {
-                                        trackId: sen.id,
-                                      }
-                                    );
+                                    }
                                   }
                                 })
                               );
@@ -374,11 +446,11 @@ export function VideoClipClass() {
                               videoCanvasInstanceRef.current?.updateImageSprite2Track(
                                 {
                                   trackId: sen.id,
-                                  svgText: {
+                                  sen: {
                                     id: sen.id,
                                     textList: sen.textList,
-                                    start: sen.timestamp[0] * 1e6,
-                                    end: sen.timestamp[1] * 1e6,
+                                    start: sen.originTimestamp[0] * 1e6,
+                                    end: sen.originTimestamp[1] * 1e6,
                                   },
                                   name: "图片",
                                 }

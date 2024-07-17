@@ -38,6 +38,11 @@ export interface AIGCClip {
   groupNum: number;
   /**  */
   description: string;
+  /** 分辨率 */
+  resolution: {
+    width: number;
+    height: number;
+  };
   /** 片段列表 */
   info: {
     id: string;
@@ -64,8 +69,10 @@ export interface AIGCClip {
       textList: { text: string; isLight: boolean }[];
       /** 句子时长 */
       duration: number;
-      /** 句子开始时间、结束时间 */
+      /** 句子开始时间、结束时间 ,片段相对时间*/
       timestamp: number[];
+      /** 句子开始时间、结束时间， 成片相对时间*/
+      originTimestamp: number[];
       /** 前端拼接的 字幕svgText */
       svgText: string;
       /** 图片url */

@@ -19,6 +19,7 @@
     "@webav/av-canvas": "^0.12.2",
     "@webav/av-cliper": "0.12.2",
     "@xzdarcy/react-timeline-editor": "^0.1.9",
+    "ahooks": "^3.8.0",
     "antd": "^5.18.1",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",

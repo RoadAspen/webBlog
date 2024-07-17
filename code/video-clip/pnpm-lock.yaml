@@ -5,6 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@babel/core':
+    specifier: ^7.16.0
+    version: 7.24.7
+  '@pmmmwh/react-refresh-webpack-plugin':
+    specifier: ^0.5.3
+    version: 0.5.15(react-refresh@0.11.0)(webpack-dev-server@4.15.2)(webpack@5.92.0)
+  '@svgr/webpack':
+    specifier: ^5.5.0
+    version: 5.5.0
   '@testing-library/jest-dom':
     specifier: ^5.17.0
     version: 5.17.0
@@ -44,45 +53,174 @@ dependencies:
   '@xzdarcy/react-timeline-editor':
     specifier: ^0.1.9
     version: 0.1.9(react-dom@18.3.1)(react@18.3.1)
+  ahooks:
+    specifier: ^3.8.0
+    version: 3.8.0(react@18.3.1)
   antd:
     specifier: ^5.18.1
     version: 5.18.1(react-dom@18.3.1)(react@18.3.1)
+  babel-jest:
+    specifier: ^27.4.2
+    version: 27.5.1(@babel/core@7.24.7)
+  babel-loader:
+    specifier: ^8.2.3
+    version: 8.3.0(@babel/core@7.24.7)(webpack@5.92.0)
+  babel-plugin-named-asset-import:
+    specifier: ^0.3.8
+    version: 0.3.8(@babel/core@7.24.7)
+  babel-preset-react-app:
+    specifier: ^10.0.1
+    version: 10.0.1
+  bfj:
+    specifier: ^7.0.2
+    version: 7.1.0
+  browserslist:
+    specifier: ^4.18.1
+    version: 4.23.1
+  camelcase:
+    specifier: ^6.2.1
+    version: 6.3.0
+  case-sensitive-paths-webpack-plugin:
+    specifier: ^2.4.0
+    version: 2.4.0
+  css-loader:
+    specifier: ^6.5.1
+    version: 6.11.0(webpack@5.92.0)
+  css-minimizer-webpack-plugin:
+    specifier: ^3.2.0
+    version: 3.4.1(webpack@5.92.0)
+  dotenv:
+    specifier: ^10.0.0
+    version: 10.0.0
+  dotenv-expand:
+    specifier: ^5.1.0
+    version: 5.1.0
+  eslint:
+    specifier: ^8.3.0
+    version: 8.57.0
+  eslint-config-react-app:
+    specifier: ^7.0.1
+    version: 7.0.1(@babel/plugin-syntax-flow@7.24.7)(@babel/plugin-transform-react-jsx@7.24.7)(eslint@8.57.0)(jest@27.5.1)(typescript@4.9.5)
+  eslint-webpack-plugin:
+    specifier: ^3.1.1
+    version: 3.2.0(eslint@8.57.0)(webpack@5.92.0)
+  file-loader:
+    specifier: ^6.2.0
+    version: 6.2.0(webpack@5.92.0)
+  fs-extra:
+    specifier: ^10.0.0
+    version: 10.1.0
+  html-webpack-plugin:
+    specifier: ^5.5.0
+    version: 5.6.0(webpack@5.92.0)
+  identity-obj-proxy:
+    specifier: ^3.0.0
+    version: 3.0.0
   immer:
     specifier: ^10.1.1
     version: 10.1.1
+  jest:
+    specifier: ^27.4.3
+    version: 27.5.1
+  jest-resolve:
+    specifier: ^27.4.2
+    version: 27.5.1
+  jest-watch-typeahead:
+    specifier: ^1.0.0
+    version: 1.1.0(jest@27.5.1)
   loadsh:
     specifier: ^0.0.4
     version: 0.0.4
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
+  mini-css-extract-plugin:
+    specifier: ^2.4.5
+    version: 2.9.0(webpack@5.92.0)
   nanoid:
     specifier: ^5.0.7
     version: 5.0.7
+  postcss:
+    specifier: ^8.4.4
+    version: 8.4.38
+  postcss-flexbugs-fixes:
+    specifier: ^5.0.2
+    version: 5.0.2(postcss@8.4.38)
+  postcss-loader:
+    specifier: ^6.2.1
+    version: 6.2.1(postcss@8.4.38)(webpack@5.92.0)
+  postcss-normalize:
+    specifier: ^10.0.1
+    version: 10.0.1(browserslist@4.23.1)(postcss@8.4.38)
+  postcss-preset-env:
+    specifier: ^7.0.1
+    version: 7.8.3(postcss@8.4.38)
+  prompts:
+    specifier: ^2.4.2
+    version: 2.4.2
   react:
     specifier: ^18.3.1
     version: 18.3.1
+  react-app-polyfill:
+    specifier: ^3.0.0
+    version: 3.0.0
   react-contenteditable:
     specifier: ^3.3.7
     version: 3.3.7(react@18.3.1)
+  react-dev-utils:
+    specifier: ^12.0.1
+    version: 12.0.1(eslint@8.57.0)(typescript@4.9.5)(webpack@5.92.0)
   react-dom:
     specifier: ^18.3.1
     version: 18.3.1(react@18.3.1)
+  react-refresh:
+    specifier: ^0.11.0
+    version: 0.11.0
   react-router-dom:
     specifier: ^6.23.1
     version: 6.23.1(react-dom@18.3.1)(react@18.3.1)
-  react-scripts:
-    specifier: 5.0.1
-    version: 5.0.1(@babel/plugin-syntax-flow@7.24.7)(@babel/plugin-transform-react-jsx@7.24.7)(eslint@8.57.0)(react@18.3.1)(typescript@4.9.5)
+  resolve:
+    specifier: ^1.20.0
+    version: 1.22.8
+  resolve-url-loader:
+    specifier: ^4.0.0
+    version: 4.0.0
+  sass-loader:
+    specifier: ^12.3.0
+    version: 12.6.0(webpack@5.92.0)
+  semver:
+    specifier: ^7.3.5
+    version: 7.6.2
+  source-map-loader:
+    specifier: ^3.0.0
+    version: 3.0.2(webpack@5.92.0)
+  style-loader:
+    specifier: ^3.3.1
+    version: 3.3.4(webpack@5.92.0)
   tailwindcss:
-    specifier: ^3.4.4
+    specifier: ^3.0.2
     version: 3.4.4
+  terser-webpack-plugin:
+    specifier: ^5.2.5
+    version: 5.3.10(webpack@5.92.0)
   typescript:
     specifier: ^4.9.5
     version: 4.9.5
   web-vitals:
     specifier: ^2.1.4
     version: 2.1.4
+  webpack:
+    specifier: ^5.64.4
+    version: 5.92.0
+  webpack-dev-server:
+    specifier: ^4.6.0
+    version: 4.15.2(webpack@5.92.0)
+  webpack-manifest-plugin:
+    specifier: ^4.0.2
+    version: 4.1.1(webpack@5.92.0)
+  workbox-webpack-plugin:
+    specifier: ^6.4.1
+    version: 6.6.0(webpack@5.92.0)
 
 packages:
 
@@ -3382,6 +3520,24 @@ packages:
       - supports-color
     dev: false
 
+  /ahooks@3.8.0(react@18.3.1):
+    resolution: {integrity: sha512-M01m+mxLRNNeJ/PCT3Fom26UyreTj6oMqJBetUrJnK4VNI5j6eMA543Xxo53OBXn6XibA2FXKcCCgrT6YCTtKQ==}
+    engines: {node: '>=8.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.24.7
+      dayjs: 1.11.11
+      intersection-observer: 0.12.2
+      js-cookie: 2.2.1
+      lodash: 4.17.21
+      react: 18.3.1
+      react-fast-compare: 3.2.2
+      resize-observer-polyfill: 1.5.1
+      screenfull: 5.2.0
+      tslib: 2.6.3
+    dev: false
+
   /ajv-formats@2.1.1(ajv@8.16.0):
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
     peerDependencies:
@@ -6444,6 +6600,10 @@ packages:
       side-channel: 1.0.6
     dev: false
 
+  /intersection-observer@0.12.2:
+    resolution: {integrity: sha512-7m1vEcPCxXYI8HqnL8CKI6siDyD+eIWSwgB3DZA+ZTogxk9I4CDnj4wilt9x/+/QbHI4YG5YZNmC6458/e9Ktg==}
+    dev: false
+
   /ipaddr.js@1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
     engines: {node: '>= 0.10'}
@@ -7336,6 +7496,10 @@ packages:
   /jiti@1.21.6:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
+    dev: false
+
+  /js-cookie@2.2.1:
+    resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
     dev: false
 
   /js-tokens@4.0.0:
@@ -9793,6 +9957,10 @@ packages:
     resolution: {integrity: sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==}
     dev: false
 
+  /react-fast-compare@3.2.2:
+    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
+    dev: false
+
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: false
@@ -9835,104 +10003,6 @@ packages:
     dependencies:
       '@remix-run/router': 1.16.1
       react: 18.3.1
-    dev: false
-
-  /react-scripts@5.0.1(@babel/plugin-syntax-flow@7.24.7)(@babel/plugin-transform-react-jsx@7.24.7)(eslint@8.57.0)(react@18.3.1)(typescript@4.9.5):
-    resolution: {integrity: sha512-8VAmEm/ZAwQzJ+GOMLbBsTdDKOpuZh7RPs0UymvBR2vRk4iZWCskjbFnxqjrzoIvlNNRZ3QJFx6/qDSi6zSnaQ==}
-    engines: {node: '>=14.0.0'}
-    hasBin: true
-    peerDependencies:
-      eslint: '*'
-      react: '>= 16'
-      typescript: ^3.2.1 || ^4
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@babel/core': 7.24.7
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.11.0)(webpack-dev-server@4.15.2)(webpack@5.92.0)
-      '@svgr/webpack': 5.5.0
-      babel-jest: 27.5.1(@babel/core@7.24.7)
-      babel-loader: 8.3.0(@babel/core@7.24.7)(webpack@5.92.0)
-      babel-plugin-named-asset-import: 0.3.8(@babel/core@7.24.7)
-      babel-preset-react-app: 10.0.1
-      bfj: 7.1.0
-      browserslist: 4.23.1
-      camelcase: 6.3.0
-      case-sensitive-paths-webpack-plugin: 2.4.0
-      css-loader: 6.11.0(webpack@5.92.0)
-      css-minimizer-webpack-plugin: 3.4.1(webpack@5.92.0)
-      dotenv: 10.0.0
-      dotenv-expand: 5.1.0
-      eslint: 8.57.0
-      eslint-config-react-app: 7.0.1(@babel/plugin-syntax-flow@7.24.7)(@babel/plugin-transform-react-jsx@7.24.7)(eslint@8.57.0)(jest@27.5.1)(typescript@4.9.5)
-      eslint-webpack-plugin: 3.2.0(eslint@8.57.0)(webpack@5.92.0)
-      file-loader: 6.2.0(webpack@5.92.0)
-      fs-extra: 10.1.0
-      html-webpack-plugin: 5.6.0(webpack@5.92.0)
-      identity-obj-proxy: 3.0.0
-      jest: 27.5.1
-      jest-resolve: 27.5.1
-      jest-watch-typeahead: 1.1.0(jest@27.5.1)
-      mini-css-extract-plugin: 2.9.0(webpack@5.92.0)
-      postcss: 8.4.38
-      postcss-flexbugs-fixes: 5.0.2(postcss@8.4.38)
-      postcss-loader: 6.2.1(postcss@8.4.38)(webpack@5.92.0)
-      postcss-normalize: 10.0.1(browserslist@4.23.1)(postcss@8.4.38)
-      postcss-preset-env: 7.8.3(postcss@8.4.38)
-      prompts: 2.4.2
-      react: 18.3.1
-      react-app-polyfill: 3.0.0
-      react-dev-utils: 12.0.1(eslint@8.57.0)(typescript@4.9.5)(webpack@5.92.0)
-      react-refresh: 0.11.0
-      resolve: 1.22.8
-      resolve-url-loader: 4.0.0
-      sass-loader: 12.6.0(webpack@5.92.0)
-      semver: 7.6.2
-      source-map-loader: 3.0.2(webpack@5.92.0)
-      style-loader: 3.3.4(webpack@5.92.0)
-      tailwindcss: 3.4.4
-      terser-webpack-plugin: 5.3.10(webpack@5.92.0)
-      typescript: 4.9.5
-      webpack: 5.92.0
-      webpack-dev-server: 4.15.2(webpack@5.92.0)
-      webpack-manifest-plugin: 4.1.1(webpack@5.92.0)
-      workbox-webpack-plugin: 6.6.0(webpack@5.92.0)
-    optionalDependencies:
-      fsevents: 2.3.3
-    transitivePeerDependencies:
-      - '@babel/plugin-syntax-flow'
-      - '@babel/plugin-transform-react-jsx'
-      - '@parcel/css'
-      - '@rspack/core'
-      - '@swc/core'
-      - '@types/babel__core'
-      - '@types/webpack'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - eslint-import-resolver-typescript
-      - eslint-import-resolver-webpack
-      - fibers
-      - node-notifier
-      - node-sass
-      - rework
-      - rework-visit
-      - sass
-      - sass-embedded
-      - sockjs-client
-      - supports-color
-      - ts-node
-      - type-fest
-      - uglify-js
-      - utf-8-validate
-      - vue-template-compiler
-      - webpack-cli
-      - webpack-hot-middleware
-      - webpack-plugin-serve
     dev: false
 
   /react-virtualized@9.22.5(react-dom@18.3.1)(react@18.3.1):
@@ -10326,6 +10396,11 @@ packages:
       ajv: 8.16.0
       ajv-formats: 2.1.1(ajv@8.16.0)
       ajv-keywords: 5.1.0(ajv@8.16.0)
+    dev: false
+
+  /screenfull@5.2.0:
+    resolution: {integrity: sha512-9BakfsO2aUQN2K9Fdbj87RJIEZ82Q9IGim7FqM5OsebfoFC6ZHXgDq/KvniuLTPdeM8wY2o6Dj3WQ7KeQCj3cA==}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /scroll-into-view-if-needed@3.1.0:
