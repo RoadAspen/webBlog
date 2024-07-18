@@ -236,10 +236,11 @@ export function transformClipConfig(videoClipPiece: AIGCClip) {
       sen.originTimestamp = sen.originTimestamp?.length
         ? sen.originTimestamp
         : sen.timestamp.map((time) => time + info.preDuration);
+      // sen.select = 1;
     }
     preDuration += info.duration;
   }
-  return { ...deepConfig };
+  return deepConfig;
 }
 
 /** 获取canvas画布等比例缩放的样式 */
@@ -261,3 +262,19 @@ export function getCanvasScaleStyleByResolutionAndContainerRect(
       margin-left: ${x}px;`;
   }
 }
+
+/** 获取播放的时长数组 */
+export const getSenPlayList = (clipConfig: AIGCClip) => {
+  const playListTime = [];
+  for (const info of clipConfig.info) {
+    for (const sen of info.sens) {
+      if (sen.select) {
+        playListTime.push({
+          start: sen.originTimestamp[0],
+          end: sen.originTimestamp[1],
+        });
+      }
+    }
+  }
+  return playListTime;
+};

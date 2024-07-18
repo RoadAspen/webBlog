@@ -47,7 +47,7 @@ export const currentConfig = {
 
 export const videoClipPiece: AIGCClip = {
   id: "piece",
-  duration: 0,
+  duration: 90,
   pointNum: 50,
   groupNum: 9,
   description: "",
@@ -111,7 +111,7 @@ export const videoClipPiece: AIGCClip = {
         },
         {
           id: "video_1_sen5",
-          select: 1,
+          select: 0,
           text: "片段一这是第五条字幕",
           textList: [],
           duration: 3.0,
@@ -133,7 +133,7 @@ export const videoClipPiece: AIGCClip = {
         },
         {
           id: "video_1_sen7",
-          select: 1,
+          select: 0,
           text: "片段一这是第七条字幕",
           textList: [],
           duration: 2.5,

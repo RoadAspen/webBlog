@@ -1,6 +1,7 @@
 import { useMemoizedFn } from "ahooks";
 import { Button, Checkbox, Select, Slider } from "antd";
 import { produce } from "immer";
+import { cloneDeep } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import {
@@ -15,12 +16,14 @@ import {
   getCanvasScaleStyleByResolutionAndContainerRect,
   getHtmlStringFromContentEditable,
   getSelectionAndTransform,
+  getSenPlayList,
   getStringFromHtml,
   transformClipConfig,
 } from "../utils/utils";
 import { VideoCanvas } from "./video-canvas";
 export function VideoClipClass() {
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const [allProgressTime, setAllProgressTime] = useState<number>(0);
   const canvasContainerRef = useRef<HTMLDivElement | null>(null);
   /** 视频class实例 */
   const videoCanvasInstanceRef = useRef<VideoCanvas>();
@@ -28,17 +31,23 @@ export function VideoClipClass() {
     transformClipConfig(videoClipPiece)
   );
   const [playing, setPlaying] = useState(false);
-  const [fontFamily, setFontFamily] = useState<FontFamily>(fontFamilyList[0]);
-  const [fontSize, setFontSize] = useState<FontSize>(60);
-  /** 更新的  */
-  const currentVideoClipPieceRef = useRef<AIGCClip>(currentVideoClipPiece);
-  const currentIntervalIndexRef = useRef(0);
   const [fontStyle, setFontStyle] = useState<FontStyle | undefined>(
     fontStyleList[0]
   );
   const [lightFontStyle, setLightFontStyle] = useState<FontStyle | undefined>(
     lightFontStyleList[0]
   );
+  const [fontFamily, setFontFamily] = useState<FontFamily>(fontFamilyList[0]);
+  const [fontSize, setFontSize] = useState<FontSize>(60);
+  /** 切片配置 ref */
+  const currentVideoClipPieceRef = useRef<AIGCClip>(currentVideoClipPiece);
+  /** 当前播放的视频片段索引index ref */
+  const currentIntervalIndexRef = useRef(0);
+  /** 当前可播放的视频时长区间列表 ref */
+  const senPlayListRef = useRef(
+    getSenPlayList(currentVideoClipPieceRef.current)
+  );
+
   /** 选中的句子的总时长 */
   const allPieceDuration = useMemo(() => {
     let duration = 0;
@@ -51,26 +60,12 @@ export function VideoClipClass() {
     });
     return duration;
   }, [currentVideoClipPiece]);
-  /** 支持播放的时长数组 */
-  const senPlayList = useMemo(() => {
-    const playListTime = [];
-    for (const info of currentVideoClipPiece.info) {
-      for (const sen of info.sens) {
-        if (sen.select) {
-          playListTime.push({
-            start: sen.originTimestamp[0],
-            end: sen.originTimestamp[1],
-          });
-        }
-      }
-    }
-    return playListTime;
-  }, [currentVideoClipPiece]);
+
   /** 根据进度条的时间，获取到原视频的的播放时间 */
   const getPlayTimeByProgress = useMemoizedFn((currentPreviewTime: number) => {
     let progressTime = 0;
     let allTime = 0;
-    for (const info of currentVideoClipPiece.info) {
+    for (const info of currentVideoClipPieceRef.current.info) {
       for (const sen of info.sens) {
         if (sen.select) {
           const nextProgressTime = progressTime + sen.duration;
@@ -85,6 +80,44 @@ export function VideoClipClass() {
     }
     return allTime;
   });
+  /** 更新进度条 */
+  const handleTimeUpdate = useMemoizedFn((time: number) => {
+    console.log("handleTimeUpdate time", time);
+    const currentTime = time / 1e6;
+    setAllProgressTime(currentTime);
+    const currentInterval =
+      senPlayListRef.current[currentIntervalIndexRef.current];
+    if (currentInterval) {
+      // 跳过不需要播放的区间
+      if (
+        currentTime >= currentInterval.end ||
+        currentTime + 0.34 > currentInterval.end
+      ) {
+        currentIntervalIndexRef.current++;
+        if (currentIntervalIndexRef.current < senPlayListRef.current.length) {
+          const nextInterval =
+            senPlayListRef.current[currentIntervalIndexRef.current];
+          if (nextInterval.start > currentInterval.end) {
+            videoCanvasInstanceRef.current?.play({
+              start: nextInterval.start * 1e6,
+            });
+            return;
+          }
+        } else {
+          currentIntervalIndexRef.current = 0;
+          videoCanvasInstanceRef.current?.play({
+            start: senPlayListRef.current[0].start * 1e6,
+          });
+        }
+      }
+    } else {
+      currentIntervalIndexRef.current = 0;
+      videoCanvasInstanceRef.current?.play({
+        start:
+          senPlayListRef.current[currentIntervalIndexRef.current].start * 1e6,
+      });
+    }
+  });
   useEffect(() => {
     if (canvasContainerRef.current && !videoCanvasInstanceRef.current) {
       videoCanvasInstanceRef.current = new VideoCanvas({
@@ -95,59 +128,7 @@ export function VideoClipClass() {
         lightFontStyle,
         fontFamily,
         playbackRate: 1,
-        handleTimeUpdate: (time) => {
-          const currentTime = time / 1e6;
-          const currentInterval = senPlayList[currentIntervalIndexRef.current];
-          if (currentInterval) {
-            // 跳过不需要播放的区间
-            if (currentTime >= currentInterval.end) {
-              currentIntervalIndexRef.current++;
-              if (currentIntervalIndexRef.current < senPlayList.length) {
-                const nextInterval =
-                  senPlayList[currentIntervalIndexRef.current];
-                if (currentInterval.end < nextInterval.start) {
-                  videoCanvasInstanceRef.current?.play({
-                    start: nextInterval.start * 1e6,
-                  });
-                }
-                const elapsedPlayTime =
-                  senPlayList
-                    .slice(0, currentIntervalIndexRef.current)
-                    .reduce(
-                      (total, interval) =>
-                        total + (interval.end - interval.start),
-                      0
-                    ) +
-                  (currentTime - currentInterval.start);
-                setCurrentTime(elapsedPlayTime);
-              } else {
-                currentIntervalIndexRef.current = 0;
-                setCurrentTime(0);
-                videoCanvasInstanceRef.current?.play({
-                  start:
-                    senPlayList[currentIntervalIndexRef.current].start * 1e6,
-                });
-              }
-            } else {
-              const elapsedPlayTime =
-                senPlayList
-                  .slice(0, currentIntervalIndexRef.current)
-                  .reduce(
-                    (total, interval) =>
-                      total + (interval.end - interval.start),
-                    0
-                  ) +
-                (currentTime - currentInterval.start);
-              setCurrentTime(elapsedPlayTime);
-            }
-          } else {
-            currentIntervalIndexRef.current = 0;
-            setCurrentTime(0);
-            videoCanvasInstanceRef.current?.play({
-              start: senPlayList[currentIntervalIndexRef.current].start * 1e6,
-            });
-          }
-        },
+        handleTimeUpdate: handleTimeUpdate,
         onPlayingChange: (play: boolean) => {
           setPlaying(play);
         },
@@ -161,7 +142,7 @@ export function VideoClipClass() {
           ),
         },
       });
-      videoCanvasInstanceRef.current.init(videoClipPiece);
+      videoCanvasInstanceRef.current.init(currentVideoClipPiece);
     }
   }, [
     allPieceDuration,
@@ -169,10 +150,9 @@ export function VideoClipClass() {
     fontFamily,
     fontSize,
     fontStyle,
+    handleTimeUpdate,
     lightFontStyle,
-    senPlayList,
   ]);
-
   return (
     <div className="canvas-wrap">
       <div className="flex mx-10">
@@ -181,6 +161,16 @@ export function VideoClipClass() {
             className="w-[600px] h-[560px] bg-black overflow-hidden"
             ref={canvasContainerRef}
           ></div>
+          <div className="flex">
+            全部进度条
+            <Slider
+              className="mx-10 flex-1"
+              min={0}
+              max={currentVideoClipPiece.duration}
+              value={allProgressTime}
+              step={0.1}
+            ></Slider>
+          </div>
           <div className="flex my-5">
             <button
               className="mx-[10px]"
@@ -189,13 +179,18 @@ export function VideoClipClass() {
                 setPlaying(!playing);
                 if (playing) {
                   videoCanvasInstanceRef.current.pause();
+                  console.log("暂停");
                 } else {
                   if (currentTime === 0) {
                     currentIntervalIndexRef.current = 0;
                     videoCanvasInstanceRef.current.play({
                       start:
-                        senPlayList[currentIntervalIndexRef.current].start *
-                        1e6,
+                        senPlayListRef.current[currentIntervalIndexRef.current]
+                          .start * 1e6,
+                    });
+                  } else {
+                    videoCanvasInstanceRef.current.play({
+                      start: videoCanvasInstanceRef.current.currentTime,
                     });
                   }
                 }
@@ -210,11 +205,28 @@ export function VideoClipClass() {
               value={currentTime}
               step={0.1}
               onChange={(val) => {
-                console.log("val", allPieceDuration, val, currentTime);
                 const previewTime = getPlayTimeByProgress(val);
+                setCurrentTime(val);
+                const index = senPlayListRef.current.findIndex((playArr) => {
+                  if (
+                    playArr.start <= previewTime &&
+                    playArr.end >= previewTime
+                  ) {
+                    console.log(
+                      "senPlayListRef.current, playArr",
+                      previewTime,
+                      senPlayListRef.current,
+                      playArr
+                    );
+                    return true;
+                  }
+                  return false;
+                });
+                currentIntervalIndexRef.current = index;
                 videoCanvasInstanceRef.current?.previewFrame(previewTime * 1e6);
               }}
             ></Slider>
+            <div></div>
             {/* <div className="flex flex-row">
               <p className="mr-5">倍速播放</p>
               <Select
@@ -347,46 +359,43 @@ export function VideoClipClass() {
                             onChange={(e) => {
                               const checked = e.target.checked;
                               console.log("checked", checked);
-                              setCurrentVideoClipPiece(
-                                produce((draft) => {
-                                  const currentVideoClip = draft.info.find(
-                                    (clipItem) => clipItem.id === videoClip.id
-                                  );
-                                  if (currentVideoClip) {
-                                    const currentText = currentVideoClip.sens.find(
-                                      (textItem) => textItem.id === sen.id
-                                    );
-                                    if (currentText) {
-                                      currentText.select = checked ? 1 : 0;
-                                      console.log(
-                                        "currentText.select",
-                                        currentText.select
-                                      );
-                                      if (currentText.select) {
-                                        videoCanvasInstanceRef.current?.addImageSprite2Track(
-                                          {
-                                            trackId: sen.id,
-                                            sen: {
-                                              id: sen.id,
-                                              start:
-                                                sen.originTimestamp?.[0] || 0,
-                                              end:
-                                                sen.originTimestamp?.[1] || 0,
-                                              textList: sen.textList,
-                                            },
-                                          }
-                                        );
-                                      } else {
-                                        videoCanvasInstanceRef.current?.removeSprite2Track(
-                                          {
-                                            trackId: sen.id,
-                                          }
-                                        );
-                                      }
-                                    }
-                                  }
-                                })
+                              const deepConfig = cloneDeep(
+                                currentVideoClipPieceRef.current
                               );
+                              const currentVideoClip = deepConfig.info.find(
+                                (clipItem) => clipItem.id === videoClip.id
+                              );
+                              if (currentVideoClip) {
+                                const currentText = currentVideoClip.sens.find(
+                                  (textItem) => textItem.id === sen.id
+                                );
+                                if (currentText) {
+                                  currentText.select = checked ? 1 : 0;
+                                }
+                              }
+                              currentVideoClipPieceRef.current = deepConfig;
+                              senPlayListRef.current = getSenPlayList(
+                                currentVideoClipPieceRef.current
+                              );
+                              if (checked) {
+                                currentIntervalIndexRef.current = 2;
+                                videoCanvasInstanceRef.current?.previewFrame(
+                                  sen.originTimestamp?.[0] * 1e6
+                                );
+                              } else {
+                                currentIntervalIndexRef.current = 2;
+                                videoCanvasInstanceRef.current?.removeSprite2Track(
+                                  { trackId: sen.id }
+                                );
+                                if (currentIntervalIndexRef.current > 1) {
+                                  videoCanvasInstanceRef.current?.previewFrame(
+                                    senPlayListRef.current[
+                                      currentIntervalIndexRef.current - 1
+                                    ].start * 1e6
+                                  );
+                                }
+                              }
+                              setCurrentVideoClipPiece(deepConfig);
                             }}
                           />
                           <ContentEditable

@@ -110,7 +110,7 @@ export class VideoCanvas {
         await this.addImageSprite2Track({trackId:sen.id,sen:{
           id:group.id + sen.id,
           start:sen.originTimestamp[0]*1e6,
-          end:sen.originTimestamp[0]*1e6,
+          end:sen.originTimestamp[1]*1e6,
           textList:[{text:sen.text,isLight:false}]
         }})
       }
@@ -161,8 +161,8 @@ export class VideoCanvas {
     const imageClip = new ImgClip(imageStream);
     await imageClip.ready;
     const spr = new VisibleSprite(imageClip);
-    spr.rect.x = 0;
-    spr.rect.y = 1000;
+    // spr.rect.x = 50;
+    // spr.rect.y = 50;
     await this.avCvs?.addSprite(spr);
     spr.time.offset = sen.start;
     spr.time.duration = sen.end - sen.start;
@@ -268,6 +268,7 @@ export class VideoCanvas {
     this.avCvs?.play({start,end:end ?? 900000000,playbackRate})
     this.#playing = true
   }
+
   /** 暂停 */
   public pause(){
     this.#playing = false

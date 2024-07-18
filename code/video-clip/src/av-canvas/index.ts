@@ -120,7 +120,11 @@ export class AVCanvas {
 
       if (lastRenderTime !== this.#renderTime) {
         lastRenderTime = this.#renderTime;
-        this.#evtTool.emit('timeupdate', Math.round(lastRenderTime));
+        console.log('timeupdate',this.#playState.step);
+        console.log('timeupdate',Math.round(lastRenderTime));
+        if(this.#playState.step!==0){
+          this.#evtTool.emit('timeupdate', Math.round(lastRenderTime));
+        }
       }
     }, expectFrameTime);
   }
@@ -133,6 +137,7 @@ export class AVCanvas {
   #pause() {
     const emitPaused = this.#playState.step !== 0;
     this.#playState.step = 0;
+    console.log('this.#playState.step',this.#playState.step);
     if (emitPaused) {
       this.#evtTool.emit('paused');
       this.#audioCtx.suspend();
@@ -156,12 +161,13 @@ export class AVCanvas {
     const cvsCtx = this.#cvsCtx;
     let ts = this.#renderTime;
     const { start, end, step, audioPlayAt } = this.#playState;
+    console.log('#render',step);
     if (step !== 0 && ts >= start && ts < end) {
       ts += step;
+      this.#updateRenderTime(ts);
     } else {
       this.#pause();
     }
-    this.#updateRenderTime(ts);
 
     const ctxDestAudioData: Float32Array[][] = [];
     for (const s of this.#spriteManager.getSprites()) {
@@ -207,9 +213,8 @@ export class AVCanvas {
       throw Error(
         `Invalid time parameter, ${JSON.stringify({ start: opts.start, end })}`,
       );
-    }
-
-    this.#updateRenderTime(opts.start);
+    };
+    // 渲染sprite的第一帧，对暂停后重新播放有影响，先取消
     this.#spriteManager
       .getSprites({ time: false })
       .forEach((vs) => vs.preFirstFrame());
@@ -221,15 +226,17 @@ export class AVCanvas {
     this.#audioCtx.resume();
     this.#playState.audioPlayAt = 0;
 
+    this.#updateRenderTime(opts.start)
     this.#evtTool.emit('playing');
     Log.info('AVCanvs play by:', this.#playState);
   }
   pause() {
     this.#pause();
   }
+  /** 跳转到对应的时间节点，然后暂停 */
   previewFrame(time: number) {
-    this.#updateRenderTime(time);
     this.#pause();
+    this.#updateRenderTime(time);
   }
 /** 设置倍速 */
   set playbackRate(nextPlaybackRate:number){

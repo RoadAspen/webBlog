@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Canvas 花字示例</title>
+  </head>
+  <body>
+    <script>
+      const a = 10;
+      // const fontFamily = "报隶-简";
+      const fontFamily = "华文楷体";
+      const fontSize = 36;
+      const fontList = [
+        {
+          text: "花字1",
+          fontStyle: {
+            id: 1,
+            shadow: {
+              shadowColor: "rgba(0, 0, 0, 0.50)",
+              shadowBlur: 6,
+              shadowOffsetX: 2,
+              shadowOffsetY: 2,
+            },
+            /** 填充 */
+            fill: {
+              color: "white",
+            },
+          },
+        },
+        {
+          text: "花字8",
+          fontStyle: {
+            id: 8,
+            /** 描边 */
+            stroke: [
+              {
+                strokeStyle: "#36ff00",
+                lineWidth: 4,
+              },
+            ],
+            /** 填充 */
+            fill: {
+              color: "#004ee6",
+            },
+          },
+        },
+        {
+          text: "花字14",
+          fontStyle: {
+            id: 14,
+            /** 描边 */
+            stroke: [
+              {
+                strokeStyle: "#ab2002",
+                lineWidth: 4,
+                strokeOffsetY: 1,
+                strokeOffsetX: 1,
+              },
+              {
+                strokeStyle: "#ab2002",
+                lineWidth: 4,
+              },
+              {
+                strokeStyle: "#efefd1",
+                lineWidth: 3,
+              },
+            ],
+            /** 填充 */
+            fill: {
+              color: "#001657",
+            },
+          },
+        },
+        {
+          text: "花字17",
+          fontStyle: {
+            id: 17,
+            /** 描边 */
+            stroke: [
+              {
+                strokeStyle: "#D77C31",
+                lineWidth: 5,
+                strokeOffsetY: 0.6,
+                strokeOffsetX: 0.6,
+              },
+              {
+                strokeStyle: "#FFFFFF",
+                lineWidth: 4,
+              },
+              {
+                strokeStyle: "#D77C31",
+                lineWidth: 2,
+              },
+            ],
+            /** 填充 */
+            fill: {
+              color: "#FDF9B1",
+            },
+          },
+        },
+        {
+          text: "花字23",
+          fontStyle: {
+            id: 23,
+            /** 描边 */
+            stroke: [
+              {
+                strokeStyle: "#3ee756",
+                lineWidth: 1,
+                strokeOffsetX: 1,
+                strokeOffsetY: 1,
+              },
+            ],
+            shadow: {
+              shadowColor: "#3ee756",
+              shadowBlur: 0,
+              shadowOffsetX: 1,
+              shadowOffsetY: 1,
+            },
+            /** 填充 */
+            fill: {
+              color: "#000000",
+            },
+          },
+        },
+      ];
+      document.addEventListener("DOMContentLoaded", function() {
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.scale(2, 2);
+        const lineHeight = 36;
+        const maxLineWidth = 5000;
+        const xPadding = 100;
+        const yPadding = 300;
+        canvas.width = 5000;
+        canvas.height = 5000;
+
+        let x = xPadding;
+        let y = yPadding;
+
+        fontList.forEach((font, index) => {
+          ctx.font = `bold ${fontSize * a}px ${fontFamily}`;
+          // 测量字符宽度
+          const textWidth = ctx.measureText(font.text).width;
+          // 判断是否需要换行
+          if (x + textWidth > maxLineWidth) {
+            x = xPadding;
+            y += lineHeight * a;
+          }
+          ctx.save();
+          const { stroke, fill, shadow, filter } = font.fontStyle;
+          // 应用描边
+          if (stroke?.length) {
+            stroke.forEach((str) => {
+              ctx.lineJoin = "round";
+              ctx.strokeStyle = str.strokeStyle;
+              ctx.lineWidth = str.lineWidth * a;
+              // 描边路径
+              const clientX = str.strokeOffsetX ? x + str.strokeOffsetX * a : x;
+              const clientY = str.strokeOffsetY ? y + str.strokeOffsetY * a : y;
+              ctx.strokeText(font.text, clientX, clientY);
+              // ctx.stroke();
+            });
+          }
+
+          if (filter) {
+            ctx.filter = filter;
+          }
+          // 应用阴影
+          if (shadow) {
+            ctx.shadowColor = shadow.shadowColor;
+            ctx.shadowBlur = shadow.shadowBlur * a;
+            ctx.shadowOffsetX = shadow.shadowOffsetX * a;
+            ctx.shadowOffsetY = shadow.shadowOffsetY * a;
+          }
+          // 应用填充
+          if (fill) {
+            ctx.fillStyle = fill.color;
+          }
+          ctx.fillText(font.text, x, y);
+          ctx.restore();
+
+          x += textWidth + 50; // 增加字符间距
+        });
+      });
+    </script>
+    <div>
+      <canvas id="myCanvas" style="width: 5000px"></canvas>
+    </div>
+  </body>
+</html>
