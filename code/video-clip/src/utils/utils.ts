@@ -1,7 +1,7 @@
 import { AVCanvas } from "@webav/av-canvas";
 import _ from "lodash";
 import { nanoid } from "nanoid";
-import { AIGCClip, FontStyle, TextItem } from "../define";
+import { AIGCClip, TextItem } from "../define";
 
 export function assetsPrefix<T extends string[] | Record<string, string>>(
   assetsURL: T
@@ -70,30 +70,21 @@ export async function fetchSvgAsReadableStream(url: string) {
 
 /**
  *
- * @param svgText svg字符串
+ * @param imageUrl base64 字符串
  * @returns
  */
 export async function convertSvgToPngStream(
-  svgText: string
+  imageUrl: string
 ): Promise<ReadableStream<any>> {
-  // Create an off-screen canvas
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d") as CanvasRenderingContext2D;
-  // 创建Blob对象
-  const blob = new Blob([svgText], { type: "image/svg+xml" });
-
-  // 创建File对象
-  const file = new File([blob], "example.svg", {
-    type: "image/svg+xml",
-  });
-  const svgUrl = URL.createObjectURL(file);
   // Create an image element and load the SVG into it
   const img = new Image();
-  img.src = svgUrl;
+  img.src = imageUrl;
 
   return new Promise((resolve, reject) => {
     img.onload = () => {
       // Set canvas dimensions to match the image
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d") as CanvasRenderingContext2D;
       canvas.width = img.width;
       canvas.height = img.height;
 
@@ -186,31 +177,6 @@ export function getSelectionAndTransform(textList: TextItem[]) {
   return textList;
 }
 
-/** 拼装svg字符串*/
-export function createSvg(params: {
-  fontFamily: string;
-  fontSize: number;
-  fontStyle?: FontStyle | null;
-  lightFontStyle?: FontStyle | null;
-  textList: TextItem[];
-  /** 视频分辨率 */
-  resolution: {
-    width: number;
-    height: number;
-  };
-}): string {
-  const { fontFamily, fontSize, fontStyle, lightFontStyle, textList } = params;
-  const prefixSvg = `<svg font-family="${fontFamily}" width="800" height="200" xmlns="http://www.w3.org/2000/svg">`;
-  const afterSvg = `</svg>`;
-  let textListStr = `<text stroke="black" font-size="${fontSize}" x="10" y="40">replace</text>`;
-  const tspanStr = textList.reduce((prev, item) => {
-    const { text, isLight } = item;
-    return prev + text;
-  }, "");
-  textListStr = textListStr.replace("replace", tspanStr);
-  return prefixSvg + textListStr + afterSvg;
-}
-
 /**
  * 跳转到视频的指定位置
  * avCanvas 编辑器实例
@@ -236,7 +202,6 @@ export function transformClipConfig(videoClipPiece: AIGCClip) {
       sen.originTimestamp = sen.originTimestamp?.length
         ? sen.originTimestamp
         : sen.timestamp.map((time) => time + info.preDuration);
-      // sen.select = 1;
     }
     preDuration += info.duration;
   }
@@ -270,6 +235,7 @@ export const getSenPlayList = (clipConfig: AIGCClip) => {
     for (const sen of info.sens) {
       if (sen.select) {
         playListTime.push({
+          id: sen.id,
           start: sen.originTimestamp[0],
           end: sen.originTimestamp[1],
         });

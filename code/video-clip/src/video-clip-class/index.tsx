@@ -11,7 +11,7 @@ import {
   lightFontStyleList,
   videoClipPiece,
 } from "../constant";
-import { AIGCClip, FontFamily, FontSize, FontStyle } from "../define";
+import { AIGCClip, FontFamily, FontSize, FontStyleItem } from "../define";
 import {
   getCanvasScaleStyleByResolutionAndContainerRect,
   getHtmlStringFromContentEditable,
@@ -31,10 +31,8 @@ export function VideoClipClass() {
     transformClipConfig(videoClipPiece)
   );
   const [playing, setPlaying] = useState(false);
-  const [fontStyle, setFontStyle] = useState<FontStyle | undefined>(
-    fontStyleList[0]
-  );
-  const [lightFontStyle, setLightFontStyle] = useState<FontStyle | undefined>(
+  const [fontStyle, setFontStyle] = useState<FontStyleItem>(fontStyleList[0]);
+  const [lightFontStyle, setLightFontStyle] = useState<FontStyleItem>(
     lightFontStyleList[0]
   );
   const [fontFamily, setFontFamily] = useState<FontFamily>(fontFamilyList[0]);
@@ -82,7 +80,6 @@ export function VideoClipClass() {
   });
   /** 更新进度条 */
   const handleTimeUpdate = useMemoizedFn((time: number) => {
-    console.log("handleTimeUpdate time", time);
     const currentTime = time / 1e6;
     setAllProgressTime(currentTime);
     const currentInterval =
@@ -143,6 +140,9 @@ export function VideoClipClass() {
         },
       });
       videoCanvasInstanceRef.current.init(currentVideoClipPiece);
+      videoCanvasInstanceRef.current.previewFrame(
+        senPlayListRef.current[0].start * 1e6
+      );
     }
   }, [
     allPieceDuration,
@@ -154,7 +154,7 @@ export function VideoClipClass() {
     lightFontStyle,
   ]);
   return (
-    <div className="canvas-wrap">
+    <div className="canvas-wrap" draggable={false}>
       <div className="flex mx-10">
         <div className="w-1/2 pt-10">
           <div
@@ -190,7 +190,7 @@ export function VideoClipClass() {
                     });
                   } else {
                     videoCanvasInstanceRef.current.play({
-                      start: videoCanvasInstanceRef.current.currentTime,
+                      start: allProgressTime * 1e6,
                     });
                   }
                 }
@@ -205,29 +205,28 @@ export function VideoClipClass() {
               value={currentTime}
               step={0.1}
               onChange={(val) => {
+                setCurrentTime(val);
+              }}
+              onChangeComplete={(val) => {
                 const previewTime = getPlayTimeByProgress(val);
                 setCurrentTime(val);
+                console.log(val, previewTime, senPlayListRef.current);
                 const index = senPlayListRef.current.findIndex((playArr) => {
                   if (
                     playArr.start <= previewTime &&
                     playArr.end >= previewTime
                   ) {
-                    console.log(
-                      "senPlayListRef.current, playArr",
-                      previewTime,
-                      senPlayListRef.current,
-                      playArr
-                    );
                     return true;
                   }
                   return false;
                 });
+                console.log(index);
                 currentIntervalIndexRef.current = index;
+                setAllProgressTime(previewTime);
                 videoCanvasInstanceRef.current?.previewFrame(previewTime * 1e6);
               }}
             ></Slider>
-            <div></div>
-            {/* <div className="flex flex-row">
+            <div className="flex flex-row">
               <p className="mr-5">倍速播放</p>
               <Select
                 className="w-10"
@@ -248,6 +247,7 @@ export function VideoClipClass() {
                 </Select.Option>
               </Select>
             </div>
+            {/*
             <div className="mx-5 flex">
               <p className="mr-5">音量控制</p>
               <Slider
@@ -305,7 +305,9 @@ export function VideoClipClass() {
                   const nextFontStyle = fontStyleList.find(
                     (fs) => fs.id === fontStyleId
                   );
-                  setFontStyle(nextFontStyle);
+                  if (nextFontStyle) {
+                    setFontStyle(nextFontStyle);
+                  }
                 }}
                 style={{ width: 300, marginLeft: 10, marginRight: 10 }}
               >
@@ -325,7 +327,9 @@ export function VideoClipClass() {
                   const nextFontStyle = lightFontStyleList.find(
                     (fs) => fs.id === lightFontStyleId
                   );
-                  setLightFontStyle(nextFontStyle);
+                  if (nextFontStyle) {
+                    setLightFontStyle(nextFontStyle);
+                  }
                 }}
                 style={{ width: 300, marginLeft: 10, marginRight: 10 }}
               >
@@ -359,6 +363,7 @@ export function VideoClipClass() {
                             onChange={(e) => {
                               const checked = e.target.checked;
                               console.log("checked", checked);
+                              videoCanvasInstanceRef.current?.pause();
                               const deepConfig = cloneDeep(
                                 currentVideoClipPieceRef.current
                               );
@@ -378,22 +383,23 @@ export function VideoClipClass() {
                                 currentVideoClipPieceRef.current
                               );
                               if (checked) {
-                                currentIntervalIndexRef.current = 2;
+                                const index = senPlayListRef.current.findIndex(
+                                  (item) => item.id === sen.id
+                                );
+                                currentIntervalIndexRef.current = index;
                                 videoCanvasInstanceRef.current?.previewFrame(
                                   sen.originTimestamp?.[0] * 1e6
                                 );
                               } else {
-                                currentIntervalIndexRef.current = 2;
-                                videoCanvasInstanceRef.current?.removeSprite2Track(
-                                  { trackId: sen.id }
+                                currentIntervalIndexRef.current =
+                                  currentIntervalIndexRef.current > 1
+                                    ? currentIntervalIndexRef.current - 1
+                                    : currentIntervalIndexRef.current;
+                                videoCanvasInstanceRef.current?.previewFrame(
+                                  senPlayListRef.current[
+                                    currentIntervalIndexRef.current
+                                  ].start * 1e6
                                 );
-                                if (currentIntervalIndexRef.current > 1) {
-                                  videoCanvasInstanceRef.current?.previewFrame(
-                                    senPlayListRef.current[
-                                      currentIntervalIndexRef.current - 1
-                                    ].start * 1e6
-                                  );
-                                }
                               }
                               setCurrentVideoClipPiece(deepConfig);
                             }}

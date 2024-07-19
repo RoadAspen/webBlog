@@ -1,13 +1,38 @@
 export interface FontStyle {
+  /** 描边 */
+  stroke?: {
+    strokeStyle: string;
+    lineWidth: number;
+    strokeOffsetY?: number;
+    strokeOffsetX?: number;
+    lineJoin: CanvasLineJoin;
+  }[];
+  /** 阴影 */
+  shadow?: {
+    shadowColor: string;
+    shadowBlur: number;
+    shadowOffsetX?: number;
+    shadowOffsetY?: number;
+  };
+  /** 滤镜 */
+  filter?: string;
+  /** 填充 */
+  fill: {
+    color: string;
+  };
+}
+export interface FontStyleItem {
   /** id */
   id: number;
   /** 名称 */
   name: string;
-  /** svg字符串 */
-  svgText: string;
+  /** 字体样式 */
+  fontStyle: FontStyle;
 }
 
+/** 字体 */
 export type FontFamily = string;
+/** 字体大小 */
 export type FontSize = number;
 
 export interface TextItem {

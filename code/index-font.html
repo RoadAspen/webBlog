@@ -6,13 +6,10 @@
   </head>
   <body>
     <script>
-      const a = 10;
-      // const fontFamily = "报隶-简";
-      const fontFamily = "华文楷体";
-      const fontSize = 36;
+      /** 花字列表 */
       const fontList = [
         {
-          text: "花字1",
+          text: "片段一这是第一条字幕",
           fontStyle: {
             id: 1,
             shadow: {
@@ -36,6 +33,7 @@
               {
                 strokeStyle: "#36ff00",
                 lineWidth: 4,
+                lineJoin: "round",
               },
             ],
             /** 填充 */
@@ -55,14 +53,17 @@
                 lineWidth: 4,
                 strokeOffsetY: 1,
                 strokeOffsetX: 1,
+                lineJoin: "round",
               },
               {
                 strokeStyle: "#ab2002",
                 lineWidth: 4,
+                lineJoin: "round",
               },
               {
                 strokeStyle: "#efefd1",
                 lineWidth: 3,
+                lineJoin: "round",
               },
             ],
             /** 填充 */
@@ -82,14 +83,17 @@
                 lineWidth: 5,
                 strokeOffsetY: 0.6,
                 strokeOffsetX: 0.6,
+                lineJoin: "round",
               },
               {
                 strokeStyle: "#FFFFFF",
                 lineWidth: 4,
+                lineJoin: "round",
               },
               {
                 strokeStyle: "#D77C31",
                 lineWidth: 2,
+                lineJoin: "round",
               },
             ],
             /** 填充 */
@@ -109,6 +113,7 @@
                 lineWidth: 1,
                 strokeOffsetX: 1,
                 strokeOffsetY: 1,
+                lineJoin: "round",
               },
             ],
             shadow: {
@@ -125,67 +130,101 @@
         },
       ];
       document.addEventListener("DOMContentLoaded", function() {
+        /** 放大倍数，削减文字锯齿 */
+        const multiple = 10;
+        /** 字间距 */
+        const letterSpacing = 1;
+        /*** 行间距 */
+        const lineSpacing = 10;
+        /** 字体 */
+        const fontFamily = "华文楷体";
+        /** 字体大小 */
+        const fontSize = 36;
+        let isBr = false;
         const canvas = document.getElementById("myCanvas");
         const ctx = canvas.getContext("2d");
-        ctx.scale(2, 2);
-        const lineHeight = 36;
-        const maxLineWidth = 5000;
-        const xPadding = 100;
-        const yPadding = 300;
-        canvas.width = 5000;
+        const maxLineWidth = 2000;
+        const xPadding = 0;
+        const yPadding = (fontSize + lineSpacing / 2) * multiple;
+        canvas.width = maxLineWidth;
         canvas.height = 5000;
 
-        let x = xPadding;
-        let y = yPadding;
+        let drawX = xPadding;
+        let drawY = yPadding;
 
-        fontList.forEach((font, index) => {
-          ctx.font = `bold ${fontSize * a}px ${fontFamily}`;
-          // 测量字符宽度
-          const textWidth = ctx.measureText(font.text).width;
-          // 判断是否需要换行
-          if (x + textWidth > maxLineWidth) {
-            x = xPadding;
-            y += lineHeight * a;
-          }
-          ctx.save();
-          const { stroke, fill, shadow, filter } = font.fontStyle;
-          // 应用描边
-          if (stroke?.length) {
-            stroke.forEach((str) => {
-              ctx.lineJoin = "round";
-              ctx.strokeStyle = str.strokeStyle;
-              ctx.lineWidth = str.lineWidth * a;
-              // 描边路径
-              const clientX = str.strokeOffsetX ? x + str.strokeOffsetX * a : x;
-              const clientY = str.strokeOffsetY ? y + str.strokeOffsetY * a : y;
-              ctx.strokeText(font.text, clientX, clientY);
-              // ctx.stroke();
-            });
-          }
+        for (const font of fontList) {
+          if (!font.text) continue;
+          for (const text of font.text) {
+            ctx.font = `${fontSize * multiple}px ${fontFamily}`;
+            // 测量字符宽度
+            const textWidth = ctx.measureText(text).width;
 
-          if (filter) {
-            ctx.filter = filter;
-          }
-          // 应用阴影
-          if (shadow) {
-            ctx.shadowColor = shadow.shadowColor;
-            ctx.shadowBlur = shadow.shadowBlur * a;
-            ctx.shadowOffsetX = shadow.shadowOffsetX * a;
-            ctx.shadowOffsetY = shadow.shadowOffsetY * a;
-          }
-          // 应用填充
-          if (fill) {
-            ctx.fillStyle = fill.color;
-          }
-          ctx.fillText(font.text, x, y);
-          ctx.restore();
+            console.log("text", text, textWidth);
+            // 判断是否需要换行
+            if (drawX + textWidth > maxLineWidth) {
+              isBr = true;
+              drawX = xPadding;
+              drawY += yPadding;
+            }
+            ctx.save();
+            const { stroke, fill, shadow, filter } = font.fontStyle;
+            // 应用描边
+            if (stroke?.length) {
+              for (const str of stroke) {
+                ctx.lineJoin = str.lineJoin;
+                ctx.strokeStyle = str.strokeStyle;
+                ctx.lineWidth = str.lineWidth * multiple;
+                // 描边路径
+                const clientX = drawX + (str.strokeOffsetX || 0) * multiple;
+                const clientY = drawY + (str.strokeOffsetY || 0) * multiple;
+                ctx.strokeText(text, clientX, clientY);
+              }
+            }
 
-          x += textWidth + 50; // 增加字符间距
-        });
+            if (filter) {
+              ctx.filter = filter;
+            }
+            // 应用阴影
+            if (shadow) {
+              ctx.shadowColor = shadow.shadowColor;
+              ctx.shadowBlur = shadow.shadowBlur * multiple;
+              ctx.shadowOffsetX = shadow.shadowOffsetX * multiple;
+              ctx.shadowOffsetY = shadow.shadowOffsetY * multiple;
+            }
+            // 应用填充
+            if (fill) {
+              ctx.fillStyle = fill.color;
+            }
+            ctx.fillText(text, drawX, drawY);
+            ctx.restore();
+
+            drawX += textWidth + letterSpacing * multiple; // 增加字符间距
+          }
+        }
+        console.log("xy", drawX, drawY);
+        const width = isBr ? maxLineWidth : drawX;
+        const height = drawY + lineSpacing * multiple;
+        // 获取要裁剪的图像数据
+        const imageData = ctx.getImageData(0, 0, width, height);
+
+        // 创建新的 Canvas 并绘制裁剪后的图像数据
+        const croppedCanvas = document.createElement("canvas");
+        croppedCanvas.width = width;
+        croppedCanvas.height = height;
+        const croppedCtx = croppedCanvas.getContext("2d");
+        croppedCtx.putImageData(imageData, 0, 0);
+
+        // // 导出裁剪后的图像
+        const croppedImageURL = croppedCanvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = croppedImageURL;
+        link.download = "cropped_image.png";
+        link.click();
+        link.remove();
       });
     </script>
     <div>
-      <canvas id="myCanvas" style="width: 5000px"></canvas>
+      <canvas id="myCanvas"></canvas>
     </div>
   </body>
 </html>

@@ -1,23 +1,24 @@
 import {ImgClip,MP4Clip,VisibleSprite} from "@webav/av-cliper";
 import {TimelineAction,TimelineState} from "@xzdarcy/react-timeline-editor";
 import {AVCanvas} from "../av-canvas";
-import {AIGCClip,FontFamily,FontStyle,SingleText} from "../define";
-import {convertSvgToPngStream,createSvg} from "../utils/utils";
+import {AIGCClip,FontFamily,FontStyleItem,SingleText} from "../define";
+import {convertSvgToPngStream} from "../utils/utils";
+import {createImageFromSubtitleList} from './subtitle-canvas-render';
 
 interface VideoCanvasConstructor {
   cvsWrapEl: HTMLDivElement;
   handleTimeUpdate?: (time: number) => void;
   onPlayingChange?: (playing: boolean) => void;
-  canvasStyle?: {
+  canvasStyle: {
     bgColor: string;
     width: number;
     height: number;
     style:string
   };
-  fontSize?: number;
-  fontStyle?: FontStyle;
-  lightFontStyle?: FontStyle;
-  fontFamily?: string;
+  fontSize: number;
+  fontStyle: FontStyleItem;
+  lightFontStyle: FontStyleItem;
+  fontFamily: string;
   clipConfig: AIGCClip;
   volume?: number;
   playing?:boolean;
@@ -33,13 +34,13 @@ export class VideoCanvas {
   /** 播放状态 */
   tlState?: TimelineState;
   /** fontSize */
-  #fontSize?: number;
+  #fontSize: number;
   /** 花字 */
-  #fontStyle?: FontStyle;
+  #fontStyle: FontStyleItem;
   /** 重点花字 */
-  #lightFontStyle?: FontStyle;
+  #lightFontStyle: FontStyleItem;
   /** 字体 */
-  #fontFamily?: FontFamily;
+  #fontFamily: FontFamily;
   /** 上一个视频结尾时间 */
   preVideoTime = 0;
   /** 视频切片配置 */
@@ -52,6 +53,7 @@ export class VideoCanvas {
   #playbackRate:number = 1.0;
   /** currentTime */
   currentTime:number = 0;
+  
   /** 实例 */
   constructor(props: VideoCanvasConstructor) {
     const {
@@ -149,15 +151,15 @@ export class VideoCanvas {
     isPreviewFrame?: boolean
   ) => {
     const { trackId, sen, name } = params;
-    const svgImg = createSvg({
+    const textImageBase64String = await createImageFromSubtitleList({
       textList: sen.textList,
-      fontSize: this.#fontSize || 20,
-      fontFamily: this.#fontFamily || '',
+      fontSize: this.#fontSize,
       fontStyle: this.#fontStyle,
       lightFontStyle: this.#lightFontStyle,
-      resolution: this.clipConfig.resolution,
+      containerWidth: 5000,
+      multiple:1
     });
-    const imageStream = await convertSvgToPngStream(svgImg);
+    const imageStream = await convertSvgToPngStream(textImageBase64String);
     const imageClip = new ImgClip(imageStream);
     await imageClip.ready;
     const spr = new VisibleSprite(imageClip);
@@ -165,7 +167,8 @@ export class VideoCanvas {
     // spr.rect.y = 50;
     await this.avCvs?.addSprite(spr);
     spr.time.offset = sen.start;
-    spr.time.duration = sen.end - sen.start;
+    /** 防止相邻的两个图片时间重合，间隔设置为0.034s，刚好大于一帧的时间 */
+    spr.time.duration = sen.end - sen.start - 0.034;
 
     const action = {
       id: trackId,
@@ -237,9 +240,9 @@ export class VideoCanvas {
     /** fontSize */
     fontSize?: number;
     /** 花字 */
-    fontStyle?: FontStyle;
+    fontStyle?: FontStyleItem;
     /** 重点花字 */
-    lightFontStyle?: FontStyle;
+    lightFontStyle?: FontStyleItem;
     /** 字体 */
     fontFamily?: FontFamily;
   }) => {

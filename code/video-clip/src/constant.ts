@@ -1,4 +1,4 @@
-import { AIGCClip, FontFamily, FontSize, FontStyle } from "./define";
+import { AIGCClip, FontFamily, FontSize, FontStyleItem } from "./define";
 
 /** 示例视频url */
 export const video1Url = "./加油站.mp4";
@@ -11,31 +11,130 @@ export const fontFamilyList: FontFamily[] = [
   "凌慧体-简",
 ];
 
-export const fontStyleList: FontStyle[] = [
+export const fontStyleList: FontStyleItem[] = [
   {
-    id: 1,
-    name: "花字一",
-    svgText: `<svg xmlns="http://www.w3.org/2000/svg" id="图层_1" data-name="图层 1" viewBox="0 0 75.84 40.55"><defs><style>.cls-1,.cls-2,.cls-3,.cls-4,.cls-5{font-size:36px;font-family:SourceHanSansCN-Bold-GBpc-EUC-H, Source Han Sans CN;}.cls-1,.cls-5{fill:#e20026;}.cls-1{stroke:#e20026;}.cls-1,.cls-2,.cls-3{stroke-linecap:round;stroke-linejoin:round;}.cls-1,.cls-2{stroke-width:3px;}.cls-2{fill:#fff;stroke:#fff;}.cls-3{stroke:#000;stroke-width:2px;}.cls-4{fill:#a9e8ff;}</style></defs><title>16</title><text class="cls-1" transform="translate(2.34 34.35)">花字</text><text class="cls-2" transform="translate(1.74 33.85)">花字</text><text class="cls-3" transform="translate(1.74 33.85)">花字</text><text class="cls-4" transform="translate(1.74 33.85)">花字</text><text class="cls-5" transform="translate(1.74 33.85)">花字</text></svg>`,
+    id: 8,
+    name: "花字8",
+    fontStyle: {
+      /** 描边 */
+      stroke: [
+        {
+          strokeStyle: "#36ff00",
+          lineWidth: 4,
+          lineJoin: "round",
+        },
+      ],
+      /** 填充 */
+      fill: {
+        color: "#004ee6",
+      },
+    },
   },
   {
-    id: 2,
-    name: "花字二",
-    svgText: `<svg xmlns="http://www.w3.org/2000/svg" id="图层_1" data-name="图层 1" viewBox="0 0 76.74 42.05"><defs><style>.cls-1,.cls-2{font-size:36px;font-family:SourceHanSansCN-Bold-GBpc-EUC-H, Source Han Sans CN;}.cls-1{fill:#40593b;stroke:#40593b;stroke-linejoin:round;stroke-width:4px;}.cls-2{fill:#c3cf47;}</style></defs><title>7</title><text class="cls-1" transform="translate(2.74 34.85)">花字</text><text class="cls-2" transform="translate(2.74 34.85)">花字</text></svg>`,
+    id: 1,
+    name: "花字1",
+    fontStyle: {
+      shadow: {
+        shadowColor: "rgba(0, 0, 0, 0.50)",
+        shadowBlur: 6,
+        shadowOffsetX: 2,
+        shadowOffsetY: 2,
+      },
+      /** 填充 */
+      fill: {
+        color: "white",
+      },
+    },
+  },
+  {
+    id: 14,
+    name: "花字14",
+    fontStyle: {
+      /** 描边 */
+      stroke: [
+        {
+          strokeStyle: "#ab2002",
+          lineWidth: 4,
+          strokeOffsetY: 1,
+          strokeOffsetX: 1,
+          lineJoin: "round",
+        },
+        {
+          strokeStyle: "#ab2002",
+          lineWidth: 4,
+          lineJoin: "round",
+        },
+        {
+          strokeStyle: "#efefd1",
+          lineWidth: 3,
+          lineJoin: "round",
+        },
+      ],
+      /** 填充 */
+      fill: {
+        color: "#001657",
+      },
+    },
+  },
+  {
+    id: 17,
+    name: "花字17",
+    fontStyle: {
+      /** 描边 */
+      stroke: [
+        {
+          strokeStyle: "#D77C31",
+          lineWidth: 5,
+          strokeOffsetY: 0.6,
+          strokeOffsetX: 0.6,
+          lineJoin: "round",
+        },
+        {
+          strokeStyle: "#FFFFFF",
+          lineWidth: 4,
+          lineJoin: "round",
+        },
+        {
+          strokeStyle: "#D77C31",
+          lineWidth: 2,
+          lineJoin: "round",
+        },
+      ],
+      /** 填充 */
+      fill: {
+        color: "#FDF9B1",
+      },
+    },
+  },
+  {
+    id: 23,
+    name: "花字23",
+    fontStyle: {
+      /** 描边 */
+      stroke: [
+        {
+          strokeStyle: "#3ee756",
+          lineWidth: 1,
+          strokeOffsetX: 1,
+          strokeOffsetY: 1,
+          lineJoin: "round",
+        },
+      ],
+      shadow: {
+        shadowColor: "#3ee756",
+        shadowBlur: 0,
+        shadowOffsetX: 1,
+        shadowOffsetY: 1,
+      },
+      /** 填充 */
+      fill: {
+        color: "#000000",
+      },
+    },
   },
 ];
 
-export const lightFontStyleList: FontStyle[] = [
-  {
-    id: 1,
-    name: "高亮花字一",
-    svgText: `<svg xmlns="http://www.w3.org/2000/svg" id="图层_1" data-name="图层 1"><defs><style>.cls-1,.cls-2{font-size:36px;font-family:SourceHanSansCN-Bold-GBpc-EUC-H, Source Han Sans CN;}.cls-1{fill:#40593b;stroke:#40593b;stroke-linejoin:round;stroke-width:4px;}.cls-2{fill:#c3cf47;}</style></defs><title>7</title><text class="cls-1" transform="translate(2.74 34.85)">花字</text><text class="cls-2" transform="translate(2.74 34.85)">花字</text></svg>`,
-  },
-  {
-    id: 2,
-    name: "高亮花字二",
-    svgText: ``,
-  },
-];
+export const lightFontStyleList: FontStyleItem[] = fontStyleList;
 
 export const fontSizeList: FontSize[] = [12, 14, 16, 18, 24, 28, 36, 48];
 
@@ -68,7 +167,7 @@ export const videoClipPiece: AIGCClip = {
         {
           id: "video_1_sen1",
           select: 0,
-          text: "片段一这是第一条字幕",
+          text: "段一这是第一条字幕",
           textList: [],
           duration: 1.7,
           timestamp: [0, 1.7],
