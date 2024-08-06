@@ -84,29 +84,29 @@ git 通过划分出几个区域，来管理本地的文件。
 
 ```sh
 # 配置提交记录中的用户信息
-$ git config --global user.name <用户名>
-$ git config --global user.email <邮箱地址>
+git config --global user.name <用户名>
+git config --global user.email <邮箱地址>
 
 # 配置提交信息模版
-$ git config --global commit.template <~/.文件名>
+git config --global commit.template <~/.文件名>
 
 # 更改Git缓存区的大小
 # 如果提交的内容较大，默认缓存较小，提交会失败
 # 缓存大小单位：B，例如：524288000（500MB）
-$ git config --global http.postBuffer <缓存大小>
+git config --global http.postBuffer <缓存大小>
 
 # 调用 git status/git diff 命令时以高亮或彩色方式显示改动状态
-$ git config --global color.ui true
+git config --global color.ui true
 
 # 配置可以缓存密码，默认缓存时间15分钟
-$ git config --global credential.helper cache
+git config --global credential.helper cache
 
 # 配置密码的缓存时间
 # 缓存时间单位：秒
-$ git config --global credential.helper 'cache --timeout=<缓存时间>'
+git config --global credential.helper 'cache --timeout=<缓存时间>'
 
 # 配置长期存储密码
-$ git config --global credential.helper store
+git config --global credential.helper store
 
 ```
 
@@ -127,7 +127,7 @@ ls -al
 克隆远程代码仓库。
 
 ```sh
-$ git clone git@github.com:RoadAspen/webBlog.git
+git clone git@github.com:RoadAspen/webBlog.git
 ```
 
 ### git remote
@@ -136,20 +136,20 @@ $ git clone git@github.com:RoadAspen/webBlog.git
 
 ```sh
 # 查看本地存在的远程仓库
-$ git remote
+git remote
 
-# 查看本地存在的远程仓库，更详细信息$ git remote -v
-$ git remote -v
+# 查看本地存在的远程仓库，更详细信息git remote -v
+git remote -v
 
 # 添加远程仓库，并指定主机名
-$ git remote add <远程仓库主机名> <远程仓库地址>
+git remote add <远程仓库主机名> <远程仓库地址>
 
 # 删除指定的远程仓库
-$ git remote remove <远程仓库主机名>
+git remote remove <远程仓库主机名>
 
 # 修改远程仓库的主机名
-$ git remote rename <旧的远程仓库主机名> <新的远程仓库主机名># 修改远程仓库的URL
-$ git remote set-url <远程仓库主机名> <新的远程仓库地址>
+git remote rename <旧的远程仓库主机名> <新的远程仓库主机名># 修改远程仓库的URL
+git remote set-url <远程仓库主机名> <新的远程仓库地址>
 
 ```
 
@@ -159,31 +159,31 @@ $ git remote set-url <远程仓库主机名> <新的远程仓库地址>
 
 ```sh
 # 查看本地仓库的所有分支
-$ git branch
+git branch
 
 # 查看远程仓库的所有分支
-$ git branch -r
+git branch -r
 
 # 查看本地仓库和远程仓库的所有分支
-$ git branch -a
+git branch -a
 
 # 创建新的本地分支，新分支基于上一次提交建立
-$ git branch <分支名>
+git branch <分支名>
 
 # 创建新的本地分支，新分支基于指定的commit
-$ git branch <分支名> <commit>
+git branch <分支名> <commit>
 
 # 删除指定的本地分支
-$ git branch -d <分支名>
+git branch -d <分支名>
 
 # 强制删除指定的本地分支
-$ git branch -D <分支名>
+git branch -D <分支名>
 
 # 修改分支名，如果不指定原分支名，则默认为当前分支
-$ git branch -m [原分支名] <新分支名>
+git branch -m [原分支名] <新分支名>
 
 # 强制修改当前分支名
-$ git branch -M <新分支名>
+git branch -M <新分支名>
 
 ```
 
@@ -193,16 +193,16 @@ $ git branch -M <新分支名>
 
 ```sh
 # 切换分支
-$ git checkout <分支名>
+git checkout <分支名>
 
 # 创建并切换到新的分支，保留所有的提交记录
-$ git checkout -b <分支名>
+git checkout -b <分支名>
 
 # 创建并切换到新的分支，删除所有的提交记录
-$ git checkout --orphan <分支名>
+git checkout --orphan <分支名>
 
 # 替换掉本地的改动，新增的文件和已经添加到暂存区的内容不受影响
-$ git checkout <文件路径>
+git checkout <文件路径>
 
 ```
 
@@ -212,10 +212,10 @@ $ git checkout <文件路径>
 
 ```sh
 # 切换到已有分支
-$ git switch <分支名>
+git switch <分支名>
 
 # 创建并切换到新分支
-$ git switch -c <分支名>
+git switch -c <分支名>
 
 ```
 
@@ -224,7 +224,7 @@ $ git switch -c <分支名>
 **用于替换 checkout 中的放弃改动的一部分功能**
 
 ```sh
-$ git restore <文件名>
+git restore <文件名>
 ```
 
 ### git status
@@ -233,9 +233,9 @@ $ git restore <文件名>
 
 ```sh
 # 查看所有文件的状态
-$ git status
+git status
 # 查看某个文件的状态
-$ git status <文件名>
+git status <文件名>
 ```
 
 ## 本地代码提交
@@ -246,18 +246,18 @@ $ git status <文件名>
 
 ```sh
 # 将 指定文件 添加到暂存区
-$ git add <文件路径>
+git add <文件路径>
 
 # 将所有 修改和新增 的文件添加到暂存区
-$ git add .
+git add .
 
 # 将所有 修改和删除 的文件添加到暂存区，不包括 新增 的文件
-$ git add -u .
-$ git add -update .
+git add -u .
+git add -update .
 
 # 将 所有改动的文件 添加到暂存区
-$ git add -A .
-$ git add -all .
+git add -A .
+git add -all .
 
 ```
 
@@ -274,24 +274,24 @@ $ git add -all .
 ```sh
 # HEAD 是当前版本  HEAD^ 是上个commit  HEAD2 或者 HEAD^^ 是撤回两次提交
 # 撤销最近一次的提交
-$ git reset HEAD~
-$ git reset --mixed HEAD~
+git reset HEAD~
+git reset --mixed HEAD~
 
 # 重置暂存区，默认保留文件的变更
 # 相当于将用 "git add" 命令更新到暂存区的内容撤出暂存区，可以指定文件
-$ git reset [文件路径]
-$ git reset --mixed [文件路径]
+git reset [文件路径]
+git reset --mixed [文件路径]
 
 # 改变 HEAD 指向，撤销到指定的commit id，并在本地保留文件的变更
-$ git reset <提交ID>
-$ git reset --mixed <提交ID>
+git reset <提交ID>
+git reset --mixed <提交ID>
 
 # 改变 HEAD 指向，撤销到指定的提交记录，并在本地保留文件的变更
 # 相当于调用 "git reset --mixed" 命令后又做了一次 "git add"
-$ git reset --soft <提交ID>
+git reset --soft <提交ID>
 
 # 改变 HEAD 指向，撤销到指定的提交记录，并丢弃所有的历史记录
-$ git reset --hard <提交ID>
+git reset --hard <提交ID>
 ```
 
 ### git revert
@@ -300,7 +300,7 @@ $ git reset --hard <提交ID>
 
 ```sh
 # 保留之前的commit，回到之前的提交 并创建新的commit
-$ git revert <commit hash>
+git revert <commit hash>
 ```
 
 ### git commit
@@ -309,23 +309,23 @@ $ git revert <commit hash>
 
 ```sh
 # 将 暂存区所有的文件 提交到本地仓库，调用文本编辑器输入该次提交的描述信息
-$ git commit
+git commit
 
 # 将 暂存区所有的文件 提交到本地仓库
-$ git commit -m <提交信息>
+git commit -m <提交信息>
 
 # 将 暂存区指定的文件 提交到本地仓库
-$ git commit [文件1] [文件2] -m <提交信息>
+git commit [文件1] [文件2] -m <提交信息>
 
 # 将 "git add" 命令添加的所有文件 提交到本地仓库
-$ git commit -a
+git commit -a
 
 # 将 工作区的内容 直接提交到本地仓库
 # 不包括未被版本库跟踪的文件，等同于先调用了 "git add -u"
-$ git commit -am <提交信息>
+git commit -am <提交信息>
 
 # 修改上次提交记录的描述信息
-$ git commit --amend
+git commit --amend
 
 ```
 
@@ -335,29 +335,29 @@ $ git commit --amend
 
 ```sh
 # 临时保存所有修改的文件，message为备注信息, 不包含新增的文件
-$ git stash
-$ git stash save <备注信息>
+git stash
+git stash save <备注信息>
 
 # 恢复最近一次的stash，保留stash记录
-$ git stash apply
+git stash apply
 
 # 恢复指定的stash，保留stash记录
-$ git stash apply <stash 序号>
+git stash apply <stash 序号>
 
 # 恢复最近一次贮藏，并删除stash 记录
-$ git stash pop
+git stash pop
 
 # 恢复指定的stash，并删除stash记录
-$ git stash pop <stash 序号>
+git stash pop <stash 序号>
 
 
 # 显示所有的贮藏
-$ git stash list
+git stash list
 
 # 丢弃最近一次贮藏
-$ git stash drop
+git stash drop
 # 丢弃id 为 1 的 stash
-$ git stash drop 1
+git stash drop 1
 ```
 
 ### git rm
@@ -366,16 +366,16 @@ $ git stash drop 1
 
 ```sh
 # 删除工作目录中的文件夹，并将删除动作添加到暂存区（stage）
-$ git rm -r <文件夹路径>
+git rm -r <文件夹路径>
 
 # 删除工作目录中的文件，并将删除动作添加到暂存区（stage）
-$ git rm <文件路径>
+git rm <文件路径>
 
 # 删除暂存区的文件
-$ git rm --cached <文件路径>
+git rm --cached <文件路径>
 
 # 删除工作目录中的文件，并删除所有暂存区的文件,
-$ git rm -rf .
+git rm -rf .
 
 ```
 
@@ -413,38 +413,38 @@ git cherry-pick --abort
 
 ```sh
 # 将本地分支推送到指定远程主机名下的远程分支
-$ git push <远程主机名> <本地分支名>:<远程分支名>
-$ git push origin master:master
+git push <远程主机名> <本地分支名>:<远程分支名>
+git push origin master:master
 
 # 将本地分支推送到与之存在"追踪关系"的远程分支
 # 省略远程分支名，如果该远程分支不存在，则会被新建
-$ git push <远程主机名> <本地分支名>
-$ git push origin master
+git push <远程主机名> <本地分支名>
+git push origin master
 
 # 如果当前分支与远程分支之间存在"追踪关系"，则本地分支和远程分支都可以省略
-$ git push <远程主机名>
-$ git push origin
+git push <远程主机名>
+git push origin
 
 # 如果当前分支只有一个追踪分支，那么主机名都可以省略
-$ git push
+git push
 
 # 当前分支推送到远程分支，并覆盖 commit 记录。
-$ git push -f
+git push -f
 
 # 如果当前分支与多个远程主机存在"追踪关系"，则可以使用 -u 指定一个默认主机，这样以后就可以不加任何参数使用git push
-$ git push -u <远程主机名> <本地分支名>
-$ git push -u origin master
+git push -u <远程主机名> <本地分支名>
+git push -u origin master
 
 # 删除指定远程主机名下的远程分支
 # 省略本地分支名，等同于推送一个空的本地分支到远程分支
-$ git push <远程主机名> :<远程分支名>
-$ git push <远程主机名> --delete <远程分支名>
+git push <远程主机名> :<远程分支名>
+git push <远程主机名> --delete <远程分支名>
 
 # 强制推送,不推荐使用
-$ git push --force
+git push --force
 
 # 更安全的强制推送
-$ git push --force-with-lease
+git push --force-with-lease
 
 ```
 
@@ -456,10 +456,10 @@ $ git push --force-with-lease
 
 ```sh
 # 抓取远程仓库所有分支的最新版本
-$ git fetch -all
+git fetch -all
 
 # 抓取远程仓库指定分支的最新版本
-$ git fetch <远程主机名> <远程分支名>
+git fetch <远程主机名> <远程分支名>
 
 ```
 
@@ -467,7 +467,7 @@ $ git fetch <远程主机名> <远程分支名>
 使用 git log 查看
 
 ```sh
-$ git log -p FETCH_HEAD
+git log -p FETCH_HEAD
 ```
 
 ### git merge
@@ -476,10 +476,10 @@ $ git log -p FETCH_HEAD
 
 ```sh
 # 将指定的分支合并到当前分支
-$ git merge <分支名>
+git merge <分支名>
 
 # 当合并分支后出现冲突，撤回合并分支
-$ git merge --quit
+git merge --quit
 
 ```
 
@@ -491,13 +491,13 @@ $ git merge --quit
 
 ```sh
 # 拉取远程服务器上的变更，并合并到你的工作目录
-$ git pull [远程仓库的地址]
+git pull [远程仓库的地址]
 
 # 如果本地分支和远端分支同步，则可以省略仓库地址
-$ git pull
+git pull
 
 # 不执行merge操作，转而执行rebase操作， git fetch + git rebase
-$ git pull --rebase
+git pull --rebase
 ```
 
 ### git rebase
@@ -506,16 +506,16 @@ $ git pull --rebase
 
 ```sh
 # 将指定的分支合并到当前分支
-$ git rebase <分支名>
+git rebase <分支名>
 
 # 如果冲突了，就解决完冲突之后再执行这个操作
-$ git rebase --continue
+git rebase --continue
 
 # 取消本次rebase
-$ git rebase --abort
+git rebase --abort
 
 # 对当前分支最近的6次提交进行操作，打开vim ，可以使用 squash 将 6次提交合并为一次提交。
-$ git rebase -i HEAD~6
+git rebase -i HEAD~6
 
 ```
 

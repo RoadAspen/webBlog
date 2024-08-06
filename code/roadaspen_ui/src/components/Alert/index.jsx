@@ -40,14 +40,4 @@ function Alert(props) {
   ) : null;
 }
 
-Alert.propTypes = {
-  style: PropTypes.object,
-  closable: PropTypes.bool,
-  closeText: PropTypes.string,
-  message: PropTypes.string,
-  description: PropTypes.string,
-  type: PropTypes.string,
-  onClose: PropTypes.func,
-};
-
 export default Alert;

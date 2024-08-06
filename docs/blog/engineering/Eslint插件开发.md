@@ -61,7 +61,7 @@ module.exports = {
 
 ## Eslint 插件开发
 
-1. ESLint 官方为了方便开发者开发插件，提供了使用 `Yeoman` 模板(`generator-eslint`)。`Yeoman` 是一个脚手架工具，它可以迅速的搭建一个新项目，并且能够简化了现有项目的维护。 `generator-eslint` 是 eslint 官方出产的脚手架，用于快速构建 eslint 的相关文件。
+1. ESLint 官方为了方便开发者开发插件，提供了 `Yeoman` 模板(`generator-eslint`)。`Yeoman` 是一个脚手架工具，它可以迅速的搭建一个新项目，并且简化了现有项目的维护。 `generator-eslint` 是 eslint 官方出产的脚手架，用于快速构建 eslint 的相关文件。
 
 ```js
 npm install -g yo generator-eslint

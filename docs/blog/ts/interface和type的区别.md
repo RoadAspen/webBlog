@@ -117,7 +117,7 @@ type Text = string | { name: string };
 type Callback<T> = (data: T) => void;
 // 支持泛型
 type Pair<T> = [T, T];
-type Coordinates = Pair<number>;
+type Coordinates = Partial<number>;
 ```
 
 ### interface 可以而 type 不行
