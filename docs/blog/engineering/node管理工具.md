@@ -79,6 +79,7 @@ brew install fnm
 
 // yarn config get registry   查看切换后的源地址
 ```
+**注意，當我們在使用yrm設置新的鏡像源時，npm 的鏡像源會同步更改。**
 
 ### cgr
 
@@ -98,3 +99,4 @@ brew install fnm
 // npm config get registry   查看切换后的源地址
 // yarn config get registry   查看切换后的源地址
 ```
+目前來說，直接使用yrm就滿足需求
