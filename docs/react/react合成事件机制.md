@@ -69,18 +69,20 @@ Event 对象提供了一个属性叫 target，可以返回事件的目标节点�
 2. React 想通过 `SyntheticEvent` 实现跨平台事件机制。
 3. 原生事件升级、改造，比如 React 的 `onChange` 事件，它为表单元素定义了统一的值变动事件，例如 `blur`、`change`、`focus`、`input` 等。
 
-对于依赖的原生事件，scroll blur focus cancel close 方法注册捕获阶段的事件监听器。invalid submit reset 事件不做处理。剩下的事件需要判断是否是媒体触发的，比如 video / audio 的 onplaying 事件，onprogress 事件， onratechange 事件等，这些媒体事件也不需要处理。
+对于依赖的原生事件，`scroll` `blur` `focus` `cancel` `close` 方法注册捕获阶段的事件监听器。`invalid` `submit` `reset` 事件不做处理。剩下的事件需要判断是否是媒体触发的，比如 `video / audio` 的 `onplaying` 事件，`onprogress` 事件， `onratechange` 事件等，这些媒体事件也不需要处理。
 
-React 这么做的原因和事件有关，有些事件是不冒泡的，所以不能在冒泡阶段进行事件委托。  
-DiscreteEvent：click，blur,focus,submit,tuchStart 等，优先级是 0。
-UserBlockingEvent：touchMove,mouseMove,scroll,drag,dragOver 等，这些事件会阻塞用户的交互，优先级是 1。
-ContinuousEvent：load,error,loadStart,abort,animationend 等，优先级是 2，这个优先级最高，不会被打断。
-根据优先级的不同，监听函数做了不同的包装，我们先不管这里生成的监听函数和最初的监听方法有什么不同。最终我们会调用 addEventBubbleListener 方法。
+React 这么做的原因和事件有关，有些事件是不冒泡的，所以不能在冒泡阶段进行事件委托。
 
-addEventBubbleListener 就是 element.addEventListener，为目标添加事件监听函数。
+- **DiscreteEvent**：`click`，`blur`,`focus`,`submit`,`tuchStart` 等，优先级是 **`0`**。
+- **UserBlockingEvent**：`touchMove`,`mouseMove`,`scroll`,`drag`,`dragOver` 等，这些事件会阻塞用户的交互，优先级是 **`1`**。
+- **ContinuousEvent**：`load`,`error`,`loadStart`,`abort`,`animationend` 等，优先级是 **`2`**，这个优先级最高，不会被打断。
+
+根据优先级的不同，监听函数做了不同的包装，我们先不管这里生成的监听函数和最初的监听方法有什么不同。最终我们会调用 `addEventBubbleListener` 方法。
+
+`addEventBubbleListener` 就是 `element.addEventListener`，为目标添加事件监听函数。
 
 1. React 借鉴事件委托的方式将大部分事件委托给了 Document 对象。
-2. React 中的事件分为 3 类。分别是 DiscreteEvent（离散事件），UserBlockingEvent（用户阻塞事件），ContinuousEvent（连续事件）。
+2. React 中的事件分为 3 类。分别是 `DiscreteEvent`（离散事件），`UserBlockingEvent`（用户阻塞事件），`ContinuousEvent`（连续事件）。
 3. 不同类型的事件代表了不同的优先级。
    事件委托需要区分捕获和冒泡，有些事件由于没有冒泡过程，只能在捕获阶段进行事件委托。
 4. 没有进行委托的事件是 Form 事件和 Media 事件，原因是这些事件委托后会触发两次回调函数。
