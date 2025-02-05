@@ -13,15 +13,15 @@ cd docs/.vuepress/dist
 # echo 'www.example.com' > CNAME
 
 git init
-# 现在本地创建master分支，才能同步到远程
-git checkout -b master
+# 现在本地创建main分支，才能同步到远程
+git checkout -b main
 git add -A
 git commit -m 'deploy'
 
 # 如果发布到 https://<USERNAME>.github.io
-git push -f git@github.com:RoadAspen/RoadAspen.github.io.git master
+git push -f git@github.com:RoadAspen/RoadAspen.github.io.git main
 
 # 如果发布到 https://<USERNAME>.github.io/<REPO>
-# git push -f git@github.com:<USERNAME>/<REPO>.git master:gh-pages
+# git push -f git@github.com:<USERNAME>/<REPO>.git main:gh-pages
 
 cd -
