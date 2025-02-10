@@ -215,11 +215,11 @@ web-servlet-hello/
 
 普通的 Java 程序时通过启动 JVM,然后执行 `main()`方法开始执行.但是 Web 应用程序有所不同,我们无法直接运行`war`文件,必须先启动 Web 服务器,再由 Web 服务器加载我们编写的 `HelloServlet`,这样就可以让 `HelloServlet`处理浏览器发送的请求.
 
-因此,我们首先要找一个支持 Servlet API 的 Web 服务器.常用的服务器有:
+因此,我们首先要找一个支持 `Servlet API` 的 `Web 服务器`.常用的服务器有:
 
-- <font style="color:#C75C00;">Tomcat</font>: 由 Apache 开发的开源免费服务器.
-- <font style="color:#C75C00;">Jetty</font>: 由 Eclipse 开发的开源免费服务器
-- <font style="color:#C75C00;">GlasFish</font>: 一个开源的全功能 JavaEE 服务器
+- **Tomcat**: 由 Apache 开发的开源免费服务器.
+- **Jetty**: 由 Eclipse 开发的开源免费服务器
+- **GlasFish**: 一个开源的全功能 JavaEE 服务器
 
 无论使用哪个服务器,只要它支持 Servlet API 5.0 ,我们的 war 包就都可以在上面运行.**这里我们选择使用最广泛的开源免费的 Tomcat 服务器.**
 
@@ -231,35 +231,35 @@ sh startup.sh
 
 在浏览器输入 `http://localhost:8080/hello/`即可看到 `HelloServlet`的输出.
 
-**细心的童鞋可能会问,为啥路径是 **`**/hello/**`**而不是**`**/**`**?因为一个 Web 服务器允许同事运行多个 Web App,而我们的 Web App 叫**`**hello**`**,因此,第一级的目录**`**/hello**`**表示 Web App 的名字,后面的**`**/**`**才是我们在 **`**HelloServlet**`**中映射的路径.**
+**细心的童鞋可能会问,为啥路径是 **`**/hello/**`**而不是**`**/**`**?因为一个 Web 服务器允许同时运行多个 Web App,而我们的 Web App 叫**`**hello**`**,因此,第一级的目录**`**/hello**`**表示 Web App 的名字,后面的**`**/**`**才是我们在 **`**HelloServlet**`**中映射的路径.**
 
-<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">那能不能直接使用</font>`/`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">而不是</font>`/hello/`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">？毕竟</font>`/`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">比较简洁。</font>
+那能不能直接使用`/`而不是`/hello/`？毕竟`/`比较简洁。
 
-<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">先关闭 Tomcat（执行</font>`shutdown.sh`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">或</font>`shutdown.bat`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">），然后删除 Tomcat 的 webapps 目录下的所有文件夹和文件，最后把我们的</font>`hello.war`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">复制过来，改名为</font>`ROOT.war`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">，文件名为</font>`ROOT`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">的应用程序将作为默认应用，启动后直接访问</font>`http://localhost:8080/`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">即可。</font>
+先关闭 Tomcat（执行`shutdown.sh`或`shutdown.bat`），然后删除 Tomcat 的 webapps 目录下的所有文件夹和文件，最后把我们的`hello.war`复制过来，改名为`ROOT.war`，文件名为`ROOT`的应用程序将作为默认应用，启动后直接访问`http://localhost:8080/`即可。
 
-<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">实际上，类似 Tomcat 这样的服务器也是 Java 编写的，启动 Tomcat 服务器实际上是启动 Java 虚拟机，执行 Tomcat 的</font>`main()`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">方法，然后由 Tomcat 负责加载我们的</font>`.war`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">文件，并创建一个</font>`HelloServlet`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">实例，最后以多线程的模式来处理 HTTP 请求。如果 Tomcat 服务器收到的请求路径是</font>`/`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">（假定部署文件为 ROOT.war），就转发到</font>`HelloServlet`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">并传入</font>`HttpServletRequest`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">和</font>`HttpServletResponse`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">两个对象。</font>
+实际上，类似 Tomcat 这样的服务器也是 Java 编写的，启动 Tomcat 服务器实际上是启动 Java 虚拟机，执行 Tomcat 的`main()`方法，然后由 Tomcat 负责加载我们的`.war`文件，并创建一个`HelloServlet`实例，最后以多线程的模式来处理 HTTP 请求。如果 Tomcat 服务器收到的请求路径是`/`（假定部署文件为 ROOT.war），就转发到`HelloServlet`并传入`HttpServletRequest`和`HttpServletResponse`两个对象。
 
-**<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">因为我们编写的 Servlet 并不是直接运行，而是由 Web 服务器加载后创建实例运行，所以，类似 Tomcat 这样的 Web 服务器也称为 Servlet 容器。</font>**
+**因为我们编写的 Servlet 并不是直接运行，而是由 Web 服务器加载后创建实例运行，所以，类似 Tomcat 这样的 Web 服务器也称为 Servlet 容器。**
 
-### <font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">Tomcat</font>
+## Tomcat
 
-<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">由于 Servlet 版本分为<=4.0 和>=5.0 两种，所以，要根据使用的 Servlet 版本选择正确的 Tomcat 版本。从</font>[<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">Tomcat 版本页</font>](https://tomcat.apache.org/whichversion.html)<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">可知：</font>
+由于 Servlet 版本分为<=4.0 和>=5.0 两种，所以，要根据使用的 Servlet 版本选择正确的 Tomcat 版本。从[Tomcat 版本页](https://tomcat.apache.org/whichversion.html)可知：
 
-- <font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">使用 Servlet<=4.0 时，选择 Tomcat 9.x 或更低版本；</font>
-- <font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">使用 Servlet>=5.0 时，选择 Tomcat 10.x 或更高版本。</font>
+- 使用 Servlet<=4.0 时，选择 Tomcat 9.x 或更低版本；
+- 使用 Servlet>=5.0 时，选择 Tomcat 10.x 或更高版本。
 
-<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">在 Servlet 容器中运行的 Servlet 具有如下特点：</font>
+在 Servlet 容器中运行的 Servlet 具有如下特点：
 
-- <font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">无法在代码中直接通过 new 创建 Servlet 实例，必须由 Servlet 容器自动创建 Servlet 实例；</font>
-- <font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">Servlet 容器只会给每个 Servlet 类创建唯一实例；</font>
-- <font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">Servlet 容器会使用多线程执行</font>`doGet()`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">或</font>`doPost()`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">方法。</font>
+- 无法在代码中直接通过 new 创建 Servlet 实例，必须由 Servlet 容器自动创建 Servlet 实例；
+- Servlet 容器只会给每个 Servlet 类创建唯一实例；
+- Servlet 容器会使用多线程执行`doGet()`或`doPost()`方法。
 
-## <font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">结论</font>
+## 结论
 
-<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">编写 Web 应用程序就是编写 Servlet 处理 HTTP 请求；</font>
+编写 Web 应用程序就是编写 Servlet 处理 HTTP 请求；
 
-<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">Servlet API 提供了</font>`HttpServletRequest`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">和</font>`HttpServletResponse`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">两个高级接口来封装 HTTP 请求和响应；</font>
+1. Servlet API 提供了`HttpServletRequest`和`HttpServletResponse`两个高级接口来封装 HTTP 请求和响应；
 
-<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">Web 应用程序必须按固定结构组织并打包为</font>`.war`<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">文件；</font>
+2. Web 应用程序必须按固定结构组织并打包为`.war`文件；
 
-<font style="color:rgb(31, 41, 55);background-color:rgb(249, 250, 251);">需要启动 Web 服务器来加载我们的 war 包来运行 Servlet。</font>
+3. 需要启动 Web 服务器来加载我们的 war 包来运行 Servlet。
