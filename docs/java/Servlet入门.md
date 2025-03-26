@@ -6,9 +6,9 @@
 
 - 识别正确和错误的 HTTP 请求;
 - 识别正确和错误的 HTTP 请求头;
-- 服用 TCP 连接;
+- 复用 TCP 连接;
 - 复用线程;
-- IO 异常处理.
+- IO 异常处理;
 
 ```java
 import java.io.BufferedReader;
