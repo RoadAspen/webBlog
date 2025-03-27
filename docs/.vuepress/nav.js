@@ -1,28 +1,37 @@
-/**
- * 顶部导航
- */
+// 顶部导航
 const blog = {
-  text: "博客",
-  link: "/blog/",
+	text: '博客',
+	link: '/blog/',
 };
 
 const arithmetic = {
-  text: "算法",
-  link: "/arithmetic/",
+	text: '算法',
+	link: '/arithmetic/',
 };
 
 const book = {
-  text: "阅读",
-  link: "/book/",
+	text: '阅读',
+	link: '/book/',
 };
+
 const react = {
-  text: "React",
-  link: "/react/",
+	text: 'React',
+	link: '/react/',
 };
 
-const cookbook = {
-  text: "菜谱",
-  link: "/cookbook/",
+const java = {
+	text: 'Java',
+	link: '/java/',
 };
 
-module.exports = [blog, arithmetic, react, book, cookbook];
+const notepad = {
+	text: '笔记',
+	link: '/notepad/',
+};
+
+const vue = {
+	text: 'Vue',
+	link: '/vue/',
+};
+
+module.exports = [blog, arithmetic, react, book, java, notepad, vue];
