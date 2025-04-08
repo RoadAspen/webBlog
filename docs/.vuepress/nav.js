@@ -1,7 +1,16 @@
 // 顶部导航
 const blog = {
-	text: '博客',
+	text: '前端博客',
 	link: '/blog/',
+};
+
+const react = {
+	text: 'React源码解析',
+	link: '/react/',
+};
+const vue = {
+	text: 'Vue源码解析',
+	link: '/vue/',
 };
 
 const arithmetic = {
@@ -14,14 +23,13 @@ const book = {
 	link: '/book/',
 };
 
-const react = {
-	text: 'React',
-	link: '/react/',
-};
-
 const java = {
-	text: 'Java',
+	text: 'Java入门',
 	link: '/java/',
+};
+const database = {
+	text: '数据库',
+	link: '/database/',
 };
 
 const notepad = {
@@ -29,9 +37,4 @@ const notepad = {
 	link: '/notepad/',
 };
 
-const vue = {
-	text: 'Vue',
-	link: '/vue/',
-};
-
-module.exports = [blog, arithmetic, react, book, java, notepad, vue];
+module.exports = [blog, arithmetic, react, vue, database, book, java, notepad];

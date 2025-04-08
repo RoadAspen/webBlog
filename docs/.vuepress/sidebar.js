@@ -23,6 +23,8 @@ const blogContent = [
 			'js/位运算及权限设计',
 			'js/自定义事件',
 			'js/拖拽',
+			'js/获取图片宽高',
+			'js/composition使用',
 		],
 	},
 	{
@@ -31,6 +33,7 @@ const blogContent = [
 		children: [
 			'http/计算机网络',
 			'http/http',
+			'http/httpcode',
 			'http/http缓存',
 			'http/sse',
 			'http/websocket',
@@ -131,7 +134,7 @@ const blogContent = [
 		children: ['reactnative/基础'],
 	},
 	{
-		title: 'Framework',
+		title: '前端库工具库',
 		collapsable: true,
 		children: [
 			'framework/react-redux',
@@ -177,17 +180,7 @@ const blogContent = [
 		],
 	},
 	{
-		title: '随笔',
-		collapsable: true,
-		children: [
-			'随笔/composition使用',
-			'随笔/上传获取图片宽高',
-			'随笔/什么是数字孪生',
-			'随笔/芯片原理',
-		],
-	},
-	{
-		title: 'libraryDiff',
+		title: '技术对比',
 		collapsable: true,
 		children: [
 			'libraryDiff/css-in-js',
@@ -337,10 +330,11 @@ const bookContent = [
 		title: '国内',
 		collapsable: true,
 		children: [
-			'book/国内/活着',
-			'book/国内/许三观卖血记',
-			'book/国内/平凡的世界',
 			'book/国内/浮生六记',
+			'book/国内/活着',
+			'book/国内/平凡的世界',
+			'book/国内/围城',
+			'book/国内/许三观卖血记',
 		],
 	},
 	{
@@ -356,17 +350,23 @@ const bookContent = [
 			'book/国外/宿命',
 		],
 	},
+	{
+		title: '心经',
+		collapsable: false,
+		children: ['book/心经'],
+	},
 ];
 
 // Java内容
 const javaContent = [
 	{
-		title: '基础',
+		title: 'java基础',
 		collapsable: true,
 		children: [
 			'java/Java介绍及搭建开发环境',
 			'java/Java程序基本结构',
 			'java/Java类型',
+			'java/Java多线程',
 		],
 	},
 	{
@@ -374,19 +374,41 @@ const javaContent = [
 		collapsable: true,
 		children: ['java/spring', 'java/Maven', 'java/Servlet入门'],
 	},
-	{
-		title: '多线程',
-		collapsable: true,
-		children: ['java/Java多线程'],
-	},
 ];
 
 // 笔记内容
 const notepadContent = [
 	{
-		title: '笔记',
+		title: '随笔',
 		collapsable: true,
-		children: ['notepad/婚礼记录'],
+		children: [
+			'notepad/从零学习英语计划',
+			'notepad/什么是数字孪生',
+			'notepad/芯片原理',
+		],
+	},
+	{
+		title: '年度总结',
+		collapsable: true,
+		children: ['notepad/年度总结/婚礼记录'],
+	},
+];
+// 数据库
+const dataBaseContent = [
+	{
+		title: 'Mongo',
+		collapsable: true,
+		children: ['database/mongo/基础'],
+	},
+	{
+		title: 'Mysql',
+		collapsable: true,
+		children: ['database/mysql/基础'],
+	},
+	{
+		title: 'PgSQL',
+		collapsable: true,
+		children: ['database/pgsql/基础'],
 	},
 ];
 
@@ -394,8 +416,9 @@ module.exports = {
 	'/blog/': blogContent,
 	'/arithmetic/': arithmeticContent,
 	'/react/': reactContent,
+	'/vue/': vueContent,
 	'/book/': bookContent,
 	'/java/': javaContent,
+	'/database/': dataBaseContent,
 	'/notepad/': notepadContent,
-	'/vue/': vueContent,
 };
