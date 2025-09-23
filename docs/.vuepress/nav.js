@@ -5,11 +5,11 @@ const blog = {
 };
 
 const react = {
-	text: 'React源码解析',
+	text: 'React',
 	link: '/react/',
 };
 const vue = {
-	text: 'Vue源码解析',
+	text: 'Vue',
 	link: '/vue/',
 };
 
