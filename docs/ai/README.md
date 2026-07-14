@@ -35,21 +35,20 @@
 5.  P1 - Embedding 的本质：构建语义空间
 6.  P1 - 为什么“语义相似”可以被计算
 7.  P1 - Temperature / Top-p 到底控制什么
-8.  P1 - 如何让输出更稳定（从参数角度）
-9.  P2 - LLM 为什么看起来“像思考”
-10. P2 - 语言能力 vs 推理能力的区别
+8.  P2 - LLM 为什么看起来”像思考”
+9.  P2 - 语言能力 vs 推理能力的区别
 
 ## 第二部分：原理机制（How it works）
 
-1.  P2 - Transformer 整体结构（非数学版）
-2.  P2 - Attention 机制：模型如何决定关注点
-3.  P1 - 自回归生成：模型是如何一步步写出答案
-4.  P0 - 上下文窗口（Context Window）机制
-5.  P1 - Token 预测过程详解
-6.  P1 - In-context learning：为什么 Prompt 有效
-7.  P0 - 幻觉（Hallucination）的根本原因
-8.  P1 - 长上下文问题与信息遗忘
-9.  P2 - 模型能力的边界在哪里
+1.  P1 - 自回归生成：模型是如何一步步写出答案
+2.  P0 - 上下文窗口（Context Window）机制
+3.  P1 - Token 预测过程详解
+4.  P1 - In-context learning：为什么 Prompt 有效
+5.  P0 - 幻觉（Hallucination）的根本原因
+6.  P1 - 长上下文问题与信息遗忘
+7.  P2 - 模型能力的边界在哪里
+8.  P2 - Transformer 整体结构（非数学版）
+9.  P2 - Attention 机制：模型如何决定关注点
 
 ## 第三部分：能力拆解（What can it do）
 
@@ -61,14 +60,15 @@
 6.  P2 - 自我反思（Reflection）机制
 7.  P0 - 多轮对话能力是如何维持的
 8.  P1 - 对话中的上下文管理策略
-9.  P1 - 代码生成能力的本质
+9.  P2 - 代码生成能力的本质
 10. P2 - 数据分析与解释能力
 11. P2 - 多模态能力（图像/文本）基础
-12. P0 - 结构化输出（JSON）实现方式
-13. P0 - 如何让模型严格遵循格式
-14. P1 - 输出稳定性优化策略
+12. P0 - 结构化输出：JSON 模式实现与格式约束
+13. P1 - 输出稳定性优化策略
 
 ## 第四部分：工程应用（How to build）【核心重点模块】
+
+### 4A. Prompt 工程
 
 1.  P0 - Prompt 设计基础原则
 2.  P0 - Zero-shot / Few-shot 使用技巧
@@ -76,20 +76,25 @@
 4.  P1 - 角色设定（Role Prompting）方法
 5.  P0 - Prompt 模板化与复用
 6.  P1 - Prompt 调优方法论（迭代优化）
+
+### 4B. RAG 知识库
+
 7.  P0 - RAG 整体架构（从 0 到 1）
 8.  P0 - Embedding + 向量数据库原理
 9.  P0 - 文本切分（Chunking）策略
 10. P1 - 召回优化（Query 改写 / Rerank）
 11. P1 - 如何提升检索命中率
 12. P2 - RAG 常见问题与优化策略
+
+### 4C. Agent 与工作流
+
 13. P0 - Agent 是什么（和 Prompt 的区别）
 14. P1 - 任务拆解（Task Decomposition）
-15. P0 - Tool Calling 机制详解
-16. P0 - Function Calling 实现方式
-17. P1 - Agent 执行流程设计
-18. P0 - AI 工作流设计（多步骤编排）
-19. P1 - 状态管理与上下文传递
-20. P1 - 复杂任务拆分策略
+15. P0 - Tool Calling / Function Calling 机制详解
+16. P1 - Agent 执行流程设计
+17. P0 - AI 工作流设计（多步骤编排）
+18. P1 - 状态管理与上下文传递
+19. P1 - 复杂任务拆分策略
 
 ## 第五部分：系统设计（Architecture）
 
@@ -98,7 +103,7 @@
 3.  P0 - Token 成本优化策略
 4.  P1 - 响应延迟优化（Streaming / 并发）
 5.  P0 - 缓存设计（Prompt 缓存 / 结果缓存）
-6.  P0 - 如何降低幻觉（工程方法）
+6.  P0 - 幻觉治理的工程方法（承接第二部分 #5 的原理）
 7.  P1 - 输出质量控制（Guardrails）
 8.  P1 - 错误处理与回退策略
 9.  P2 - 多模型协同策略（大模型 + 小模型）
@@ -107,6 +112,10 @@
 12. P1 - AI 系统评估方法（Evaluation）
 13. P2 - 如何构建评测数据集
 14. P1 - 从 Demo 到生产系统的演进路径
+15. P0 - Streaming 实现与用户体验
+16. P1 - Prompt Injection 与安全基础
+17. P1 - 模型选型方法论
+18. P2 - RAG vs Fine-tuning：各自适用场景
 
 ---
 
