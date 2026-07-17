@@ -1,0 +1,128 @@
+﻿[
+    {
+        "slug":  "ch01-architecture",
+        "url":  "https://claude-code-from-source.com/ch01-architecture/",
+        "en":  "en/ch01-architecture.md",
+        "zhCN":  "zh-CN/ch01-architecture.zh-CN.md",
+        "html":  "html/ch01-architecture.html"
+    },
+    {
+        "slug":  "ch02-bootstrap",
+        "url":  "https://claude-code-from-source.com/ch02-bootstrap/",
+        "en":  "en/ch02-bootstrap.md",
+        "zhCN":  "zh-CN/ch02-bootstrap.zh-CN.md",
+        "html":  "html/ch02-bootstrap.html"
+    },
+    {
+        "slug":  "ch03-state",
+        "url":  "https://claude-code-from-source.com/ch03-state/",
+        "en":  "en/ch03-state.md",
+        "zhCN":  "zh-CN/ch03-state.zh-CN.md",
+        "html":  "html/ch03-state.html"
+    },
+    {
+        "slug":  "ch04-api-layer",
+        "url":  "https://claude-code-from-source.com/ch04-api-layer/",
+        "en":  "en/ch04-api-layer.md",
+        "zhCN":  "zh-CN/ch04-api-layer.zh-CN.md",
+        "html":  "html/ch04-api-layer.html"
+    },
+    {
+        "slug":  "ch05-agent-loop",
+        "url":  "https://claude-code-from-source.com/ch05-agent-loop/",
+        "en":  "en/ch05-agent-loop.md",
+        "zhCN":  "zh-CN/ch05-agent-loop.zh-CN.md",
+        "html":  "html/ch05-agent-loop.html"
+    },
+    {
+        "slug":  "ch06-tools",
+        "url":  "https://claude-code-from-source.com/ch06-tools/",
+        "en":  "en/ch06-tools.md",
+        "zhCN":  "zh-CN/ch06-tools.zh-CN.md",
+        "html":  "html/ch06-tools.html"
+    },
+    {
+        "slug":  "ch07-concurrency",
+        "url":  "https://claude-code-from-source.com/ch07-concurrency/",
+        "en":  "en/ch07-concurrency.md",
+        "zhCN":  "zh-CN/ch07-concurrency.zh-CN.md",
+        "html":  "html/ch07-concurrency.html"
+    },
+    {
+        "slug":  "ch08-sub-agents",
+        "url":  "https://claude-code-from-source.com/ch08-sub-agents/",
+        "en":  "en/ch08-sub-agents.md",
+        "zhCN":  "zh-CN/ch08-sub-agents.zh-CN.md",
+        "html":  "html/ch08-sub-agents.html"
+    },
+    {
+        "slug":  "ch09-fork-agents",
+        "url":  "https://claude-code-from-source.com/ch09-fork-agents/",
+        "en":  "en/ch09-fork-agents.md",
+        "zhCN":  "zh-CN/ch09-fork-agents.zh-CN.md",
+        "html":  "html/ch09-fork-agents.html"
+    },
+    {
+        "slug":  "ch10-coordination",
+        "url":  "https://claude-code-from-source.com/ch10-coordination/",
+        "en":  "en/ch10-coordination.md",
+        "zhCN":  "zh-CN/ch10-coordination.zh-CN.md",
+        "html":  "html/ch10-coordination.html"
+    },
+    {
+        "slug":  "ch11-memory",
+        "url":  "https://claude-code-from-source.com/ch11-memory/",
+        "en":  "en/ch11-memory.md",
+        "zhCN":  "zh-CN/ch11-memory.zh-CN.md",
+        "html":  "html/ch11-memory.html"
+    },
+    {
+        "slug":  "ch12-extensibility",
+        "url":  "https://claude-code-from-source.com/ch12-extensibility/",
+        "en":  "en/ch12-extensibility.md",
+        "zhCN":  "zh-CN/ch12-extensibility.zh-CN.md",
+        "html":  "html/ch12-extensibility.html"
+    },
+    {
+        "slug":  "ch13-terminal-ui",
+        "url":  "https://claude-code-from-source.com/ch13-terminal-ui/",
+        "en":  "en/ch13-terminal-ui.md",
+        "zhCN":  "zh-CN/ch13-terminal-ui.zh-CN.md",
+        "html":  "html/ch13-terminal-ui.html"
+    },
+    {
+        "slug":  "ch14-input-interaction",
+        "url":  "https://claude-code-from-source.com/ch14-input-interaction/",
+        "en":  "en/ch14-input-interaction.md",
+        "zhCN":  "zh-CN/ch14-input-interaction.zh-CN.md",
+        "html":  "html/ch14-input-interaction.html"
+    },
+    {
+        "slug":  "ch15-mcp",
+        "url":  "https://claude-code-from-source.com/ch15-mcp/",
+        "en":  "en/ch15-mcp.md",
+        "zhCN":  "zh-CN/ch15-mcp.zh-CN.md",
+        "html":  "html/ch15-mcp.html"
+    },
+    {
+        "slug":  "ch16-remote",
+        "url":  "https://claude-code-from-source.com/ch16-remote/",
+        "en":  "en/ch16-remote.md",
+        "zhCN":  "zh-CN/ch16-remote.zh-CN.md",
+        "html":  "html/ch16-remote.html"
+    },
+    {
+        "slug":  "ch17-performance",
+        "url":  "https://claude-code-from-source.com/ch17-performance/",
+        "en":  "en/ch17-performance.md",
+        "zhCN":  "zh-CN/ch17-performance.zh-CN.md",
+        "html":  "html/ch17-performance.html"
+    },
+    {
+        "slug":  "ch18-epilogue",
+        "url":  "https://claude-code-from-source.com/ch18-epilogue/",
+        "en":  "en/ch18-epilogue.md",
+        "zhCN":  "zh-CN/ch18-epilogue.zh-CN.md",
+        "html":  "html/ch18-epilogue.html"
+    }
+]
