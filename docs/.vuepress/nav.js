@@ -1,16 +1,7 @@
 // 顶部导航
-const blog = {
-	text: '前端博客',
-	link: '/blog/',
-};
-
-const react = {
-	text: 'React',
-	link: '/react/',
-};
-const vue = {
-	text: 'Vue',
-	link: '/vue/',
+const ai = {
+	text: 'AI',
+	link: '/ai/',
 };
 
 const arithmetic = {
@@ -18,23 +9,61 @@ const arithmetic = {
 	link: '/arithmetic/',
 };
 
+const blog = {
+	text: '博客',
+	link: '/blog/',
+};
+
 const book = {
 	text: '阅读',
 	link: '/book/',
 };
 
-const java = {
-	text: 'Java入门',
-	link: '/java/',
+const claudeSource = {
+	text: 'Claude Source',
+	link: '/claude-source/',
 };
+
 const database = {
 	text: '数据库',
 	link: '/database/',
 };
 
-const notepad = {
-	text: '笔记',
-	link: '/notepad/',
+const java = {
+	text: 'Java',
+	link: '/java/Java介绍及搭建开发环境',
 };
 
-module.exports = [blog, arithmetic, react, vue, database, book, java, notepad];
+const notepad = {
+	text: '笔记',
+	link: '/notepad/从零学习英语计划',
+};
+
+const react = {
+	text: 'React',
+	link: '/react/',
+};
+
+const vue = {
+	text: 'Vue',
+	link: '/vue/',
+};
+
+const blockchain = {
+	text: '区块链',
+	link: '/区块链/',
+};
+
+module.exports = [
+	ai,
+	arithmetic,
+	blog,
+	book,
+	claudeSource,
+	database,
+	java,
+	notepad,
+	react,
+	vue,
+	blockchain,
+];

@@ -72,13 +72,13 @@
 
  Every memory file uses YAML frontmatter with three required fields:
 
-` ext
-`  ---
-  name  : {{  memory name  }}
-  description  : {{  one-line description -- used to decide relevance  }}
-  type  : {{  user  ,   feedback  ,   project  ,   reference  }}
-  ---  `
-`
+```yaml
+---
+name: <memory name>
+description: <one-line description used to decide relevance>
+type: <user | feedback | project | reference>
+---
+```
 
  The `description` is the most load-bearing field. It is what the relevance selector (a Sonnet side-query, discussed below) uses to decide whether to surface this memory. A vague description like “testing stuff” will either match too broadly or fail to match at all. A specific description like “Integration tests must hit real DB, not mocks — burned by mock divergence Q4” matches exactly the conversations where it matters. The description is the memory’s search index — consumed not by a search engine but by a language model that can understand nuance, context, and intent.
 
@@ -90,27 +90,27 @@
 
   Step 1: Write the memory file.  The model creates a `.md` file in the memory directory with YAML frontmatter:
 
-` ext
-`  ---
-  name  :   Testing Policy
-  description  :   Integration tests must hit real DB, not mocks
-  type  :   feedback
-  ---
+```md
+---
+name: Testing Policy
+description: Integration tests must hit real DB, not mocks
+type: feedback
+---
 
-  Don't mock the database in integration tests.
+Don't mock the database in integration tests.
 
-  **Why:**   We got burned last quarter when mocked tests passed but production
-  queries hit edge cases the mocks didn't cover.
+**Why:** We got burned last quarter when mocked tests passed but production
+queries hit edge cases the mocks didn't cover.
 
-  **How to apply:**   Any test file under   `__tests__/`   that touches database
-  operations should use the real PGlite instance from test-utils.  `
-`
+**How to apply:** Any test file under `__tests__/` that touches database
+operations should use the real PGlite instance from test-utils.
+```
 
   Step 2: Update the index.  The model adds a one-line pointer to `MEMORY.md`:
 
-` ext
-`  -   [  Testing Policy  ](  feedback_testing.md  ) -- integration tests must hit real DB  `
-`
+```md
+- [Testing Policy](feedback_testing.md) -- integration tests must hit real DB
+```
 
  Each entry must stay under approximately 150 characters. The index is a table of contents, not a knowledge base.
 
